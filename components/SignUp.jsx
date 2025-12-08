@@ -47,26 +47,11 @@ export default function SignUp() {
 
   return (
     <div className="flex flex-col w-screen h-screen">
-      <header className="pr-10 pl-10 bg-white w-full h-20 items-center flex justify-between">
-        <Link href="#" className="logo"> APIhub</Link>
-        <div className="gap-5 justify-between flex">
-        </div>
-      </header>
+      <Header />
 
       <div className="container">
 
-        <div className="w-[70%] justify-items-center items-center">
-          <Link
-            href="#"
-            className="text-sm text-stone-300 hover:underline underline-offset-2"
-          >
-            Already sign up ?
-          </Link>
-          <Button classname="w-full bg-[#B8A9FF] h-[50px] font-semibold text-lg rounded-[3] hover:bg-[#9d90de] cursor-pointer">
-            Sign Up
-          </Button>
-        </div>
-        <hr className="bg-white border-white border-2 w-[80%]"></hr>
+       
 
         <div className="w-[50%] justify-end flex flex-col  h-full p-10">
 
