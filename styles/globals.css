@@ -1,12 +1,51 @@
 @import "tailwindcss";
+@font-face {
+  font-family: "Aqua";
+  src: url('/aqua.ttf');
+}
+
 
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 * {
   box-sizing: border-box;
+}
+
+/*.button {
+  @apply bg-[#B8A9FF] rounded-[3] text-[#F2FDFF] text-sm w-[150px]   p-3 text-shadow-2xs
+
+}*/
+
+.logo{
+ font-family: "Aqua";
+ font-size: 2rem;
+}
+
+#button:hover {
+  cursor: pointer;
+  background-color: #9d90de;
+}
+
+.inputText {
+  @apply bg-[#ffffff] rounded-[5] text-lg text-stone-400 h-[50px] w-[500px] pl-10 shadow
+}
+
+.inputText:hover {
+  background-color: rgb(241, 241, 241);
+}
+
+.container {
+  @apply w-full h-full flex flex-1;
+}
+
+.imageLogin {
+  @apply w-[50%]
+}
+
+.containerLogin{
+  @apply w-[50%] h-full gap-[100px] p-20 bg-[#050F2A] text-white
 }
