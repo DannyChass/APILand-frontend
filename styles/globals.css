@@ -31,7 +31,7 @@ body {
 }
 
 .inputText {
-  @apply bg-[#ffffff] rounded-[5] text-lg text-stone-400 h-[50px] w-[500px] pl-10 shadow
+  @apply bg-[#757575] rounded-[5] text-lg text-stone-400 h-[50px] w-[500px] pl-10 shadow
 }
 
 .inputText:hover {
