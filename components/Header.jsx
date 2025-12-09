@@ -4,14 +4,14 @@ import Link from "next/link";
 import Button from "./ui/Button";
 import * as React from "react";
 import { useState } from "react";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faAngleDown, faNewspaper} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleDown, faNewspaper } from '@fortawesome/free-solid-svg-icons'
 import Fade from "@mui/material/Fade";
 
 
 export default function Header() {
   const [select, setSelect] = useState("API");
-   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -27,12 +27,12 @@ export default function Header() {
           {" "}
           APIhub
         </Link>
-        <button className="flex gap-3 p-3 pr-6 justify-center font-bold text-stone-500 items-center border-0 border-r-2 border-stone-300"  id="apiMenu"
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}>
-          API <FontAwesomeIcon icon={faAngleDown} color="#757575"/>
+        <button className="flex gap-3 p-3 pr-6 justify-center font-bold text-stone-500 items-center border-0 border-r-2 border-stone-300" id="apiMenu"
+          aria-controls={open ? 'basic-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          onClick={handleClick}>
+          API <FontAwesomeIcon icon={faAngleDown} color="#757575" />
         </button>
         <Menu
           anchorEl={anchorEl}
@@ -49,15 +49,15 @@ export default function Header() {
           <MenuItem value="Docs">Docs</MenuItem>
           <MenuItem value="community">Community</MenuItem>
         </Menu>
-        <button className="flex gap-3 p-3 pr-6 justify-center font-bold text-stone-500 items-center border-0 border-r-2 border-stone-300"  id="apiMenu"
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}>
-          News <FontAwesomeIcon icon={faAngleDown} color="#757575"/>
+        <button className="flex gap-3 p-3 pr-6 justify-center font-bold text-stone-500 items-center border-0 border-r-2 border-stone-300" id="apiMenu"
+          aria-controls={open ? 'basic-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          onClick={handleClick}>
+          News <FontAwesomeIcon icon={faAngleDown} color="#757575" />
         </button>
         <Menu
-        slot={{transition: Fade}}
+          slot={{ transition: Fade }}
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
@@ -73,9 +73,12 @@ export default function Header() {
           <MenuItem value="community">Community</MenuItem>
         </Menu>
       </div>
-      
+
 
       <div className="gap-5 justify-between flex">
+        <Link href="/AddAPI">
+          <Button>Add an API</Button>
+        </Link>
         <Button>Sign Up</Button>
         <Button>Login</Button>
       </div>

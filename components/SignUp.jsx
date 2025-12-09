@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Button from "./ui/Button";
-import InputText from "./ui/inputText";
+import InputText from "./ui/InputText";
 import Header from "./Header";
 import Backdrop from "@mui/material/Backdrop";
 import { useState } from 'react'
+import { useRouter } from "next/router";
 
 export default function SignUp() {
 
@@ -12,6 +13,8 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
+
+  const router = useRouter();
 
   const handleSignup = async () => {
     setError(null);
@@ -42,7 +45,7 @@ export default function SignUp() {
 
     localStorage.setItem("token", data.token);
 
-    alert("Inscription réussi");
+    router.push("/HomePage");
   }
 
   return (
@@ -51,7 +54,7 @@ export default function SignUp() {
 
       <div className="container">
 
-       
+
 
         <div className="w-[50%] justify-end flex flex-col  h-full p-10">
 

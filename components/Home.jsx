@@ -1,6 +1,6 @@
 import styles from '../styles/Home.module.css';
 import Button from './ui/Button';
-import InputText from './ui/inputText';
+import InputText from './ui/InputText';
 
 function Home() {
   const placeholder = 'Username'
