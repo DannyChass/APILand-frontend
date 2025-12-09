@@ -5,10 +5,12 @@ import ThemeButton from "../components/ui/ThemeButton";
 import ApiCarousel from "../components/ui/ApiCarousel";
 import Header from "../components/Header";
 import { useState } from "react";
+import {useNavigate} from 'react-router'
 
 
 
 function Home() {
+  let navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [suggestions, setSuggestions] = useState([])
 
@@ -32,6 +34,10 @@ const  handleChange = async (text) => {
 setSuggestions([])
     }
     
+}
+
+const searchAPI = () => {
+  navigate("#")
 }
 
 const handleSelect = (title) => {
