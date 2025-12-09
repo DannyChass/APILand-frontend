@@ -10,7 +10,7 @@ import {useNavigate} from 'react-router'
 
 
 function Home() {
-  let navigate = useNavigate()
+  //let navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [suggestions, setSuggestions] = useState([])
 
@@ -36,9 +36,10 @@ setSuggestions([])
     
 }
 
-const searchAPI = () => {
-  navigate("#")
-}
+// const searchAPI = () => {
+
+//   navigate("#")
+// }
 
 const handleSelect = (title) => {
   setQuery(title);
