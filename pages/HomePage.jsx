@@ -1,19 +1,100 @@
-import styles from '../styles/Home.module.css';
-import Button from '../components/ui/Button';
-import InputText from '../components/ui/InputText';
-import ApiCarousel from '../components/ui/ApiCarousel';
-import Header from '../components/Header';
+import styles from "../styles/Home.module.css";
+import Button from "../components/ui/Button";
+import InputText from "../components/ui/InputText";
+import ThemeButton from "../components/ui/ThemeButton";
+import ApiCarousel from "../components/ui/ApiCarousel";
+import Header from "../components/Header";
+import { useState } from "react";
+import {useNavigate} from 'react-router'
+
+
 
 function Home() {
-  const placeholder = "Username";
+  //let navigate = useNavigate()
+  const [query, setQuery] = useState('')
+  const [suggestions, setSuggestions] = useState([])
+
+const  handleChange = async (text) => {
+  setQuery(text)
+
+  if (text.length >= 3) {
+    try {
+      const response = await fetch(`http://localhost:3000/api/allApi/${text}`);
+    const data = await response.json()
+
+   const result = data.map((api) => api.name)
+
+    setSuggestions(result)
+  
+    } catch (error) {
+      console.log(error)
+      setSuggestions([])
+    }
+  }else {
+setSuggestions([])
+    }
+    
+}
+
+// const searchAPI = () => {
+
+//   navigate("#")
+// }
+
+const handleSelect = (title) => {
+  setQuery(title);
+  setSuggestions([])
+}
+
+const suggests = suggestions.map((data,i) =>{
+    return <li key={i} className="p-2 text-sm   hover:bg-gray-200 cursor-pointer" onClick={() => handleSelect(data)} >{data}</li>
+
+}
+)
+
+
+  const theme = ["Business", "Weather", "Jobs", "Maps"];
+
+  const popSearch = theme.map((data, i) => {
+    return <ThemeButton key={i} theme={data} />;
+  });
+
   return (
     <div>
       <Header />
       <main className={styles.main}>
-        
+        <div className="flex flex-col justify-around gap-15 items-center bg-[#050F2A] w-full h-[30%] py-15">
+          <h2 className="text-white text-4xl font-bold">Welcome on APIHub</h2>
+          <div className="bg-white relative justify-between items-center flex w-[50%] rounded-xl ">
+            <input
+              type="search"
+              placeholder="Search API"
+              value={query}
+              onChange={(e)=> handleChange(e.target.value)}
+              className="pl-10 w-[70%] h-11 rounded-l-xl text-slate-700"
+            />
+            {suggestions.length > 0 && (
+  <ul className="absolute left-0 right-0  top-11 text-slate-500 z-10 border rounded shadow bg-white">
+      {suggests}
+  </ul>
+)}
+
+            <Button classname="h-11 w-40 rounded-xl bg-[#B8A9FF] text-white font-bold shadow hover:bg-[#9d90de] cursor-pointer">
+              Search
+            </Button>
+          </div>
+          <div className="flex gap-10 justify-center items-center ">
+            <h5 className="text-white font-bold">Recherches populaires:</h5>
+            <div className="flex gap-10">{popSearch}</div>
+          </div>
+        </div>
+
         <ApiCarousel title="Les apis de Daniel San" />
-        <hr className='border border-stone-100 w-[70%]'/>
+        <hr className="border border-stone-100 w-[70%]" />
         <ApiCarousel title="le sommum du développeur" />
+        <hr className="border border-stone-100 w-[70%]" />
+        <ApiCarousel title="le sommum du développeur" />
+
       </main>
     </div>
   );

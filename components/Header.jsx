@@ -4,7 +4,7 @@ import Link from "next/link";
 import Button from "./ui/Button";
 import * as React from "react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faNewspaper } from '@fortawesome/free-solid-svg-icons'
 import Fade from "@mui/material/Fade";
@@ -14,12 +14,32 @@ export default function Header() {
   const [select, setSelect] = useState("API");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+    if (stored) {
+      setUser(JSON.parse(stored));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
+    setUser(null);
+    window.location.href = "/";
+  }
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  }
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+
+  const handleClose = () => setAnchorEl(null);
 
   const onClick = () => {
 
@@ -29,7 +49,7 @@ export default function Header() {
   return (
     <header className="px-10 bg-white w-full h-20 items-center flex justify-between">
       <div className="flex gap-10">
-        <Link href="#" className="logo">
+        <Link href="/HomePage" className="logo">
           {" "}
           APIhub
         </Link>
@@ -81,17 +101,44 @@ export default function Header() {
       </div>
 
 
-      <div className="gap-5 justify-between flex">
-        <Link href="/AddAPI">
-          <Button>Add an API</Button>
-        </Link>
-        <Link href="/AuthPage">
-        <Button >Sign Up</Button>
-        </Link>
-        <Link href="/LoginPage">
-        <Button>Login</Button>
-        </Link>
-        
+      <div className="flex gap-5 items-center">
+        {user ? (
+          <>
+            <Link href="/AddAPI">
+              <Button>Add an API</Button>
+            </Link>
+
+            <div className="flex items-center gap-3">
+              <div className="text-right">
+                <p className="font-semibold text-stone-700">{user.username}</p>
+                <button
+                  onClick={handleLogout}
+                  className="text-sm text-stone-500 hover:underline"
+                >
+                  Déconnexion
+                </button>
+              </div>
+
+              <img
+                src="/default-avatar.png"
+                className="h-14 w-14 rounded-full object-cover border"
+                alt="avatar"
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <Link href="/AddAPI">
+              <Button>Add an API</Button>
+            </Link>
+            <Link href="/AuthPage?mode=signup">
+              <Button>Sign Up</Button>
+            </Link>
+            <Link href="/AuthPage?mode=login">
+              <Button>Sign In</Button>
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );
