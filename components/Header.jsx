@@ -21,7 +21,7 @@ export default function Header() {
   };
 
   return (
-    <header className="pr-10 pl-10 bg-white w-full h-20 items-center flex justify-between">
+    <header className="px-10 bg-white w-full h-20 items-center flex justify-between">
       <div className="flex gap-10">
         <Link href="#" className="logo">
           {" "}

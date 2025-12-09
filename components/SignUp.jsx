@@ -69,59 +69,62 @@ export default function SignUp() {
           </div>
         </div>
         <div className="flex flex-col bg-[#050F2A] w-[50%] h-full pt-10 items-center gap-[15] text-white">
-          <h3 className="text-2xl w-[60%] font-bold">Sign Up!</h3>
+          <div className="w-[70%] h-[10%]">
+            <h3 className="text-2xl w-[60%] font-bold">Sign Up!</h3>
 
           <p className="text-red-400 font-semibold w-[60%]">
             {error}
           </p>
+          </div>
+          
 
           <div className="flex flex-col w-[60%]">
-            <label htmlFor='Username'>Username</label>
+            <label htmlFor='Username' className="text-sm">Username</label>
             <InputText
               placeHolder="Username"
               label='email'
               Name='Username'
               Type="text"
-              classname=" bg-[#ffffff] rounded-[5]  text-stone-400 h-10 pl-10 shadow w-full hover:bg-[#eeeeee]"
+              classname=" bg-[#ffffff] rounded-[5]  text-stone-400 text-sm h-10 pl-10 shadow w-full hover:bg-[#eeeeee]"
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
           <div className="flex flex-col w-[60%]">
-            <label htmlFor='password'>Password</label>
+            <label htmlFor='password' className="text-sm">Password</label>
             <InputText
               placeHolder="Password"
               label='email'
               Name='password'
               Type="password"
-              classname=" bg-[#ffffff] rounded-[5]   text-stone-400 h-10 pl-10 shadow w-full hover:bg-[#eeeeee]"
+              classname=" bg-[#ffffff] rounded-[5]   text-stone-400 text-sm h-10 pl-10 shadow w-full hover:bg-[#eeeeee]"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="flex flex-col w-[60%]">
-            <label htmlFor='Password'>Confirm Password</label>
+            <label htmlFor='Password' className="text-sm">Confirm Password</label>
             <InputText
               placeHolder="Confirm Password"
               label='email'
               Name='Password'
               Type="password"
-              classname=" bg-[#ffffff] rounded-[5]   text-stone-400 h-10 pl-10 shadow w-full hover:bg-[#eeeeee]"
+              classname=" bg-[#ffffff] rounded-[5]   text-stone-400 text-sm h-10 pl-10 shadow w-full hover:bg-[#eeeeee]"
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
           <div className="flex flex-col w-[60%]">
-            <label htmlFor='email'>Email</label>
+            <label htmlFor='email' className="text-sm">Email</label>
             <InputText
               placeHolder="Email"
               label='email'
               Name='email'
               Type="email"
-              classname=" bg-[#ffffff] rounded-[5]  text-stone-400 h-10 pl-10 shadow w-full hover:bg-[#eeeeee]"
+              classname=" bg-[#ffffff] rounded-[5]  text-stone-400 text-sm   h-10 pl-10 shadow w-full hover:bg-[#eeeeee]"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
           <div className="w-[70%] justify-items-center items-center">
-            <Link href="#" className="text-sm text-stone-300 hover:underline underline-offset-2">
+            <Link href="#" className="text-[14px] text-stone-300 hover:underline underline-offset-2">
               Already sign up ?
             </Link>
             <Button

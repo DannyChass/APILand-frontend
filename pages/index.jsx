@@ -3,7 +3,7 @@ import LoginPage from '../components/LoginPage';
 import SignUp from '../components/SignUp';
 
 function Index() {
-  return <SignUp />;
+  return <Home />;
 }
 
 export default Index;
