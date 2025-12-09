@@ -1,6 +1,6 @@
-import Home from '../components/Home';
-import LoginPage from '../components/LoginPage';
-import SignUp from '../components/SignUp';
+import Home from './HomePage';
+
+import SignUp from './AuthPage';
 
 function Index() {
   return <Home />;

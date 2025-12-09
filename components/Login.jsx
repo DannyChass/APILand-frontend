@@ -2,7 +2,7 @@ import Button from "./ui/Button";
 import InputText from "./ui/InputText";
 import Link from "next/link";
 
-export default function LoginPage() {
+export default function Login() {
   return (
     <div className="container">
 

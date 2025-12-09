@@ -1,8 +1,7 @@
 import Link from "next/link";
-import Button from "./ui/Button";
-import InputText from "./ui/InputText";
-import Header from "./Header";
-import Backdrop from "@mui/material/Backdrop";
+import Button from "../components/ui/Button";
+import InputText from "../components/ui/InputText";
+import Header from "../components/Header";
 import { useState } from 'react'
 import { useRouter } from "next/router";
 
@@ -51,8 +50,7 @@ export default function SignUp() {
 
   return (
     <div className="flex flex-col w-screen h-screen">
-      <Header />
-
+    
       <div className="container">
 
 
