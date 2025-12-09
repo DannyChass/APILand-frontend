@@ -1,5 +1,5 @@
 import Button from "./ui/Button";
-import InputText from "./ui/inputText";
+import InputText from "./ui/InputText";
 import Link from "next/link";
 
 export default function LoginPage() {
