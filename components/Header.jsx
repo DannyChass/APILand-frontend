@@ -85,13 +85,12 @@ export default function Header() {
         <Link href="/AddAPI">
           <Button>Add an API</Button>
         </Link>
-        <Link href="/AuthPage">
-        <Button >Sign Up</Button>
+        <Link href="/AuthPage?mode=signup">
+          <Button>Sign Up</Button>
         </Link>
-        <Link href="/LoginPage">
-        <Button>Login</Button>
+        <Link href="/AuthPage?mode=login">
+          <Button>Login</Button>
         </Link>
-        
       </div>
     </header>
   );
