@@ -1,8 +1,8 @@
 import styles from '../styles/Home.module.css';
-import Button from './ui/Button';
-import InputText from './ui/InputText';
-import ApiCarousel from './ui/ApiCarousel';
-import Header from './Header';
+import Button from '../components/ui/Button';
+import InputText from '../components/ui/InputText';
+import ApiCarousel from '../components/ui/ApiCarousel';
+import Header from '../components/Header';
 
 function Home() {
   const placeholder = "Username";

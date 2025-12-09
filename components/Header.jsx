@@ -3,6 +3,7 @@ import Menu from "@mui/material/Menu";
 import Link from "next/link";
 import Button from "./ui/Button";
 import * as React from "react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faNewspaper } from '@fortawesome/free-solid-svg-icons'
@@ -19,6 +20,11 @@ export default function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const onClick = () => {
+
+    router.push()
+  }
 
   return (
     <header className="px-10 bg-white w-full h-20 items-center flex justify-between">
@@ -79,7 +85,7 @@ export default function Header() {
         <Link href="/AddAPI">
           <Button>Add an API</Button>
         </Link>
-        <Link href="./SignUp">
+        <Link href="/AuthPage">
         <Button >Sign Up</Button>
         </Link>
         <Link href="/LoginPage">
