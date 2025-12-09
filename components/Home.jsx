@@ -11,7 +11,9 @@ function Home() {
       <Header />
       <main className={styles.main}>
         
-        <ApiCarousel />
+        <ApiCarousel title="Les apis de Daniel San" />
+        <hr className='border border-stone-100 w-[70%]'/>
+        <ApiCarousel title="le sommum du développeur" />
       </main>
     </div>
   );

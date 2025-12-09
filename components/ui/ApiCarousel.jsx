@@ -3,7 +3,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
-export default function ApiCarousel() {
+export default function ApiCarousel(props) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState([]);
@@ -30,12 +30,19 @@ export default function ApiCarousel() {
   }, [emblaApi]);
 
   return (
-    <div className=" w-full max-w-4xl mx-auto">
-      <h2 className="text-lg font-semibold text-stone-400 mb-4    ">
-        Les API les mieux notées
+    <div className=" w-screen flex flex-col  ">
+      <h2 className="text-lg pl-40 font-semibold text-stone-400 mb-4    ">
+        {props.title}
       </h2>
-
-      <div className="overflow-hidden w-full" ref={emblaRef}>
+      <div className="w-full  flex items-center justify-between">
+        <button
+        className="h-30 bg-stone-200 rounded p-2 shadow-lg hover:bg-[#B8A9FF] cursor-pointer"
+        onClick={() => emblaApi?.scrollPrev()}
+      >
+        <FontAwesomeIcon icon={faAngleLeft} />
+      </button>
+      <div className="flex-1 flex justify-center">
+        <div className="overflow-hidden w-full max-w-2xl " ref={emblaRef}>
         <div className="flex">
           {slides.map((slide, index) => (
             <div
@@ -57,20 +64,23 @@ export default function ApiCarousel() {
             </div>
           ))}
         </div>
-      </div>
 
-      <button
-        className="absolute h-30 left-0 top-1/2 -translate-y-1/2 bg-stone-200  rounded p-2 mt-20 shadow-lg hover:bg-[#B8A9FF] cursor-pointer"
-        onClick={() => emblaApi?.scrollPrev()}
-      >
-        <FontAwesomeIcon icon={faAngleLeft} />
-      </button>
-      <button
-        className="absolute right-0 h-30 top-1/2 -translate-y-1/2 bg-stone-200 rounded-md p-2 mt-20 shadow hover:bg-[#B8A9FF] cursor-pointer"
+
+        
+      </div>
+      
+        
+      </div>
+<button
+        className="h-30 bg-stone-200 rounded p-2 shadow hover:bg-[#B8A9FF] cursor-pointer"
         onClick={() => emblaApi?.scrollNext()}
       >
         <FontAwesomeIcon icon={faAngleRight} />
       </button>
+      </div>
+
+      
+      
 
       <div className="flex justify-center mt-4 gap-2">
         {scrollSnaps.map((_, index) => (
