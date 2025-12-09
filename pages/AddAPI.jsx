@@ -19,6 +19,72 @@ export default function AddAPI() {
         }
     }
 
+    const handleSubmit = async () => {
+        const apiData = {
+            name,
+            description,
+            officialLink,
+            documentationLink: docLink,
+            category: "",
+            image: null,
+        };
+
+        const accessToken = sessionStorage.getItem("accessToken");
+
+        try {
+            let response = await fetch("http://localhost:3000/api", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + accessToken,
+                },
+                body: JSON.stringify(apiData),
+            });
+
+            let data = await response.json();
+
+            if (data.error === "Invalid or expired access token") {
+                console.log("Access token expired, refreshing...");
+
+                const refresh = await fetch("http://localhost:3000/users/refresh", {
+                    method: "POST",
+                    credentials: "include",
+                });
+
+                const refreshData = await refresh.json();
+
+                if (!refreshData.result) {
+                    alert("Session expired, please log in again");
+                    return;
+                }
+
+                sessionStorage.setItem("accessToken", refreshData.accessToken);
+
+                response = await fetch("http://localhost:3000/api", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + refreshData.accessToken,
+                    },
+                    body: JSON.stringify(apiData),
+                });
+
+                data = await response.json();
+            }
+
+            if (data.result) {
+                alert("API added successfully!");
+            } else {
+                alert("Error: " + data.error);
+            }
+
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-[#EAF7FF]">
             <Header />
@@ -99,7 +165,7 @@ export default function AddAPI() {
                 <div className="w-[80%] mt-16">
                     <Button
                         classname="bg-[#B8A9FF] text-white px-10 py-3 rounded-md hover:bg-[#9d90de]"
-                        onClick={() => console.log("Submit data here")}
+                        onClick={handleSubmit}
                     >
                         Add
                     </Button>
