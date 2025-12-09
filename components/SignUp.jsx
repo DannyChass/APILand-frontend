@@ -27,6 +27,7 @@ export default function SignUp() {
     const response = await fetch("http://localhost:3000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({
         username,
         email,
@@ -43,7 +44,7 @@ export default function SignUp() {
       return
     }
 
-    localStorage.setItem("token", data.token);
+    sessionStorage.setItem("accessToken", data.accessToken);
 
     router.push("/HomePage");
   }
@@ -72,11 +73,11 @@ export default function SignUp() {
           <div className="w-[70%] h-[10%]">
             <h3 className="text-2xl w-[60%] font-bold">Sign Up!</h3>
 
-          <p className="text-red-400 font-semibold w-[60%]">
-            {error}
-          </p>
+            <p className="text-red-400 font-semibold w-[60%]">
+              {error}
+            </p>
           </div>
-          
+
 
           <div className="flex flex-col w-[60%]">
             <label htmlFor='Username' className="text-sm">Username</label>
