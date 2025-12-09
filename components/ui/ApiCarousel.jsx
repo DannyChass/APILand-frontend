@@ -77,11 +77,7 @@ export default function ApiCarousel(props) {
       >
         <FontAwesomeIcon icon={faAngleRight} />
       </button>
-      </div>
-
-      
-      
-
+</div>
       <div className="flex justify-center mt-4 gap-2">
         {scrollSnaps.map((_, index) => (
           <button
@@ -93,6 +89,7 @@ export default function ApiCarousel(props) {
           />
         ))}
       </div>
+    
     </div>
   );
 }

@@ -29,7 +29,7 @@ export default function Header() {
   return (
     <header className="px-10 bg-white w-full h-20 items-center flex justify-between">
       <div className="flex gap-10">
-        <Link href="#" className="logo">
+        <Link href="/HomePage" className="logo">
           {" "}
           APIhub
         </Link>
