@@ -1,8 +1,39 @@
+import { useState } from "react";
 import Button from "./ui/Button";
 import InputText from "./ui/InputText";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleSignIn = async () => {
+    setErrorMsg("");
+
+    const response = await fetch("http://localhost:3000/users/signin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+      credentials: "include",
+    })
+
+    const data = await response.json();
+
+    if (!data.result) {
+      setErrorMsg(data.error || "Erreur lors de la connexion")
+      return
+    }
+
+    localStorage.setItem("acessToken", data.accessToken);
+    localStorage.setItem("user", JSON.stringify(data.user));
+
+    router.push("/");
+  }
+
   return (
     <div className="container">
 
@@ -20,14 +51,21 @@ export default function SignIn() {
       </div>
       <div className="flex flex-col bg-[#050F2A] w-[50%] h-full justify-center items-center pt-15 gap-[30] text-white">
         <h3 className="text-3xl font-bold">Connectez-vous</h3>
+        {errorMsg && (
+          <p className="text-red-400 font-semibold">{errorMsg}</p>
+        )}
         <InputText
-          placeHolder="Username"
+          placeHolder="Username or email"
           classname=" bg-[#ffffff] rounded-[5] text-lg  text-stone-400 h-[50px] pl-10 shadow w-[70%] hover:bg-[#eeeeee]"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <div className=" w-[70%] justify-items-center items-center">
           <InputText
             placeHolder="Mot de Passe"
             classname="w-full bg-[#ffffff] rounded-[5] text-lg text-stone-400 h-[50px] shadow pl-10 hover:bg-[#eeeeee] "
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <Link href="#" className="text-sm text-stone-300 hover:underline">
             {" "}
@@ -38,7 +76,10 @@ export default function SignIn() {
           <Link href="#" className="text-sm text-stone-300 hover:underline">
             Vous n'avez pas de compte ?
           </Link>
-          <Button classname="w-full bg-[#B8A9FF] h-[50px] font-semibold text-lg rounded-[3] hover:bg-[#9d90de] cursor-pointer">
+          <Button
+            classname="w-full bg-[#B8A9FF] h-[50px] font-semibold text-lg rounded-[3] hover:bg-[#9d90de] cursor-pointer"
+            onClick={handleSignIn}
+          >
             Connexion
           </Button>
         </div>
