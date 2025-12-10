@@ -122,12 +122,10 @@ export default function SignUp() {
             />
           </div>
 
-          <div className="w-[70%] justify-items-center items-center">
-            <Link href="#" className="text-[14px] text-stone-300 hover:underline underline-offset-2">
-              Already sign up ?
-            </Link>
+          <div className="w-[70%] flex flex-col justify-items-center items-center">
+            
             <Button
-              classname="w-full bg-[#B8A9FF] h-[50px] font-semibold text-lg rounded-[3] hover:bg-[#9d90de] cursor-pointer"
+              classname="w-[60%] bg-[#B8A9FF] h-[50px] font-semibold text-lg rounded-[3] hover:bg-[#9d90de] cursor-pointer"
               onClick={handleSignup}
             >
               Sign Up
@@ -135,7 +133,14 @@ export default function SignUp() {
           </div>
           <hr className="bg-white border-white border-2 w-[80%]"></hr>
 
-          <div className="w-[60%] h-[20%] flex flex-col gap-[20] justify-center items-center">
+          <div className="flex flex-col w-[60%] py-5 justify-between items-center h-[30%]">
+            <Link href="#" className="text-[14px] text-stone-300 hover:underline underline-offset-2">
+              Already sign up ?
+            </Link>
+          
+
+          <div className="w-full h-[60%] flex flex-col gap-5 justify-center items-center">
+            
             <Button classname="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-400 h-10 hover:bg-stone-200">
               {" "}
               Sign up with <img className="h-6" src="../google.png" />{" "}
@@ -144,6 +149,7 @@ export default function SignUp() {
               {" "}
               Sign up with <img className="h-6" src="../github.png" />{" "}
             </Button>
+          </div>
           </div>
         </div>
       </div>

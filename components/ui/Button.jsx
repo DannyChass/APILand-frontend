@@ -13,7 +13,7 @@ export default function Button(props) {
 
     return (
         <button
-            className="bg-[#B8A9FF] rounded-[3] text-[#F2FDFF] text-sm w-[150px] p-3 text-shadow-2xs hover:bg-[#9d90de] cursor-pointer"
+            className="bg-[#B8A9FF] rounded-[3] text-[#F2FDFF] text-sm w-[150px] p-2 text-shadow-2xs hover:bg-[#9d90de] cursor-pointer"
             onClick={onClick}
         >
             {children}

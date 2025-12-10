@@ -47,19 +47,19 @@ export default function Header() {
   }
 
   return (
-    <header className="px-10 bg-white w-full h-20 items-center flex justify-between">
-      <div className="flex gap-10">
+    <header className="px-10 bg-white w-full h-14 items-center flex justify-between">
+      <div className="flex gap-10 items-center">
         <Link href="/HomePage" className="logo">
           {" "}
           APIhub
         </Link>
-        <button className="flex gap-3 p-3 pr-6 justify-center font-bold text-stone-500 items-center border-0 border-r-2 border-stone-300" id="apiMenu"
+        <button className="flex gap-3 pl-3 pr-6 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer" id="apiMenu"
           aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}>
-          API <FontAwesomeIcon icon={faAngleDown} color="#757575" />
-        </button>
+          API <FontAwesomeIcon icon={faAngleDown} color="#90a1b9" />
+        </button> 
         <Menu
           anchorEl={anchorEl}
           open={open}
@@ -75,12 +75,12 @@ export default function Header() {
           <MenuItem value="Docs">Docs</MenuItem>
           <MenuItem value="community">Community</MenuItem>
         </Menu>
-        <button className="flex gap-3 p-3 pr-6 justify-center font-bold text-stone-500 items-center border-0 border-r-2 border-stone-300" id="apiMenu"
+        <button className="flex  gap-3 pl-3 pr-6 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer" id="apiMenu"
           aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}>
-          News <FontAwesomeIcon icon={faAngleDown} color="#757575" />
+          News <FontAwesomeIcon icon={faAngleDown} color="#90a1b9" />
         </button>
         <Menu
           slot={{ transition: Fade }}
@@ -94,7 +94,7 @@ export default function Header() {
           }}
           className="w-40 border-0"
         >
-          <MenuItem value="mySub">My Subs</MenuItem>
+          <MenuItem value="mySub" className="border-b-2 border-slate-200">My Subs</MenuItem>
           <MenuItem value="explorer">Explorer</MenuItem>
           <MenuItem value="community">Community</MenuItem>
         </Menu>
@@ -132,10 +132,10 @@ export default function Header() {
               <Button>Add an API</Button>
             </Link>
             <Link href="/AuthPage?mode=signup">
-              <Button>Sign Up</Button>
+              <Button classname="font-sans text-white font-normal text-sm border-2 border-[#050f2a] p-2 bg-[#050F2A] rounded-lg hover:bg-slate-800 cursor-pointer">Sign Up</Button>
             </Link>
             <Link href="/AuthPage?mode=login">
-              <Button>Sign In</Button>
+              <Button classname='font-sans text-black font-normal text-sm border-2 p-2 border-slate-400 rounded-lg hover:bg-slate-200 transition cursor-pointer'>Sign In</Button>
             </Link>
           </>
         )}
