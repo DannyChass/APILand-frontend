@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import ApiCards from "./ui/ApiCard";
 
 export default function MyApiComponent() {
-  const [user, setUser] = useState(null);
+  const [userToken, setUserToken] = useState(null);
   const [apis, setApis] = useState([])
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
     if (stored) {
-      setUser(JSON.parse(stored));
+      setUserToken(JSON.parse(stored));
     }
     async () => {
       const response = await fetch("http://localhost:3000/user/me");
@@ -27,6 +27,6 @@ export default function MyApiComponent() {
   
 
   return <div className="">
-
+{myApis}
   </div>;
 }
