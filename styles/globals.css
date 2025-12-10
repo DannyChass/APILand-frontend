@@ -49,3 +49,12 @@ body {
 .containerLogin{
   @apply w-[50%] h-full gap-[100px] p-20 bg-[#050F2A] text-white
 }
+
+.dropDownButton {
+  @apply flex gap-3 p-3 pr-6 justify-center font-bold text-stone-500 items-center border-0 border-r-2 border-stone-300
+}
+
+.dropDownButtonWhite {
+  @apply flex gap-3 p-3 pr-6 justify-center text-xs text-white items-center border-r-0
+}
+

@@ -3,7 +3,7 @@ import Rating from '@mui/material/Rating';
 
 
 function ApiCards({ apiName, theme, price, author, ratingValue }) {
-    const value = ratingValue !== undefined ? ratingValue : 2;
+    const value = ratingValue !== undefined ? ratingValue : 0;
 
 
     return (
