@@ -2,31 +2,39 @@ import { useEffect, useState } from "react";
 import ApiCards from "./ui/ApiCard";
 
 export default function MyApiComponent() {
-  const [userToken, setUserToken] = useState(null);
-  const [apis, setApis] = useState([])
+  const [user, setUser] = useState({});
+  const [apis, setApis] = useState([]);
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
-    if (stored) {
-      setUserToken(JSON.parse(stored));
-    }
-    async () => {
-      const response = await fetch("http://localhost:3000/user/me");
-      const data = await response.json();
+    console.log(stored);
 
-      const res = await fetch(`http://localhost:3000/api/${data.user._id}`);
+    if (!stored) return;
+
+    const object = JSON.parse(stored);
+    
+
+    (async () => {
+      const res = await fetch(`http://localhost:3000/apis/user/${object.id}`);
       const userApi = await res.json();
 
-        setApis(userApi.apis)
-    };
+      setApis(userApi.apis)
+    })();
   }, []);
-
-  const myApis = apis.map((data,i) => {
-    return <ApiCards key={i} apiName={data.name} theme={data.category} price={data.price}   />
-  })
   
+  let myApis = <p>Pas d'Apis crées</p>;
+  if (apis.length > 0) {
+    myApis = apis.map((data, i) => {
+      return (
+        <ApiCards
+          key={i}
+          apiName={data.name}
+          theme={data.category}
+          price={data.price}
+        />
+      );
+    });
+  }
 
-  return <div className="">
-{myApis}
-  </div>;
+  return <div className=" w-full flex flex-wrap justify-start">{myApis}</div>;
 }

@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from "../components/Header";
 import Button from "../components/ui/Button";
+import MyApiComponent from "../components/MyApi";
 import {
   faArrowRightFromBracket,
   faPencil,
@@ -9,16 +10,28 @@ import ButtonMenu from "../components/ui/ButtonMenu";
 import { useState } from "react";
 
 export default function ProfilePage() {
-    const [active, setActive] = useState('api')
+    const [active, setActive] = useState('Api')
+
+    const handleApi= () => {
+        setActive('Api')
+    }
+
+    const handleFav =  () => {
+        setActive('Favs')
+    }
+
+    const handleGirlfriends = () => {
+        setActive('Girlfriends')
+    }
 
 
   return (
-    <div className="w-screen">
+    <div className="w-full">
       <Header />
       <div className="relative flex flex-col justify-center items-center gap-10 w-full">
         <div className=" w-full justify-center items-center flex  h-70 px-10 gap-15">
-          <div className="flex flex-col w-full h-full">
-            <div className=" absolute top-0 -z-10 w-full h-30 bg-slate-200 ">
+          <div className="flex justify-center flex-col w-full h-full">
+            <div className=" absolute top-0 -z-10 left-0  w-full h-30 bg-slate-200 ">
               <img src="" alt=""  />
             </div>
 <div className="flex justify-center mt-10 items-end gap-10">
@@ -74,7 +87,9 @@ export default function ProfilePage() {
           <hr className="border-2 w-full border-slate-200" />
         </div>
 
-        <div className="border border-slate-200 flex h-90 w-[80%]"></div>
+        <div className="border border-slate-200 flex h-90 w-[80%]">
+        {active === "Api" && <MyApiComponent />}
+        </div>
       </div>
     </div>
   );

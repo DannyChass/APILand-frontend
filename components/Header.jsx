@@ -2,6 +2,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Link from "next/link";
 import Button from "./ui/Button";
+import UserHeader from "./ui/UserHeader";
 import * as React from "react";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -103,26 +104,7 @@ export default function Header() {
             <Link href="/AddAPI">
               <Button>Add an API</Button>
             </Link>
-            <Link href='/ProfilePage'>
-            <div className="flex items-center rounded-lg gap-3 border-slate-200 h-[60%] hover:bg-slate-200">
-              <div className="text-left rounded-lg m-0 p-0">
-                <h6 className="text-sm font-medium">Bonjour</h6>
-                <p className="font-semibold text-stone-700 text-sm">{user.username}</p>
-                <button
-                  onClick={handleLogout}
-                  className="text-sm text-stone-500 hover:underline"
-                >
-                  Déconnexion
-                </button>
-              </div>
-
-              <img
-                src="/default-avatar.png"
-                className="h-10 w-10 rounded-full object-cover border"
-                alt="avatar"
-              />
-            </div>
-            </Link>
+            <UserHeader/>
           </>
         ) : (
           <>
