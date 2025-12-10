@@ -27,12 +27,13 @@ export default function AddAPI() {
             documentationLink: docLink,
             category: "",
             image: null,
+            tags: tags
         };
 
         const accessToken = sessionStorage.getItem("accessToken");
 
         try {
-            let response = await fetch("http://localhost:3000/api", {
+            let response = await fetch("http://localhost:3000/apis/create", {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -54,6 +55,8 @@ export default function AddAPI() {
 
                 const refreshData = await refresh.json();
 
+                console.log("REFRESH DATA:", refreshData);
+
                 if (!refreshData.result) {
                     alert("Session expired, please log in again");
                     return;
@@ -61,7 +64,7 @@ export default function AddAPI() {
 
                 sessionStorage.setItem("accessToken", refreshData.accessToken);
 
-                response = await fetch("http://localhost:3000/api", {
+                response = await fetch("http://localhost:3000/apis/create", {
                     method: "POST",
                     credentials: "include",
                     headers: {
