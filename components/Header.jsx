@@ -41,10 +41,6 @@ export default function Header() {
 
   const handleClose = () => setAnchorEl(null);
 
-  const onClick = () => {
-
-    router.push()
-  }
 
   return (
     <header className="px-10 bg-white w-full h-14 items-center flex justify-between">
@@ -72,7 +68,7 @@ export default function Header() {
           className="w-40 border-0"
         >
           <MenuItem value="api">API</MenuItem>
-          <MenuItem value="Docs">Docs</MenuItem>
+          <MenuItem value="Docs">Docs</MenuItem>  
           <MenuItem value="community">Community</MenuItem>
         </Menu>
         <button className="flex  gap-3 pl-3 pr-6 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer" id="apiMenu"
@@ -107,10 +103,11 @@ export default function Header() {
             <Link href="/AddAPI">
               <Button>Add an API</Button>
             </Link>
-
-            <div className="flex items-center gap-3">
-              <div className="text-right">
-                <p className="font-semibold text-stone-700">{user.username}</p>
+            <Link href='/ProfilePage'>
+            <div className="flex items-center rounded-lg gap-3 border-slate-200 h-[60%] hover:bg-slate-200">
+              <div className="text-left rounded-lg m-0 p-0">
+                <h6 className="text-sm font-medium">Bonjour</h6>
+                <p className="font-semibold text-stone-700 text-sm">{user.username}</p>
                 <button
                   onClick={handleLogout}
                   className="text-sm text-stone-500 hover:underline"
@@ -121,10 +118,11 @@ export default function Header() {
 
               <img
                 src="/default-avatar.png"
-                className="h-14 w-14 rounded-full object-cover border"
+                className="h-10 w-10 rounded-full object-cover border"
                 alt="avatar"
               />
             </div>
+            </Link>
           </>
         ) : (
           <>
