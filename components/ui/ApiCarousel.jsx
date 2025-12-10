@@ -2,11 +2,13 @@ import React, { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
 
 export default function ApiCarousel(props) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState([]);
+  const router = useRouter();
 
   const slides = props.items || [];
 
@@ -47,9 +49,10 @@ export default function ApiCarousel(props) {
               {slides.map((api, index) => (
                 <div
                   key={index}
-                  className={`flex-[0_0_40%] mx-2 flex items-center justify-center rounded-lg
-    ${index === selectedIndex ? "scale-100 opacity-100" : "scale-90 opacity-60"}
-    bg-gray-100 h-48 shadow-md`}
+                  onClick={() => router.push(`/API/${api.name}`)}
+                  className={`flex-[0_0_40%] mx-2 flex items-center justify-center rounded-lg cursor-pointer
+  ${index === selectedIndex ? "scale-100 opacity-100" : "scale-90 opacity-60"}
+  bg-gray-100 h-48 shadow-md`}
                 >
                   <div className="text-center">
                     <div className="text-gray-500 text-sm mb-2">
