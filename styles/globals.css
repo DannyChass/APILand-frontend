@@ -11,6 +11,10 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
+.main{
+  @apply w-screen flex flex-col justify-start items-start
+}
+
 * {
   box-sizing: border-box;
 }

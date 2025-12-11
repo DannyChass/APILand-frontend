@@ -39,11 +39,11 @@ function Home() {
 
     if (text.length >= 3) {
       try {
-        const response = await fetch(`http://localhost:3000/api/allApi/${text}`);
+        const response = await fetch(`http://localhost:3000/apis/allApi/${text}`);
         const data = await response.json()
 
         const result = data.map((api) => api.name)
-
+console.log(data)
         setSuggestions(result)
 
       } catch (error) {
@@ -82,8 +82,8 @@ function Home() {
   return (
     <div>
       <Header />
-      <main className={styles.main}>
-        <div className="flex flex-col justify-around gap-15 items-center bg-[#050F2A] w-full h-[30%] py-15">
+      <main className="w-full ">
+        <div className="flex flex-col justify-around gap-10 items-center bg-[#050F2A] w-screen h-[30%] py-5">
           <h2 className="text-white text-4xl font-bold">Welcome on APIHub</h2>
           <div className="bg-white relative justify-between items-center flex w-[50%] rounded-xl ">
             <input

@@ -7,7 +7,7 @@ import * as React from "react";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown, faNewspaper } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faBell, faBookmark, faCommentDots, faNewspaper } from '@fortawesome/free-solid-svg-icons'
 import Fade from "@mui/material/Fade";
 
 
@@ -45,12 +45,12 @@ export default function Header() {
 
   return (
     <header className="px-10 bg-white w-full h-14 items-center flex justify-between">
-      <div className="flex gap-10 items-center">
+      <div className="flex gap-5   items-center">
         <Link href="/HomePage" className="logo">
           {" "}
           APIhub
         </Link>
-        <button className="flex gap-3 pl-3 pr-6 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer" id="apiMenu"
+        <button className="flex gap-3 pl-2 pr-2 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer" id="apiMenu"
           aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
@@ -72,7 +72,7 @@ export default function Header() {
           <MenuItem value="Docs">Docs</MenuItem>
           <MenuItem value="community">Community</MenuItem>
         </Menu>
-        <button className="flex  gap-3 pl-3 pr-6 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer" id="apiMenu"
+        <button className="flex  gap-3 pl-2 pr-2 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer" id="apiMenu"
           aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
@@ -104,6 +104,14 @@ export default function Header() {
             <Link href="/AddAPI">
               <Button>Add an API</Button>
             </Link>
+            <div className="flex gap-5 border-x-2 border-slate-200 px-5 ">
+              <div ><FontAwesomeIcon icon={faBell} color="#050f2a"/></div>
+            <div><FontAwesomeIcon icon={faCommentDots}/></div>
+            <div><FontAwesomeIcon icon={faBookmark}/></div>
+            </div>
+            
+            
+            
             <UserHeader />
           </>
         ) : (
