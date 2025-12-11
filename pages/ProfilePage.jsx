@@ -12,15 +12,30 @@ import { useEffect, useState } from "react";
 export default function ProfilePage() {
     const [active, setActive] = useState('Api')
     const [user, setUser] = useState({})
+    
 
     useEffect(()=>{
       (async () => {
-        const response = await fetch('http://localhost:3000/users/me');
+        const accessToken = localStorage.getItem('accessToken')
+        
+        const response = await fetch('http://localhost:3000/users/me', {
+          method: 'GET',
+          headers: {
+            'Content-Type' : "application/json",
+            'Authorization' : `Bearer ${accessToken}`
+          }
+        });
         const data = await response.json()
-        setUser(data)
+        console.log(data)
+        setUser(data.user)
+
       })()
     },[])
- console.log(user)
+
+    useEffect(()=>{
+      console.log(user)
+    },[user])
+ 
     const handleApi= () => {
         setActive('Api')
     }
@@ -49,8 +64,8 @@ export default function ProfilePage() {
           </div>
           <div className="h-[40%] w-[30%] flex flex-col gap-2 justify-end px-10 border-l-2 border-slate-200">
             <div>
-              <h3>Username</h3>
-              <h6>Job</h6>
+              <h3>{user.username}</h3>
+              <h6>{user.email}</h6>
               <h6>Location</h6>
             </div>
 
@@ -96,7 +111,7 @@ export default function ProfilePage() {
           <hr className="border-2 w-full border-slate-200" />
         </div>
 
-        <div className="border border-slate-200 flex h-90 w-[80%]">
+        <div className="border border-slate-200 flex w-[80%] jsu">
         {active === "Api" && <MyApiComponent />}
         </div>
       </div>
