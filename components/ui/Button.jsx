@@ -1,11 +1,10 @@
-"use client"
+"use client";
 
-export default function Button(props) {
-    const { classname, children, onClick } = props;
+export default function Button({ className, children, onClick }) {
 
-    if (classname !== undefined) {
+    if (className) {
         return (
-            <button className={classname} onClick={onClick}>
+            <button className={className} onClick={onClick}>
                 {children}
             </button>
         );
@@ -13,7 +12,7 @@ export default function Button(props) {
 
     return (
         <button
-            className="bg-[#B8A9FF] rounded-[3] text-[#F2FDFF] text-sm w-[150px] p-2 text-shadow-2xs hover:bg-[#9d90de] cursor-pointer"
+            className="bg-[#B8A9FF] rounded text-[#F2FDFF] text-sm w-[150px] p-2 hover:bg-[#9d90de] cursor-pointer"
             onClick={onClick}
         >
             {children}

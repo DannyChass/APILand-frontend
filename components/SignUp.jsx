@@ -43,14 +43,15 @@ export default function SignUp() {
       return
     }
 
-    sessionStorage.setItem("accessToken", data.accessToken);
+    localStorage.setItem("accessToken", data.accessToken);
+    localStorage.setItem("user", JSON.stringify(data.user));
 
-    router.push("/HomePage");
+    router.push("/");
   }
 
   return (
     <div className="flex flex-col w-screen h-screen">
-    
+
       <div className="container">
 
 
@@ -123,7 +124,7 @@ export default function SignUp() {
           </div>
 
           <div className="w-[70%] flex flex-col justify-items-center items-center">
-            
+
             <Button
               classname="w-[60%] bg-[#B8A9FF] h-[50px] font-semibold text-lg rounded-[3] hover:bg-[#9d90de] cursor-pointer"
               onClick={handleSignup}
@@ -137,19 +138,19 @@ export default function SignUp() {
             <Link href="/SignIn" className="text-[14px] text-stone-300 hover:underline underline-offset-2">
               Already sign up ?
             </Link>
-          
 
-          <div className="w-full h-[60%] flex flex-col gap-5 justify-center items-center">
-            
-            <Button classname="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-400 h-10 hover:bg-stone-200">
-              {" "}
-              Sign up with <img className="h-6" src="../google.png" />{" "}
-            </Button>
-            <Button classname="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-400 h-10 hover:bg-stone-200">
-              {" "}
-              Sign up with <img className="h-6" src="../github.png" />{" "}
-            </Button>
-          </div>
+
+            <div className="w-full h-[60%] flex flex-col gap-5 justify-center items-center">
+
+              <Button className="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-400 h-10 hover:bg-stone-200">
+                {" "}
+                Sign up with <img className="h-6" src="../google.png" />{" "}
+              </Button>
+              <Button className="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-400 h-10 hover:bg-stone-200">
+                {" "}
+                Sign up with <img className="h-6" src="../github.png" />{" "}
+              </Button>
+            </div>
           </div>
         </div>
       </div>

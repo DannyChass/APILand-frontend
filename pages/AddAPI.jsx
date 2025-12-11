@@ -151,7 +151,7 @@ export default function AddAPI() {
                 </div>
 
                 <Button
-                    classname="bg-[#B8A9FF] text-white px-6 py-2 rounded-md hover:bg-[#9d90de]"
+                    className="bg-[#B8A9FF] text-white px-6 py-2 rounded-md hover:bg-[#9d90de]"
                     onClick={handleAddTag}
                 >
                     Add tag
@@ -167,7 +167,7 @@ export default function AddAPI() {
 
                 <div className="w-[80%] mt-16">
                     <Button
-                        classname="bg-[#B8A9FF] text-white px-10 py-3 rounded-md hover:bg-[#9d90de]"
+                        className="bg-[#B8A9FF] text-white px-10 py-3 rounded-md hover:bg-[#9d90de]"
                         onClick={handleSubmit}
                     >
                         Add

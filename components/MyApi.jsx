@@ -16,13 +16,21 @@ export default function MyApiComponent() {
 
     (async () => {
       const res = await fetch(`http://localhost:3000/apis/user/${object.id}`);
-      const userApi = await res.json();
+      const data = await res.json();
+      console.log(data)
 
-      setApis(userApi.apis)
+      if(data.result){
+
+        setApis(data.apis)
+      }
+
+      
+
+      
     })();
   }, []);
   
-  let myApis = <p>Pas d'Apis crées</p>;
+  let myApis;
   if (apis.length > 0) {
     myApis = apis.map((data, i) => {
       return (
@@ -34,6 +42,8 @@ export default function MyApiComponent() {
         />
       );
     });
+  } else {
+    myApis = <p>Pas d'Apis crées</p>
   }
 
   return <div className=" w-full flex flex-wrap justify-start">{myApis}</div>;
