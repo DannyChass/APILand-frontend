@@ -145,7 +145,9 @@ export default function API() {
                         />
                     </div>
 
-                    <p className="text-gray-600 mt-2">{apiData.description}</p>
+                    <p className="text-gray-600 mt-2">
+                        Created by : <span className="font-semibold">{apiData.user?.username}</span>
+                    </p>
 
                     <div className="flex gap-4 mt-6">
                         <Button
