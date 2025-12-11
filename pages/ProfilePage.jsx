@@ -7,11 +7,20 @@ import {
   faPencil,
 } from "@fortawesome/free-solid-svg-icons";
 import ButtonMenu from "../components/ui/ButtonMenu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ProfilePage() {
     const [active, setActive] = useState('Api')
+    const [user, setUser] = useState({})
 
+    useEffect(()=>{
+      (async () => {
+        const response = await fetch('http://localhost:3000/users/me');
+        const data = await response.json()
+        setUser(data)
+      })()
+    },[])
+ console.log(user)
     const handleApi= () => {
         setActive('Api')
     }
