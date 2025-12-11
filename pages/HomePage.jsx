@@ -5,7 +5,8 @@ import ThemeButton from "../components/ui/ThemeButton";
 import ApiCarousel from "../components/ui/ApiCarousel";
 import Header from "../components/Header";
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router'
+import Link  from 'next/link';
+
 
 
 
@@ -13,6 +14,7 @@ function Home() {
   const [query, setQuery] = useState('')
   const [suggestions, setSuggestions] = useState([])
   const [topRatedApis, setTopRatedApis] = useState([]);
+
 
 
   useEffect(() => {
@@ -53,8 +55,8 @@ console.log(data)
     } else {
       setSuggestions([])
     }
-
   }
+
 
   // const searchAPI = () => {
 
@@ -98,10 +100,11 @@ console.log(data)
                 {suggests}
               </ul>
             )}
-
-            <Button className="h-11 w-40 rounded-xl bg-[#B8A9FF] text-white font-bold shadow hover:bg-[#9d90de] cursor-pointer">
-              Search
-            </Button>
+            <div className="h-11 w-40 rounded-xl bg-[#B8A9FF] text-white font-bold shadow hover:bg-[#9d90de] cursor-pointer flex items-center justify-center">
+              <Link href={{ pathname: `/ApiSearch`, query: { query: query }, }}>
+                Search
+              </Link>
+            </div>
           </div>
           <div className="flex gap-10 justify-center items-center ">
             <h5 className="text-white font-bold">Recherches populaires:</h5>
