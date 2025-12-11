@@ -3,6 +3,7 @@ import Button from "../components/ui/Button";
 import InputText from "../components/ui/InputText";
 import ThemeButton from "../components/ui/ThemeButton";
 import ApiCarousel from "../components/ui/ApiCarousel";
+import CategoryCard from "../components/ui/CategoryCard";
 import Header from "../components/Header";
 import { useState, useEffect } from "react";
 import Link  from 'next/link';
@@ -82,9 +83,9 @@ console.log(data)
   });
 
   return (
-    <div>
+    <div >
       <Header />
-      <main className="w-full ">
+      <main className="w-full flex flex-col gap-5 items-center ">
         <div className="flex flex-col justify-around gap-10 items-center bg-[#050F2A] w-screen h-[30%] py-5">
           <h2 className="text-white text-4xl font-bold">Welcome on APIHub</h2>
           <div className="bg-white relative justify-between items-center flex w-[50%] rounded-xl ">
@@ -113,6 +114,15 @@ console.log(data)
         </div>
 
         <ApiCarousel title="Top Rated APIs" items={topRatedApis} />
+        <div className="w-[90%] flex justify-center gap-15">
+          <CategoryCard title='Movies' img='./icon.cinema.png'/>
+          <CategoryCard title='Business'/>
+          <CategoryCard title='Geography'/>
+          <CategoryCard title='Fashion'/>
+         
+
+
+        </div>
       </main>
     </div>
   );
