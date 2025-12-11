@@ -17,9 +17,11 @@ export default function MyApiComponent() {
     (async () => {
       const res = await fetch(`http://localhost:3000/apis/user/${object.id}`);
       const data = await res.json();
+      console.log(data)
 
       if(data.result){
-        setApis(userApi.apis)
+
+        setApis(data.apis)
       }
 
       
