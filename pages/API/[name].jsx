@@ -32,6 +32,39 @@ export default function API() {
 
     if (!apiData) return <div>Loading...</div>;
 
+    async function handleFollow() {
+        const token = localStorage.getItem("accessToken");
+
+        console.log(token);
+
+        if (!token) {
+            alert("Vous devez être connecté pour suivre une API");
+            return;
+        }
+
+        try {
+
+            const res = await fetch(`http://localhost:3000/apis/follow/${apiData._id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            const data = await res.json();
+
+            if (data.result) {
+                alert("Vous suivez maintenant cette API");
+            } else {
+                alert(data.error || "Erreur");
+            }
+
+        } catch (error) {
+            console.error("Erreur follow", error);
+        }
+    }
+
     return (
         <>
             <Header />
@@ -45,7 +78,7 @@ export default function API() {
                     <div className="flex items-center justify-between">
                         <h1 className="text-3xl font-bold">{apiData.name}</h1>
                         <img
-                            src=""
+                            src="https://i.pravatar.cc/160"
                             className="w-16 h-16 rounded-full object-cover"
                         />
                     </div>
@@ -53,7 +86,10 @@ export default function API() {
                     <p className="text-gray-600 mt-2">{apiData.description}</p>
 
                     <div className="flex gap-4 mt-6">
-                        <Button className="px-6 py-2 bg-purple-300 hover:bg-purple-400 transition rounded-lg">
+                        <Button
+                            className="px-6 py-2 bg-purple-300 hover:bg-purple-400 transition rounded-lg"
+                            onClick={handleFollow}
+                        >
                             Suivre
                         </Button>
 

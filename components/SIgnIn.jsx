@@ -28,7 +28,7 @@ export default function SignIn() {
       return
     }
 
-    localStorage.setItem("acessToken", data.accessToken);
+    localStorage.setItem("accessToken", data.accessToken);
     localStorage.setItem("user", JSON.stringify(data.user));
 
     router.push("/");
