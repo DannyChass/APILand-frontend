@@ -21,7 +21,7 @@ export default function UserHeader() {
     setActive(!active)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     function handleClickOutside(event) {
       if (dropDownRef.current && !dropDownRef.current.contains(event.target)) {
         setActive(false)
@@ -31,17 +31,17 @@ export default function UserHeader() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  },[])
+  }, [])
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
-    
+
     if (stored) {
       setUser(JSON.parse(stored));
     }
   }, []);
 
-  
+
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("accessToken");
@@ -76,10 +76,9 @@ export default function UserHeader() {
           </div> */}
 
           <ul className="py-2 text-sm text-gray-700">
-          <li className="px-4 py-2 hover:bg-gray-100 flex items-center gap-2 active:bg-slate-200 active:shadow "><Link href='/ProfilePage' > Account <FontAwesomeIcon icon={faUser}/></Link></li>
-          <li className="px-4 py-2 hover:bg-gray-100 flex items-center gap-2 active:bg-slate-200 active:shadow">Setting <FontAwesomeIcon icon={faGear}/></li>
-          <li onClick={handleLogout} className="px-4 py-2 hover:bg-gray-100 flex items-center gap-2 active:bg-slate-200 active:shadow">Logout <FontAwesomeIcon icon={faArrowRightFromBracket}/></li>
-          
+            <li className="px-4 py-2 hover:bg-gray-100 flex items-center gap-2 active:bg-slate-200 active:shadow "><Link className='flex gap-5 items-center w-full' href='/ProfilePage'  ><FontAwesomeIcon icon={faUser} /> Account </Link></li>
+            <li className="px-4 py-2 hover:bg-gray-100 flex items-center gap-2 active:bg-slate-200 active:shadow">Setting <FontAwesomeIcon icon={faGear} /></li>
+            <li onClick={handleLogout} className="px-4 py-2 hover:bg-gray-100 flex items-center gap-2 active:bg-slate-200 active:shadow">Logout <FontAwesomeIcon icon={faArrowRightFromBracket} /></li>
           </ul>
         </div>
       )}
