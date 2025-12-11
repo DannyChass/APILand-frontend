@@ -9,6 +9,7 @@ export default function API() {
 
     const [apiData, setApiData] = useState(null);
     const [comment, setComment] = useState("");
+    const [comments, setComments] = useState([]);
 
     useEffect(() => {
         if (!name) return
@@ -29,6 +30,12 @@ export default function API() {
 
         fetchAPI();
     }, [name]);
+
+    useEffect(() => {
+        if (apiData?._id) {
+            fetchComments();
+        }
+    }, [apiData]);
 
     if (!apiData) return <div>Loading...</div>;
 
@@ -65,10 +72,65 @@ export default function API() {
         }
     }
 
+    async function handleAddComment() {
+        const token = localStorage.getItem("accessToken");
+
+        if (!token) {
+            alert("Vous devez être connecté pour commenter");
+            return;
+        }
+
+        if (!comment.trim()) {
+            alert("Le commentaire est vide");
+            return;
+        }
+
+        try {
+            const res = await fetch(`http://localhost:3000/apis/${apiData._id}/comments`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ content: comment })
+            })
+
+            const data = await res.json();
+
+            if (data.result) {
+                alert("Commentaire ajouté");
+
+                setComment("");
+
+                fetchComments();
+
+            } else {
+                alert(data.error || "Erreur lors de l'ajout du commentaire");
+            }
+
+        } catch (error) {
+            console.error("Erreur ajout commentaire:", error);
+        }
+    }
+
+    async function fetchComments() {
+        try {
+            const res = await fetch(`http://localhost:3000/apis/${apiData._id}/comments`);
+            const data = await res.json();
+
+            if (data.result) {
+                setComments(data.comments);
+            }
+
+        } catch (error) {
+            console.error("Erreur fetching comments", error);
+        }
+    }
+
     return (
         <>
             <Header />
-            <div className="max-w-5max-w-5xl w-full bg-white rounded-xl shadow p-10 flex gap-12">
+            <div className="max-w-5xl w-full bg-white rounded-xl shadow p-10 flex gap-12">
 
                 <div className="w-60 h-60 bg-gray-300 rounded-xl flex items-center justify-center">
                     <span className="text-gray-600 text-3xl"></span>
@@ -106,10 +168,12 @@ export default function API() {
                         </a>
                     </div>
 
+                    {/* Zone d'exemple */}
                     <div className="max-w-5xl w-full bg-white rounded-xl shadow p-10 mt-10 h-64 flex items-center justify-center text-gray-400">
                         Exemple
                     </div>
 
+                    {/* COMMENTAIRES */}
                     <div className="max-w-5xl w-full mt-10">
                         <h2 className="text-xl font-semibold mb-4">Comments</h2>
 
@@ -121,18 +185,27 @@ export default function API() {
                                 className="flex-1 px-4 py-2 bg-white border rounded-lg"
                             />
 
-                            <Button className="px-6 py-2 bg-purple-300 hover:bg-purple-400 transition rounded-lg">
+                            <Button
+                                className="px-6 py-2 bg-purple-300 hover:bg-purple-400 transition rounded-lg"
+                                onClick={handleAddComment}
+                            >
                                 Add
                             </Button>
                         </div>
 
-                        <div className="flex items-start gap-4">
-                            <img
-                                src="https://i.pravatar.cc/80"
-                                className="w-12 h-12 rounded-full"
-                            />
-
-                            <p className="mt-2 text-gray-700">Comment</p>
+                        <div className="mt-6 flex flex-col gap-6">
+                            {comments.map((c) => (
+                                <div key={c._id} className="flex items-start gap-4">
+                                    <img
+                                        src={c.author?.image || "https://i.pravatar.cc/80"}
+                                        className="w-12 h-12 rounded-full"
+                                    />
+                                    <div>
+                                        <p className="font-semibold">{c.author?.username}</p>
+                                        <p className="text-gray-700">{c.content}</p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
 
