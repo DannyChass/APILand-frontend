@@ -85,7 +85,7 @@ export default function SignIn() {
         <div className="w-[70%] flex flex-col justify-start items-center">
           
           <Button
-            classname="w-[60%] bg-[#B8A9FF] h-[50px] font-semibold text-lg rounded-[3] hover:bg-[#9d90de] cursor-pointer"
+            className="w-[60%] bg-[#B8A9FF] h-[50px] font-semibold text-lg rounded-[3] hover:bg-[#9d90de] cursor-pointer"
             onClick={handleSignIn}
           >
             Connexion
@@ -97,11 +97,11 @@ export default function SignIn() {
             Vous n'avez pas de compte ?
           </Link>
         <div className="w-full h-[70%] flex flex-col gap-5 justify-center items-center ">
-          <Button classname="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-300 h-10">
+          <Button className="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-300 h-10">
             {" "}
             Connectez-vous avec <img className="h-6" src="../google.png" />{" "}
           </Button>
-          <Button classname="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-300 h-10">
+          <Button className="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-300 h-10">
             {" "}
             Connectez-vous avec <img className="h-6" src="../github.png" />{" "}
           </Button>

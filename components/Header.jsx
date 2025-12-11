@@ -56,7 +56,7 @@ export default function Header() {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}>
           API <FontAwesomeIcon icon={faAngleDown} color="#90a1b9" />
-        </button> 
+        </button>
         <Menu
           anchorEl={anchorEl}
           open={open}
@@ -69,7 +69,7 @@ export default function Header() {
           className="w-40 border-0"
         >
           <MenuItem value="api">API</MenuItem>
-          <MenuItem value="Docs">Docs</MenuItem>  
+          <MenuItem value="Docs">Docs</MenuItem>
           <MenuItem value="community">Community</MenuItem>
         </Menu>
         <button className="flex  gap-3 pl-3 pr-6 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer" id="apiMenu"
@@ -104,7 +104,7 @@ export default function Header() {
             <Link href="/AddAPI">
               <Button>Add an API</Button>
             </Link>
-            <UserHeader/>
+            <UserHeader />
           </>
         ) : (
           <>
@@ -112,10 +112,14 @@ export default function Header() {
               <Button>Add an API</Button>
             </Link>
             <Link href="/AuthPage?mode=signup">
-              <Button classname="font-sans text-white font-normal text-sm border-2 border-[#050f2a] p-2 bg-[#050F2A] rounded-lg hover:bg-slate-800 cursor-pointer">Sign Up</Button>
+              <Button className="font-sans text-white font-normal text-sm border-2 border-[#050f2a] p-2 bg-[#050F2A] rounded-lg hover:bg-slate-800 cursor-pointer">
+                Sign Up
+              </Button>
             </Link>
             <Link href="/AuthPage?mode=login">
-              <Button classname='font-sans text-black font-normal text-sm border-2 p-2 border-slate-400 rounded-lg hover:bg-slate-200 transition cursor-pointer'>Sign In</Button>
+              <Button className="font-sans text-black font-normal text-sm border-2 p-2 border-slate-400 rounded-lg hover:bg-slate-200 transition cursor-pointer">
+                Sign In
+              </Button>
             </Link>
           </>
         )}

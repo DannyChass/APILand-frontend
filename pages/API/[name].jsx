@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Header from "../../components/Header";
+import Button from "../../components/ui/Button";
 
 export default function API() {
     const router = useRouter();
     const { name } = router.query;
 
     const [apiData, setApiData] = useState(null);
+    const [comment, setComment] = useState("");
 
     useEffect(() => {
         if (!name) return
@@ -33,21 +35,73 @@ export default function API() {
     return (
         <>
             <Header />
+            <div className="max-w-5max-w-5xl w-full bg-white rounded-xl shadow p-10 flex gap-12">
 
-            <div className="p-10 max-w-2xl mx-auto">
-                <h1 className="text-3xl font-bold mb-4">{apiData.name}</h1>
-
-                <p className="text-gray-700 mb-4">{apiData.description}</p>
-
-                <div className="text-sm text-gray-500">
-                    <p><strong>Category:</strong> {apiData.category || "None"}</p>
-                    <p><strong>Documentation:</strong> {apiData.documentationLink || "Not provided"}</p>
-                    <p><strong>Official link:</strong> {apiData.officialLink || "Not provided"}</p>
+                <div className="w-60 h-60 bg-gray-300 rounded-xl flex items-center justify-center">
+                    <span className="text-gray-600 text-3xl"></span>
                 </div>
 
-                <div className="mt-4">
-                    <p className="text-lg">⭐ Notation: {apiData.notation ?? "No rating"}</p>
+                <div className="flex flex-col justify-between flex-1">
+                    <div className="flex items-center justify-between">
+                        <h1 className="text-3xl font-bold">{apiData.name}</h1>
+                        <img
+                            src=""
+                            className="w-16 h-16 rounded-full object-cover"
+                        />
+                    </div>
+
+                    <p className="text-gray-600 mt-2">{apiData.description}</p>
+
+                    <div className="flex gap-4 mt-6">
+                        <Button className="px-6 py-2 bg-purple-300 hover:bg-purple-400 transition rounded-lg">
+                            Suivre
+                        </Button>
+
+                        <a href={apiData.officialLink} target="_blank">
+                            <Button className="px-6 py-2 bg-purple-300 hover:bg-purple-400 transition rounded-lg">
+                                Site officiel
+                            </Button>
+                        </a>
+
+                        <a href={apiData.documentationLink} target="_blank">
+                            <Button className="px-6 py-2 bg-purple-300 hover:bg-purple-400 transition rounded-lg">
+                                Documentation
+                            </Button>
+                        </a>
+                    </div>
+
+                    <div className="max-w-5xl w-full bg-white rounded-xl shadow p-10 mt-10 h-64 flex items-center justify-center text-gray-400">
+                        Exemple
+                    </div>
+
+                    <div className="max-w-5xl w-full mt-10">
+                        <h2 className="text-xl font-semibold mb-4">Comments</h2>
+
+                        <div className="flex gap-4 mb-8">
+                            <input
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                placeholder="Add comment"
+                                className="flex-1 px-4 py-2 bg-white border rounded-lg"
+                            />
+
+                            <Button className="px-6 py-2 bg-purple-300 hover:bg-purple-400 transition rounded-lg">
+                                Add
+                            </Button>
+                        </div>
+
+                        <div className="flex items-start gap-4">
+                            <img
+                                src="https://i.pravatar.cc/80"
+                                className="w-12 h-12 rounded-full"
+                            />
+
+                            <p className="mt-2 text-gray-700">Comment</p>
+                        </div>
+                    </div>
+
                 </div>
+
             </div>
         </>
     );

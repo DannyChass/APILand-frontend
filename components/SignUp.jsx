@@ -141,11 +141,11 @@ export default function SignUp() {
 
           <div className="w-full h-[60%] flex flex-col gap-5 justify-center items-center">
             
-            <Button classname="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-400 h-10 hover:bg-stone-200">
+            <Button className="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-400 h-10 hover:bg-stone-200">
               {" "}
               Sign up with <img className="h-6" src="../google.png" />{" "}
             </Button>
-            <Button classname="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-400 h-10 hover:bg-stone-200">
+            <Button className="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-400 h-10 hover:bg-stone-200">
               {" "}
               Sign up with <img className="h-6" src="../github.png" />{" "}
             </Button>

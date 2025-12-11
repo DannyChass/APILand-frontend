@@ -99,7 +99,7 @@ function Home() {
               </ul>
             )}
 
-            <Button classname="h-11 w-40 rounded-xl bg-[#B8A9FF] text-white font-bold shadow hover:bg-[#9d90de] cursor-pointer">
+            <Button className="h-11 w-40 rounded-xl bg-[#B8A9FF] text-white font-bold shadow hover:bg-[#9d90de] cursor-pointer">
               Search
             </Button>
           </div>
