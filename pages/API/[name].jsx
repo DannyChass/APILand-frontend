@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Header from "../../components/Header";
 import Button from "../../components/ui/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookmark as solidBookmark } from "@fortawesome/free-solid-svg-icons";
+import { faBookmark as regularBookmark } from "@fortawesome/free-regular-svg-icons";
 
 export default function API() {
     const router = useRouter();
     const { name } = router.query;
 
     const [apiData, setApiData] = useState(null);
+    const [isFollowed, setIsFollowed] = useState(false);
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState([]);
 
@@ -37,20 +41,36 @@ export default function API() {
         }
     }, [apiData]);
 
+    useEffect(() => {
+        if (!apiData?._id) return;
+
+        async function checkFollow() {
+            const token = localStorage.getItem("accessToken");
+            if (!token) return;
+
+            const res = await fetch(`http://localhost:3000/apis/follow/${apiData._id}/status`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            const data = await res.json();
+            if (data.result) {
+                setIsFollowed(data.isFollowed);
+            }
+        }
+
+        checkFollow();
+    }, [apiData]);
+
     if (!apiData) return <div>Loading...</div>;
 
     async function handleFollow() {
         const token = localStorage.getItem("accessToken");
-
-        console.log(token);
-
         if (!token) {
-            alert("Vous devez être connecté pour suivre une API");
+            alert("Vous devez être connecté");
             return;
         }
 
         try {
-
             const res = await fetch(`http://localhost:3000/apis/follow/${apiData._id}`, {
                 method: "POST",
                 headers: {
@@ -62,11 +82,10 @@ export default function API() {
             const data = await res.json();
 
             if (data.result) {
-                alert("Vous suivez maintenant cette API");
+                setIsFollowed(data.isFollowed);
             } else {
-                alert(data.error || "Erreur");
+                alert(data.error);
             }
-
         } catch (error) {
             console.error("Erreur follow", error);
         }
@@ -138,23 +157,28 @@ export default function API() {
 
                 <div className="flex flex-col justify-between flex-1">
                     <div className="flex items-center justify-between">
-                        <h1 className="text-3xl font-bold">{apiData.name}</h1>
+
+                        <div className="flex items-center gap-4">
+                            <h1 className="text-3xl font-bold">{apiData.name}</h1>
+
+                            <FontAwesomeIcon
+                                icon={isFollowed ? solidBookmark : regularBookmark}
+                                className="text-purple-500 text-2xl cursor-pointer"
+                                onClick={handleFollow}
+                            />
+                        </div>
+
                         <img
                             src="https://i.pravatar.cc/160"
                             className="w-16 h-16 rounded-full object-cover"
                         />
                     </div>
 
-                    <p className="text-gray-600 mt-2">{apiData.description}</p>
+                    <p className="text-gray-600 mt-2">
+                        Created by : <span className="font-semibold">{apiData.user?.username}</span>
+                    </p>
 
                     <div className="flex gap-4 mt-6">
-                        <Button
-                            className="px-6 py-2 bg-purple-300 hover:bg-purple-400 transition rounded-lg"
-                            onClick={handleFollow}
-                        >
-                            Suivre
-                        </Button>
-
                         <a href={apiData.officialLink} target="_blank">
                             <Button className="px-6 py-2 bg-purple-300 hover:bg-purple-400 transition rounded-lg">
                                 Site officiel
