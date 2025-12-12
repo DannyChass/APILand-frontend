@@ -14,7 +14,7 @@ function DropDownButton({ title, menu, className }) {
     const toggleDropdown = () => {
         setActive(!active)
     }
-    
+
     const menuItems = menu.map((item, index) => {
         const itemUrl = '#'
         return (
@@ -25,23 +25,21 @@ function DropDownButton({ title, menu, className }) {
             </li>
         );
     })
-console.log(active)
+    console.log(active)
 
     return (
-        <main >
-            <div className='bg-[#050F2A] h-20 flex relative'>
-                <button className={`dropDownButton ${className}`} id={title}
-                    onClick={toggleDropdown}>
-                    {title} <FontAwesomeIcon icon={faAngleDown} />
-                </button>
-                {active && (
-                    <div className="absolute right-0 top-full w-full bg-white shadow-lg rounded-[3] z-50">
-                        <ul className="py-2 text-sm text-gray-700">
-                            {menuItems}
-                        </ul>
-                    </div>)}
-            </div>
-        </main>
+        <div className='relative w-full' >
+            <button className={`dropDownButton ${className}`} id={title}
+                onClick={toggleDropdown}>
+                {title} <FontAwesomeIcon icon={faAngleDown} />
+            </button>
+            {active && (
+                <div className="absolute left-0 top-full bg-white shadow-lg rounded-[3] z-50">
+                    <ul className="py-2 text-sm text-gray-700">
+                        {menuItems}
+                    </ul>
+                </div>)}
+        </div>
     );
 }
 
