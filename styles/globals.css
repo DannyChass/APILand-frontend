@@ -74,6 +74,6 @@ h3{
 }
 
 .dropDownButtonWhite {
-  @apply flex gap-3 p-3 pr-6 justify-center text-xs text-white items-center border-r-0
+  @apply flex h-10 gap-3 p-3 pr-6 justify-center text-xs text-white items-center border-r-0
 }
 
