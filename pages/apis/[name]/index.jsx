@@ -16,6 +16,8 @@ export default function API() {
     const [comments, setComments] = useState([]);
     const [activeTab, setActiveTab] = useState("description");
     const [isOwner, setIsOwner] = useState(false);
+    const [news, setNews] = useState([]);
+    const [newsLoading, setNewsLoading] = useState(false);
 
     useEffect(() => {
         if (!name) return
@@ -82,6 +84,12 @@ export default function API() {
         }
 
         checkOwnership();
+    }, [apiData]);
+
+    useEffect(() => {
+        if (apiData?._id) {
+            fetchNews();
+        }
     }, [apiData]);
 
     if (!apiData) return <div>Loading...</div>;
@@ -152,6 +160,27 @@ export default function API() {
 
         } catch (error) {
             console.error("Erreur ajout commentaire:", error);
+        }
+    }
+
+    async function fetchNews() {
+        if (!apiData?._id) return;
+
+        setNewsLoading(true);
+
+        try {
+            const res = await fetch(
+                `http://localhost:3000/apis/${apiData._id}/news`
+            );
+            const data = await res.json();
+
+            if (data.result) {
+                setNews(data.news);
+            }
+        } catch (error) {
+            console.error("Erreur fetching news:", error);
+        } finally {
+            setNewsLoading(false);
         }
     }
 
@@ -288,16 +317,51 @@ export default function API() {
                                     <div className="flex justify-center">
                                         <Button
                                             className="px-6 py-2 bg-purple-300 hover:bg-purple-400 transition rounded-lg"
-                                            onClick={() => router.push(`/apis/${apiData.name}/news/new`)}
+                                            onClick={() => router.push(`/apis/${apiData.name}/news/AddNew`)}
                                         >
                                             Add news
                                         </Button>
                                     </div>
                                 )}
 
-                                <div className="text-gray-500 text-center py-20">
-                                    No news published yet.
-                                </div>
+                                {newsLoading && (
+                                    <div className="text-gray-400 text-center">Loading news...</div>
+                                )}
+
+                                {!newsLoading && news.length === 0 && (
+                                    <div className="text-gray-500 text-center py-20">
+                                        No news published yet.
+                                    </div>
+                                )}
+
+                                {!newsLoading && news.length > 0 && (
+                                    <div className="flex flex-col gap-6">
+                                        {news.map((n) => (
+                                            <div
+                                                key={n._id}
+                                                className="border rounded-lg p-6 bg-gray-50"
+                                            >
+                                                <div className="flex justify-between items-center mb-2">
+                                                    <h3 className="text-lg font-semibold">{n.title}</h3>
+                                                    <span className="text-sm text-gray-400">
+                                                        {new Date(n.createdAt).toLocaleDateString()}
+                                                    </span>
+                                                </div>
+
+                                                <p className="text-gray-700 mb-4">{n.content}</p>
+
+                                                <div className="flex items-center gap-3 text-sm text-gray-500">
+                                                    <img
+                                                        src={n.author?.image || "https://i.pravatar.cc/40"}
+                                                        className="w-6 h-6 rounded-full"
+                                                    />
+                                                    <span>{n.author?.username}</span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
                             </div>
                         )}
 
