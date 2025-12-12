@@ -205,6 +205,7 @@ const deletedProfile = async () => {
               placeholder="Pays/région"
               name="inputUsername"
               className="inputSetting"
+              onChange={(e) => setCountry(e.target.value)}
               value={country}
             />
           </div>
