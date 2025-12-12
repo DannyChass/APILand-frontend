@@ -15,7 +15,7 @@ export default function AccountSetting() {
   const handleChange = (e) => {
     setGender(e.target.value);
   };
-  
+
   useEffect(() => {
   if (user) {
     setEmail(user.email || "");
@@ -25,6 +25,27 @@ export default function AccountSetting() {
     setCountry(user.country || "");
   }
 }, [user]);
+
+const deletedProfile = async () => {
+  const accessToken = localStorage.getItem('accessToken')
+  const response = await fetch('http://localhost:3000/users/me', {
+    method: 'DELETE', 
+    headers: {
+      "Content-Type" : "application/json",
+      "Authorization" : `Bearer ${accessToken}`
+    }
+  })
+  const data = await response.json()
+
+  if(data){
+    console.log('utilisateur supprimé');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('user');
+    window.location.href = "/HomePage";
+  }else {
+    console.log('erreur de suppression', dataerror)
+  }
+}
 
   const updateProfile = async () => {
 
@@ -201,7 +222,7 @@ export default function AccountSetting() {
           </div>
         </div>
         <div className="flex items-center gap-10 mt-10">
-          <button className="flex items-center rounded-lg p-2 h-10 cursor-pointer hover:bg-slate-300 bg-slate-200 gap-5">
+          <button onClick={() => deletedProfile()} className="flex items-center rounded-lg p-2 h-10 cursor-pointer hover:bg-slate-300 bg-slate-200 gap-5">
             Supprimer le compte
           </button>
           <div className="w-70">
