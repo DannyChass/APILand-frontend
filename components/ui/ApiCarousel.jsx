@@ -49,7 +49,7 @@ export default function ApiCarousel(props) {
               {slides.map((api, index) => (
                 <div
                   key={index}
-                  onClick={() => router.push(`/API/${api.name}`)}
+                  onClick={() => router.push(`/apis/${api.name}`)}
                   className={`flex-[0_0_40%] mx-2 flex items-center justify-center rounded-lg cursor-pointer
   ${index === selectedIndex ? "scale-100 opacity-100" : "scale-90 opacity-60"}
   bg-gray-100 h-48 shadow-md`}
