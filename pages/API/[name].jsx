@@ -14,6 +14,7 @@ export default function API() {
     const [isFollowed, setIsFollowed] = useState(false);
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState([]);
+    const [activeTab, setActiveTab] = useState("description");
 
     useEffect(() => {
         if (!name) return
@@ -192,9 +193,62 @@ export default function API() {
                         </a>
                     </div>
 
-                    {/* Zone d'exemple */}
-                    <div className="max-w-5xl w-full bg-white rounded-xl shadow p-10 mt-10 h-64 flex items-center justify-center text-gray-400">
-                        Exemple
+                    <div className="mt-10">
+                        <div className="flex gap-6">
+                            <button
+                                onClick={() => setActiveTab("description")}
+                                className={`pb-2 border-b-2 ${activeTab === "description"
+                                    ? "border-purple-500 font-semibold"
+                                    : "border-transparent text-gray-500"
+                                    }`}
+                            >
+                                Description
+                            </button>
+
+                            <button
+                                onClick={() => setActiveTab("example")}
+                                className={`pb-2 border-b-2 ${activeTab === "example"
+                                    ? "border-purple-500 font-semibold"
+                                    : "border-transparent text-gray-500"
+                                    }`}
+                            >
+                                Exemple
+                            </button>
+
+                            <button
+                                onClick={() => setActiveTab("test")}
+                                className={`pb-2 border-b-2 ${activeTab === "test"
+                                    ? "border-purple-500 font-semibold"
+                                    : "border-transparent text-gray-500"
+                                    }`}
+                            >
+                                Test
+                            </button>
+                        </div>
+
+                        <hr className="border-slate-200 mt-2" />
+                    </div>
+
+                    <div className="max-w-5xl w-full bg-white rounded-xl shadow p-10 mt-6 min-h-[250px]">
+
+                        {activeTab === "description" && (
+                            <p className="text-gray-700">
+                                {apiData.description || "Aucune description disponible."}
+                            </p>
+                        )}
+
+                        {activeTab === "example" && (
+                            <div className="text-gray-400 flex items-center justify-center h-full">
+                                Exemple
+                            </div>
+                        )}
+
+                        {activeTab === "test" && (
+                            <div className="text-gray-400 flex items-center justify-center h-full">
+                                Test
+                            </div>
+                        )}
+
                     </div>
 
                     {/* COMMENTAIRES */}
