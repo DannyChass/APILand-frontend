@@ -6,26 +6,38 @@ import Button from '../components/ui/Button';
 import ThemeButton from '../components/ui/ThemeButton'
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Pagination from '../components/ui/Pagination.jsx';
 
 function ApiSearch() {
     const searchParams = useSearchParams();
     const searchTerm = searchParams.get('query');
-    console.log("Search Term:", searchTerm);    
+    console.log("Search Term:", searchTerm);
     const [apiCards, setApiCards] = useState([]);
+    const [resultCount, setResultCount] = useState(0);
 
     useEffect(() => {
         async function ApiSearchResults() {
+            let apiUrl;
+            if (searchTerm) {
+                apiUrl = `http://localhost:3000/apis/allApiSearch/${searchTerm}`
+            } else {
+                apiUrl = 'http://localhost:3000/apis/allApi'
+            }
+            console.log("API URL:", apiUrl);
             try {
-                const response = await fetch(`http://localhost:3000/apis/allApiSearch/${searchTerm}`);
+                const response = await fetch(apiUrl);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                const data = await response.json();
-                console.log(data);
-                console.log(data)
-                setApiCards(data.map(api => (
+                const responseData = await response.json();
+                const apiData = responseData.allAPI || responseData;
+                console.log(apiData);
+                if (Array.isArray(apiData))
+                setResultCount(apiData.length)
+                setApiCards(apiData.map(api => (
                     <ApiCard
                         key={api._id}
+                        image={api.image || '/noImage.jpg'}
                         apiName={api.name}
                         theme={api.category}
                         price={api.price}
@@ -36,7 +48,7 @@ function ApiSearch() {
             } catch (error) {
                 console.error('Error fetching API search results:', error);
             }
-        } ;
+        };
         ApiSearchResults();
 
     }, [searchTerm]);
@@ -73,9 +85,9 @@ function ApiSearch() {
         <div>
             <Header />
             <main >
-                <div id='search' className='flex h-96 justify-center items-center w-full'>
-                    <div className="flex flex-col justify-baseline gap-5 bg-[#050F2A] w-[90%] h-[70%]">
-                        <h2 className="text-white text-3xl font-bold mt-10 ml-6">Results for "your search" :</h2>
+                <div id='search' className='flex h-60 justify-center items-center w-full'>
+                    <div className="flex flex-col justify-around gap-5 py-5 bg-[#050F2A] w-[90%] h-[90%]">
+                        {searchTerm ? <h2 className="text-white text-3xl font-bold ml-6">Results for {searchTerm} : {resultCount}</h2> : <h2 className="text-white text-3xl font-bold ml-6">Results for all : {resultCount}</h2>}
                         <div className="bg-white relative justify-between items-center flex w-[90%] ml-6 rounded-xl ">
                             <input
                                 type="search"
@@ -88,21 +100,22 @@ function ApiSearch() {
                         </div>
                         <div className="flex gap-10 ml-6 items-center ">
                             <h5 className="text-white font-bold">similar search :</h5>
-                            <div className="flex gap-10">{popSearch}</div>
+                            <div className="flex gap-10 p-0">{popSearch}</div>
                         </div>
                     </div>
                 </div>
-                <div id='dropDownContainer' className='bg-[#050F2A] h-20 flex'>
-                    <div id='dropDownButton' className='flex ml-12'>
+                <div id='dropDownContainer' className='bg-[#050F2A] h-10 flex'>
+                    <div id='dropDownButton' className='flex h-10 ml-12'>
                         <DropDownButton title='Category' menu={category} className='dropDownButtonWhite'></DropDownButton>
                         <DropDownButton title='Tag' menu={tag} className='dropDownButtonWhite'></DropDownButton>
                         <DropDownButton title='Price' menu={price} className='dropDownButtonWhite'></DropDownButton>
                         <DropDownButton title='Follower' menu={follower} className='dropDownButtonWhite'></DropDownButton>
                     </div>
                 </div>
-                <div className='flex flex-wrap justify-center'>
+                <div className='flex flex-wrap ml-6'>
                     {apiCards}
                 </div>
+                <div><Pagination /></div>
             </main>
         </div>
     );
