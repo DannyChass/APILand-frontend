@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Header from "../../components/Header";
-import Button from "../../components/ui/Button";
+import Header from "../../../components/Header";
+import Button from "../../../components/ui/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark as solidBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as regularBookmark } from "@fortawesome/free-regular-svg-icons";
@@ -288,7 +288,7 @@ export default function API() {
                                     <div className="flex justify-center">
                                         <Button
                                             className="px-6 py-2 bg-purple-300 hover:bg-purple-400 transition rounded-lg"
-                                            onClick={() => alert("Add news (coming soon)")}
+                                            onClick={() => router.push(`/apis/${apiData.name}/news/new`)}
                                         >
                                             Add news
                                         </Button>
