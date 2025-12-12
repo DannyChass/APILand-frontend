@@ -114,11 +114,17 @@ console.log(data)
         </div>
 
         <ApiCarousel title="Top Rated APIs" items={topRatedApis} />
-        <div className="w-[90%] flex justify-center gap-15">
-          <CategoryCard title='Movies' img='./icon.cinema.png'/>
-          <CategoryCard title='Business'/>
-          <CategoryCard title='Geography'/>
-          <CategoryCard title='Fashion'/>
+        <div className="w-[90%] flex flex-col justify-center gap-5">
+          <div className=" flex justify-end w-full px-10 text-left text-sm text-blue-400  ">
+            <p className="hover:underline hover:underline-offset-2 cursor-pointer">View All Category</p>
+          </div>
+          <div className="flex justify-center w-full gap-15">
+            <CategoryCard title='Movies' img='./icon.cinema.png'/>
+          <CategoryCard title='Business' img='./icon.business.png'/>
+          <CategoryCard title='Geography' img='./icon.geography.png'/>
+          <CategoryCard title='Fashion' img='./icon.fashion.png'/>
+          </div>
+          
          
 
 
