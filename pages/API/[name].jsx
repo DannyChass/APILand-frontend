@@ -15,6 +15,7 @@ export default function API() {
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState([]);
     const [activeTab, setActiveTab] = useState("description");
+    const [isOwner, setIsOwner] = useState(false);
 
     useEffect(() => {
         if (!name) return
@@ -60,6 +61,27 @@ export default function API() {
         }
 
         checkFollow();
+    }, [apiData]);
+
+    useEffect(() => {
+        async function checkOwnership() {
+            const token = localStorage.getItem("accessToken");
+            if (!token || !apiData?.user?._id) return;
+
+            const res = await fetch("http://localhost:3000/users/me", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            const data = await res.json();
+
+            if (data.result && data.user._id === apiData.user._id) {
+                setIsOwner(true);
+            }
+        }
+
+        checkOwnership();
     }, [apiData]);
 
     if (!apiData) return <div>Loading...</div>;
@@ -224,6 +246,16 @@ export default function API() {
                             >
                                 Test
                             </button>
+
+                            <button
+                                onClick={() => setActiveTab("news")}
+                                className={`pb-2 border-b-2 ${activeTab === "news"
+                                    ? "border-purple-500 font-semibold"
+                                    : "border-transparent text-gray-500"
+                                    }`}
+                            >
+                                News
+                            </button>
                         </div>
 
                         <hr className="border-slate-200 mt-2" />
@@ -246,6 +278,26 @@ export default function API() {
                         {activeTab === "test" && (
                             <div className="text-gray-400 flex items-center justify-center h-full">
                                 Test
+                            </div>
+                        )}
+
+                        {activeTab === "news" && (
+                            <div className="flex flex-col gap-6">
+
+                                {isOwner && (
+                                    <div className="flex justify-center">
+                                        <Button
+                                            className="px-6 py-2 bg-purple-300 hover:bg-purple-400 transition rounded-lg"
+                                            onClick={() => alert("Add news (coming soon)")}
+                                        >
+                                            Add news
+                                        </Button>
+                                    </div>
+                                )}
+
+                                <div className="text-gray-500 text-center py-20">
+                                    No news published yet.
+                                </div>
                             </div>
                         )}
 
