@@ -53,6 +53,9 @@ h3{
   @apply flex flex-col w-100 gap-1
 }
 
+
+
+
 .inputSetting{
   @apply  w-100 border rounded-md px-5 py-1 border-slate-400 
 }
