@@ -6,7 +6,7 @@ import Button from '../components/ui/Button';
 import ThemeButton from '../components/ui/ThemeButton'
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Pagination from '../components/ui/Pagination.jsx';
+import PaginationApiHub from '../components/ui/PaginationApiHub.jsx';
 
 function ApiSearch() {
     const searchParams = useSearchParams();
@@ -14,58 +14,60 @@ function ApiSearch() {
     console.log("Search Term:", searchTerm);
     const [apiCards, setApiCards] = useState([]);
     const [resultCount, setResultCount] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+
+
+    const ApiSearchResults = async (pageNumber) => {
+        const limit = 6;
+        let apiUrl;
+        if (searchTerm) {
+            apiUrl = `http://localhost:3000/apis/allApiSearch/${searchTerm}?page=${pageNumber}&limit=${limit}`
+        } else {
+            apiUrl = `http://localhost:3000/apis/allApi?page=${pageNumber}&limit=${limit}`
+        }
+        console.log("API URL:", apiUrl);
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const responseData = await response.json();
+            const apiData = responseData.allAPI;
+            const paginationInfo = responseData.pagination
+            setResultCount(paginationInfo.totalCount || apiData.length)
+            setTotalPages(paginationInfo.totalPages || 1)
+            setCurrentPage(pageNumber)
+
+            console.log(apiData);
+            if (Array.isArray(apiData))
+                setResultCount(apiData.length)
+            setApiCards(apiData.map(api => (
+                <ApiCard
+                    key={api._id}
+                    apiId={api._id}
+                    image={api.image || '/noImage.jpg'}
+                    apiName={api.name}
+                    theme={api.category}
+                    price={api.price}
+                    author={api.author}
+                    ratingValue={api.ratingValue}
+                />
+            )));
+        } catch (error) {
+            console.error('Error fetching API search results:', error);
+        }
+    };
 
     useEffect(() => {
-        async function ApiSearchResults() {
-            let apiUrl;
-            if (searchTerm) {
-                apiUrl = `http://localhost:3000/apis/allApiSearch/${searchTerm}`
-            } else {
-                apiUrl = 'http://localhost:3000/apis/allApi'
-            }
-            console.log("API URL:", apiUrl);
-            try {
-                const response = await fetch(apiUrl);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const responseData = await response.json();
-                const apiData = responseData.allAPI || responseData;
-                console.log(apiData);
-                if (Array.isArray(apiData))
-                setResultCount(apiData.length)
-                setApiCards(apiData.map(api => (
-                    <ApiCard
-                        key={api._id}
-                        image={api.image || '/noImage.jpg'}
-                        apiName={api.name}
-                        theme={api.category}
-                        price={api.price}
-                        author={api.author}
-                        ratingValue={api.ratingValue}
-                    />
-                )));
-            } catch (error) {
-                console.error('Error fetching API search results:', error);
-            }
-        };
-        ApiSearchResults();
-
-    }, [searchTerm]);
+        ApiSearchResults(1)
+    }, [searchTerm])
 
 
 
-
-    // const apiData = [
-    //     { apiName: 'mon API', theme: 'Sport', price: '10€', author: 'Matt', ratingValue: 4, },
-    //     { apiName: 'API-2', theme: 'Culture', price: '15€', author: 'Pierre', ratingValue: 3, },
-    //     { apiName: 'API-3', theme: 'Weather', price: '20€', author: 'Marie', ratingValue: 5, },
-    //     { apiName: 'API-4', theme: 'Sport', price: '100€', author: 'Paul', ratingValue: 1, },
-    //     { apiName: 'API-5', theme: 'Culture', price: '150€', author: 'Sophie', ratingValue: 2, },
-    //     { apiName: 'API-6', theme: 'Weather', price: '200€', author: 'Julien', ratingValue: 5, },
-    // ]
-
-
+    const handlePageChange = (event, newPage) => {
+        ApiSearchResults(newPage);
+    };
 
     const category = ['Sport', 'Culture', 'Weather', 'Health']
     const tag = ['#sport', '#life']
@@ -115,7 +117,12 @@ function ApiSearch() {
                 <div className='flex flex-wrap ml-6'>
                     {apiCards}
                 </div>
-                <div><Pagination /></div>
+                <div id='pagination' className='flex justify-center'>
+                    <PaginationApiHub
+                        totalPages={totalPages}
+                        currentPage={currentPage}
+                        onPageChange={handlePageChange}
+                    /></div>
             </main>
         </div>
     );

@@ -1,13 +1,16 @@
 import * as React from 'react';
 import Rating from '@mui/material/Rating';
 import Image from 'next/image';
+import Link from 'next/link';
 
 
-function ApiCards({ apiName, image, theme, price, author, ratingValue }) {
+function ApiCards({ apiName, image, theme, price, author, ratingValue,}) {
     const value = ratingValue !== undefined ? ratingValue : 0;
+    const apiDetailUrl = `/apis/${apiName}`
 
 
     return (
+<<<<<<< HEAD
         <div className='w-44 m-4 rounded-xs overflow-hidden bg-[#050F2A] text-white shadow-lg '>
             <div className='relative h-28 w-full'>
                 <Image src={image || '/noImage.jpg'} alt='image' layout='fill' objectFit='cover' />
@@ -15,30 +18,42 @@ function ApiCards({ apiName, image, theme, price, author, ratingValue }) {
             <div className='flex flex-col h-52 p-3 justify-between'>
                 <div id='title' className='grow-0 shrink-0'>
                     <p className='font-semibold text-xl wrap-break-word line-clamp-2'>{apiName || 'API Name (Défaut)'}</p>
+=======
+        <Link href={apiDetailUrl}>
+            <div className='w-44 m-4 rounded-xs overflow-hidden bg-[#050F2A] text-white shadow-lg '>
+                <div className='relative h-28 w-full'>
+                    <Image src={image || '/noImage.jpg'} alt='image' layout='fill' objectFit='cover' />
+>>>>>>> 1ecf433c355cf5e2283a457ca5358024a386f3f3
                 </div>
-                <div className='flex flex-col font-light text-xs justify-around gap-2'>
-                    <p>Theme : {theme}</p>
-                    <p>Prix : {price}</p>
-                    <p>Auteur : {author}</p>
-                    <div className='flex flex-row justify-between'>
-                        <p>Avis </p>
-                        <Rating name="read-only" value={value} readOnly size='small' sx={{
-                            color: '#B8A9FF',
-                            '& .MuiRating-iconEmpty': {
-                                fill: 'white',
-                                stroke: 'white',
-                                strokeWidth: '0.5px',
-                                color: 'transparent',
-                            },
-                            '& .MuiRating-icon': {
-                                opacity: 1,
-                            },
-                        }}
-                        />
+                <div className='flex flex-col h-52 p-3 justify-between'>
+                    <div id='title' className='flex-grow-0 flex-shrink-0'>
+                        <p className='font-semibold text-xl wrap-break-word line-clamp-2'>{apiName || 'API Name (Défaut)'}</p>
+                    </div>
+                    <div className='flex flex-col font-light text-xs justify-around gap-2'>
+                        <p>Theme : {theme}</p>
+                        <p>Prix : {price}</p>
+                        <p>Auteur : {author}</p>
+                        <div className='flex flex-row justify-between'>
+                            <p>Avis</p>
+                            <Rating name="read-only" value={value} readOnly size='small' sx={{
+                                color: '#B8A9FF',
+                                '& .MuiRating-iconEmpty': {
+                                    fill: 'white',
+                                    stroke: 'white',
+                                    strokeWidth: '0.5px',
+                                    color: 'transparent',
+                                },
+                                '& .MuiRating-icon': {
+                                    opacity: 1,
+                                },
+                            }}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </Link>
+
     );
 }
 
