@@ -72,13 +72,12 @@ export default function Header() {
           <MenuItem value="Docs">Docs</MenuItem>
           <MenuItem value="community">Community</MenuItem>
         </Menu>
-        <button className="flex  gap-3 pl-2 pr-2 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer" id="apiMenu"
-          aria-controls={open ? 'basic-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
-          onClick={handleClick}>
-          News <FontAwesomeIcon icon={faAngleDown} color="#90a1b9" />
-        </button>
+        <Link
+          href="/news"
+          className="flex gap-3 pl-2 pr-2 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer"
+        >
+          News <FontAwesomeIcon icon={faNewspaper} color="#90a1b9" />
+        </Link>
         <Menu
           slot={{ transition: Fade }}
           anchorEl={anchorEl}
@@ -105,13 +104,13 @@ export default function Header() {
               <Button>Add an API</Button>
             </Link>
             <div className="flex gap-5 border-x-2 border-slate-200 px-5 ">
-              <div ><FontAwesomeIcon icon={faBell} color="#050f2a"/></div>
-            <div><FontAwesomeIcon icon={faCommentDots}/></div>
-            <div><FontAwesomeIcon icon={faBookmark}/></div>
+              <div ><FontAwesomeIcon icon={faBell} color="#050f2a" /></div>
+              <div><FontAwesomeIcon icon={faCommentDots} /></div>
+              <div><FontAwesomeIcon icon={faBookmark} /></div>
             </div>
-            
-            
-            
+
+
+
             <UserHeader />
           </>
         ) : (
