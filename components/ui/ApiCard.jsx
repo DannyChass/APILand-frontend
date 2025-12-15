@@ -13,7 +13,7 @@ function ApiCards({ apiName, image, theme, price, author, ratingValue }) {
                 <Image src={image || '/noImage.jpg'} alt='image' layout='fill' objectFit='cover' />
             </div>
             <div className='flex flex-col h-52 p-3 justify-between'>
-                <div id='title' className='flex-grow-0 flex-shrink-0'>
+                <div id='title' className='grow-0 shrink-0'>
                     <p className='font-semibold text-xl wrap-break-word line-clamp-2'>{apiName || 'API Name (Défaut)'}</p>
                 </div>
                 <div className='flex flex-col font-light text-xs justify-around gap-2'>

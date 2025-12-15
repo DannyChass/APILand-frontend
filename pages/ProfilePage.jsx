@@ -8,14 +8,42 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ButtonMenu from "../components/ui/ButtonMenu";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import ApiCards from "../components/ui/ApiCard";
 
 export default function ProfilePage() {
+  const router = useRouter();
+  const { name } = router.query;
   const [activeMenu, setActiveMenu] = useState("Apis");
   const [updateProfile, setUpdateProfile] = useState(false);
   const [user, setUser] = useState({});
   const [description, setDescription] = useState(user.description || "");
   const [expanded, setExpanded] = useState(false);
   const [apiFollow, setApiFollow] = useState([]);
+  const [apiData, setApiData] = useState(null);
+
+  useEffect(() => {
+    if (!name) return;
+
+    async function fetchAPI() {
+      try {
+        const res = await fetch(`http://localhost:3000/apis/by-name/${name}`);
+        const data = await res.json();
+
+        if (data.result) {
+          setApiData(data.api);
+        }
+      } catch (error) {
+        console.error("Error fetching API:", error);
+      }
+    }
+
+    fetchAPI();
+  }, [name]);
+
+  useEffect(() => {
+    console.log(apiData);
+  }, [apiData]);
 
   useEffect(() => {
     (async () => {
@@ -33,10 +61,6 @@ export default function ProfilePage() {
     })();
   }, []);
 
-useEffect(()=> {
-  console.log(user)
-})
-
   const isLong = user.description && user.description.length > 30;
 
   const displayText =
@@ -46,22 +70,38 @@ useEffect(()=> {
 
   const handleClick = async () => {
     setActiveMenu("Favs");
-    const accessToken = localStorage.getItem('accessToken')
+    const accessToken = localStorage.getItem("accessToken");
 
     const response = await fetch(
-      `http://localhost:3000/users/follow/${user._id}`, {
-        method: 'GET',
+      `http://localhost:3000/users/follow/${user._id}`,
+      {
+        method: "GET",
         headers: {
-          "Content-Type" : 'application/json',
-          Authorization : `Bearer ${accessToken}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
       }
     );
 
     const data = await response.json();
-    setApiFollow(data);
-    console.log(data);
+    console.log(data.data);
+    setApiFollow(data.data);
+
+    //console.log(apiFollow);
   };
+
+  const favorites = apiFollow.map((data, i) => {
+    return (
+      <ApiCards
+        key={i}
+        apiName={data.api.name}
+        image={data.api.image}
+        ratingValue={data.api.ratingValue}
+        theme={data.api.category}
+        author={data.api.user.username}
+      />
+    );
+  });
 
   return (
     <div className="w-full">
@@ -80,7 +120,7 @@ useEffect(()=> {
                   alt="avatar"
                 />
               </div>
-              <div className="w-full md:w-1/3 flex flex-col bg-slate-100  gap-10 items-center justify-start px-3 md:px-5 border-t-2 md:border-t-0 md:border-l-2 border-slate-200 ">
+              <div className="w-full md:w-1/3 flex flex-col   gap-10 items-center justify-start px-3 md:px-5 border-t-2 md:border-t-0 md:border-l-2 border-slate-200 ">
                 <div className="text-center md:text-left">
                   <h3 className="text-lg sm:text-base md:text-xl font-semibold">
                     {user.username}
@@ -147,7 +187,7 @@ useEffect(()=> {
               name="My Fav"
             />
             <ButtonMenu
-              onClick={(() => setActiveMenu("Girlfriends"))}
+              onClick={() => setActiveMenu("Girlfriends")}
               active={activeMenu === "Girlfriends"}
               name="My Girlfriends"
             />
@@ -158,16 +198,13 @@ useEffect(()=> {
 
         <div className="border border-slate-200 flex w-[80%] ">
           {activeMenu === "Apis" && (
-            <div className="w-full flex flex-wrap">
-              {<MyApiComponent />}
-            </div> 
+            <div className="w-full flex flex-wrap">{<MyApiComponent />}</div>
           )}
-            
-          
-          {activeMenu === "Favs" && (
-            <div className="w-full flex flex-wrap">{apiFollow._id}</div> || <div className="w-full flex flex-wrap">pas d'apis follow</div>
 
-) }
+          {activeMenu === "Favs" &&
+            (<div className="w-full flex flex-wrap">{favorites}</div> || (
+              <div className="w-full flex flex-wrap">pas d'apis follow</div>
+            ))}
         </div>
       </div>
     </div>

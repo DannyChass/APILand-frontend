@@ -29,6 +29,7 @@ export default function API() {
                 const data = await res.json();
 
                 if (data.result) {
+                    console.log(data.api);
                     setApiData(data.api);
                 }
             } catch (error) {
