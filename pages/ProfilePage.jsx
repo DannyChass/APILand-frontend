@@ -10,9 +10,12 @@ import ButtonMenu from "../components/ui/ButtonMenu";
 import { useEffect, useState } from "react";
 
 export default function ProfilePage() {
-  const [activeMenu, setActiveMenu] = useState("Api");
-  const [updateProfile, setUpdateProfile]= useState(false)
+  const [activeMenu, setActiveMenu] = useState("Apis");
+  const [updateProfile, setUpdateProfile] = useState(false);
   const [user, setUser] = useState({});
+  const [description, setDescription] = useState(user.description || "");
+  const [expanded, setExpanded] = useState(false);
+  const [apiFollow, setApiFollow] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -26,33 +29,58 @@ export default function ProfilePage() {
         },
       });
       const data = await response.json();
-      console.log(data);
       setUser(data.user);
     })();
   }, []);
 
-  const toggleUpdateProfile = () => {
-    setUpdateProfile(true)
-  }
+useEffect(()=> {
+  console.log(user)
+})
+
+  const isLong = user.description && user.description.length > 30;
+
+  const displayText =
+    expanded || !isLong
+      ? user.description
+      : user.description.slice(0, 30) + "...";
+
+  const handleClick = async () => {
+    setActiveMenu("Favs");
+    const accessToken = localStorage.getItem('accessToken')
+
+    const response = await fetch(
+      `http://localhost:3000/users/follow/${user._id}`, {
+        method: 'GET',
+        headers: {
+          "Content-Type" : 'application/json',
+          Authorization : `Bearer ${accessToken}`
+        }
+      }
+    );
+
+    const data = await response.json();
+    setApiFollow(data);
+    console.log(data);
+  };
 
   return (
     <div className="w-full">
       <Header />
-      <div className="relative flex flex-col justify-center items-center gap-10 w-full">
+      <div className="flex flex-col justify-center items-center gap-10 w-full">
         <div className=" w-full justify-center items-center flex  h-70 px-10 gap-15">
           <div className="flex justify-center flex-col w-full h-full">
-            <div className=" absolute top-0 -z-10 left-0 w-full h-20 sm:h-20 md:h-25 bg-slate-200">
+            <div className="relative w-full h-64 sm:h-25 md:h-64 bg-slate-200">
               <img src="" alt="" />
             </div>
-            <div className="flex flex-col sm:mt-20 md:flex-row justify-center mt-10 items-center md:items-end gap-3 md:gap-10">
-              <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full overflow-hidden flex items-center justify-center">
+            <div className="flex flex-col h-64 sm:mt-3 md:flex-row justify-center mt-6 items-start md:items-start gap-3 md:gap-10">
+              <div className=" w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full overflow-hidden flex ">
                 <img
                   src="./homme.png"
                   className="h-full w-full object-cover rounded-full"
                   alt="avatar"
                 />
               </div>
-              <div className="w-full md:w-1/3 flex flex-col gap-2 justify-end px-6 md:px-10 border-t-2 md:border-t-0 md:border-l-2 border-slate-200 mt-6 md:mt-0">
+              <div className="w-full md:w-1/3 flex flex-col bg-slate-100  gap-10 items-center justify-start px-3 md:px-5 border-t-2 md:border-t-0 md:border-l-2 border-slate-200 ">
                 <div className="text-center md:text-left">
                   <h3 className="text-lg sm:text-base md:text-xl font-semibold">
                     {user.username}
@@ -63,6 +91,19 @@ export default function ProfilePage() {
                   <h6 className="text-sm md:text-base text-gray-500">
                     Location
                   </h6>
+                  <div className="mt-2 w-full">
+                    <p className="flex flex-wrap text-sm wrap-break-word whitespace-normal">
+                      {displayText}
+                    </p>
+                    {isLong && (
+                      <button
+                        onClick={() => setExpanded(!expanded)}
+                        className="text-blue-500 block hover:underline text-sm mt-1"
+                      >
+                        {expanded ? "moins" : "plus"}
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="gap-5 flex">
@@ -75,9 +116,7 @@ export default function ProfilePage() {
                   </Button>
                 </div>
               </div>
-              <div
-                className="w-full md:w-1/3 flex  md:flex-row justify-center items-center md:items-end gap-6 md:gap-10 px-6 md:px-10 border-t-2 md:border-t-0 md:border-l-2 border-slate-200"
-              >
+              <div className="w-full md:w-1/3 flex  md:flex-row justify-center items-center md:items-end gap-6 md:gap-10 px-6 md:px-10 border-t-2 md:border-t-0 md:border-l-2 border-slate-200">
                 <div className="userStats text-center md:text-left">
                   <h5 className="text-base md:text-lg">Followers</h5>
                   <h4 className="text-2xl md:text-3xl font-bold">2454</h4>
@@ -97,24 +136,38 @@ export default function ProfilePage() {
 
         <div className=" gap-2 px-50 h-20 w-full flex flex-col justify-end items-start">
           <div className="flex gap-5">
-            <ButtonMenu onClick={()=>setActiveMenu('Apis')} active={activeMenu=== 'Apis'} name="My Api" />
-            <ButtonMenu onClick={()=>setActiveMenu('Favs')}active={activeMenu==='Favs'} name="My Fav" />
-            <ButtonMenu onClick={()=>setActiveMenu('Girlfriends')}active={activeMenu==='Girlfriends'} name="My Girlfriends" />
+            <ButtonMenu
+              onClick={() => setActiveMenu("Apis")}
+              active={activeMenu === "Apis"}
+              name="My Api"
+            />
+            <ButtonMenu
+              onClick={() => handleClick()}
+              active={activeMenu === "Favs"}
+              name="My Fav"
+            />
+            <ButtonMenu
+              onClick={(() => setActiveMenu("Girlfriends"))}
+              active={activeMenu === "Girlfriends"}
+              name="My Girlfriends"
+            />
           </div>
 
           <hr className="border-2 w-full border-slate-200" />
         </div>
 
         <div className="border border-slate-200 flex w-[80%] ">
-          {user.createdApis?.length > 0 ? (
+          {activeMenu === "Apis" && (
             <div className="w-full flex flex-wrap">
-              <MyApiComponent />
-            </div>
-          ) : (
-            <div className="w-full h-90">
-              <MyApiComponent />
-            </div>
+              {<MyApiComponent />}
+            </div> 
           )}
+            
+          
+          {activeMenu === "Favs" && (
+            <div className="w-full flex flex-wrap">{apiFollow._id}</div> || <div className="w-full flex flex-wrap">pas d'apis follow</div>
+
+) }
         </div>
       </div>
     </div>
