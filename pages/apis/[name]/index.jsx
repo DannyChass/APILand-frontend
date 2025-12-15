@@ -5,12 +5,13 @@ import Button from "../../../components/ui/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark as solidBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as regularBookmark } from "@fortawesome/free-regular-svg-icons";
+import useApiDetails from "./hooks/useApiDetails";
 
 export default function API() {
     const router = useRouter();
     const { name } = router.query;
+    const { apiData, loading, error } = useApiDetails(name);
 
-    const [apiData, setApiData] = useState(null);
     const [isFollowed, setIsFollowed] = useState(false);
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState([]);
@@ -18,27 +19,6 @@ export default function API() {
     const [isOwner, setIsOwner] = useState(false);
     const [news, setNews] = useState([]);
     const [newsLoading, setNewsLoading] = useState(false);
-
-    useEffect(() => {
-        if (!name) return
-
-        async function fetchAPI() {
-            try {
-
-                const res = await fetch(`http://localhost:3000/apis/by-name/${name}`);
-                const data = await res.json();
-
-                if (data.result) {
-                    console.log(data.api);
-                    setApiData(data.api);
-                }
-            } catch (error) {
-                console.error("Error fetching API:", error);
-            }
-        }
-
-        fetchAPI();
-    }, [name]);
 
     useEffect(() => {
         if (apiData?._id) {
@@ -93,7 +73,8 @@ export default function API() {
         }
     }, [apiData]);
 
-    if (!apiData) return <div>Loading...</div>;
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div className="text-red-500">{error}</div>;
 
     async function handleFollow() {
         const token = localStorage.getItem("accessToken");
@@ -368,7 +349,6 @@ export default function API() {
 
                     </div>
 
-                    {/* COMMENTAIRES */}
                     <div className="max-w-5xl w-full mt-10">
                         <h2 className="text-xl font-semibold mb-4">Comments</h2>
 
