@@ -19,6 +19,10 @@ export default function Header() {
   const [user, setUser] = useState(null);
   const [unreadCount, setUnreadCount] = useState(0);
 
+  const [notifAnchorEl, setNotifAnchorEl] = useState(null);
+  const notifOpen = Boolean(notifAnchorEl);
+  const [notifications, setNotifications] = useState([]);
+
   useEffect(() => {
     const stored = localStorage.getItem("user");
     if (stored) {
@@ -37,12 +41,14 @@ export default function Header() {
       .then(res => res.json())
       .then(data => {
         if (data.result) {
+          setNotifications(data.notifications);
           const unread = data.notifications.filter(n => !n.read).length;
           setUnreadCount(unread);
         }
       })
       .catch(err => console.error("Notifications error:", err));
   }, [user]);
+
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -57,6 +63,14 @@ export default function Header() {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleNotifClick = (event) => {
+    setNotifAnchorEl(event.currentTarget);
+  };
+
+  const handleNotifClose = () => {
+    setNotifAnchorEl(null);
   };
 
   const handleClose = () => setAnchorEl(null);
@@ -123,7 +137,10 @@ export default function Header() {
               <Button>Add an API</Button>
             </Link>
             <div className="flex gap-5 border-x-2 border-slate-200 px-5 ">
-              <div className="relative cursor-pointer">
+              <div
+                className="relative cursor-pointer"
+                onClick={handleNotifClick}
+              >
                 <FontAwesomeIcon icon={faBell} color="#050f2a" />
 
                 {unreadCount > 0 && (
@@ -132,6 +149,27 @@ export default function Header() {
                   </span>
                 )}
               </div>
+              <Menu
+                anchorEl={notifAnchorEl}
+                open={notifOpen}
+                onClose={handleNotifClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+                className="mt-2"
+              >
+                {notifications.length === 0 && (
+                  <MenuItem>Aucune notification</MenuItem>
+                )}
+
+                {notifications.map((notif) => (
+                  <MenuItem
+                    key={notif._id}
+                    className={!notif.read ? "bg-slate-100 font-semibold" : ""}
+                  >
+                    {notif.message}
+                  </MenuItem>
+                ))}
+              </Menu>
               <div><FontAwesomeIcon icon={faCommentDots} /></div>
               <div><FontAwesomeIcon icon={faBookmark} /></div>
             </div>
