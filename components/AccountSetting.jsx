@@ -59,7 +59,7 @@ const deletedProfile = async () => {
   }
 }
 
-  const updateProfile = async () => {
+  const updateAccount = async () => {
 
   const infos = {email, telephoneNumber, birthDate, gender, country}
     const accessToken = localStorage.getItem("accessToken");
@@ -272,7 +272,7 @@ const deletedProfile = async () => {
 )}
 
       <footer className=" flex h-20 bg-white fixed bottom-0 w-full shadow-[0_-4px_6px_rgba(0,0,0,0.1)] items-center justify-start ">
-        <button onClick={updateProfile} className="flex items-center rounded-lg p-2 h-10 -py bg-slate-200 gap-5 ml-45 cursor-pointer hover:bg-slate-300">
+        <button onClick={updateAccount} className="flex items-center rounded-lg p-2 h-10 -py bg-slate-200 gap-5 ml-45 cursor-pointer hover:bg-slate-300">
           Enregistrer
         </button>
         
