@@ -7,6 +7,7 @@ import { faBookmark as solidBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as regularBookmark } from "@fortawesome/free-regular-svg-icons";
 import useApiDetails from "./hooks/useApiDetails";
 import useFollowApi from "./hooks/useFollowApi";
+import ApiTabs from "../../../components/ui/ApiTabs";
 
 export default function API() {
     const router = useRouter();
@@ -179,51 +180,7 @@ export default function API() {
                         </a>
                     </div>
 
-                    <div className="mt-10">
-                        <div className="flex gap-6">
-                            <button
-                                onClick={() => setActiveTab("description")}
-                                className={`pb-2 border-b-2 ${activeTab === "description"
-                                    ? "border-purple-500 font-semibold"
-                                    : "border-transparent text-gray-500"
-                                    }`}
-                            >
-                                Description
-                            </button>
-
-                            <button
-                                onClick={() => setActiveTab("example")}
-                                className={`pb-2 border-b-2 ${activeTab === "example"
-                                    ? "border-purple-500 font-semibold"
-                                    : "border-transparent text-gray-500"
-                                    }`}
-                            >
-                                Exemple
-                            </button>
-
-                            <button
-                                onClick={() => setActiveTab("test")}
-                                className={`pb-2 border-b-2 ${activeTab === "test"
-                                    ? "border-purple-500 font-semibold"
-                                    : "border-transparent text-gray-500"
-                                    }`}
-                            >
-                                Test
-                            </button>
-
-                            <button
-                                onClick={() => setActiveTab("news")}
-                                className={`pb-2 border-b-2 ${activeTab === "news"
-                                    ? "border-purple-500 font-semibold"
-                                    : "border-transparent text-gray-500"
-                                    }`}
-                            >
-                                News
-                            </button>
-                        </div>
-
-                        <hr className="border-slate-200 mt-2" />
-                    </div>
+                    <ApiTabs activeTab={activeTab} onChange={setActiveTab} />
 
                     <div className="max-w-5xl w-full bg-white rounded-xl shadow p-10 mt-6 min-h-[250px]">
 
