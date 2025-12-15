@@ -10,20 +10,10 @@ function ApiCards({ apiName, image, theme, price, author, ratingValue,}) {
 
 
     return (
-<<<<<<< HEAD
-        <div className='w-44 m-4 rounded-xs overflow-hidden bg-[#050F2A] text-white shadow-lg '>
-            <div className='relative h-28 w-full'>
-                <Image src={image || '/noImage.jpg'} alt='image' layout='fill' objectFit='cover' />
-            </div>
-            <div className='flex flex-col h-52 p-3 justify-between'>
-                <div id='title' className='grow-0 shrink-0'>
-                    <p className='font-semibold text-xl wrap-break-word line-clamp-2'>{apiName || 'API Name (Défaut)'}</p>
-=======
         <Link href={apiDetailUrl}>
             <div className='w-44 m-4 rounded-xs overflow-hidden bg-[#050F2A] text-white shadow-lg '>
                 <div className='relative h-28 w-full'>
                     <Image src={image || '/noImage.jpg'} alt='image' layout='fill' objectFit='cover' />
->>>>>>> 1ecf433c355cf5e2283a457ca5358024a386f3f3
                 </div>
                 <div className='flex flex-col h-52 p-3 justify-between'>
                     <div id='title' className='flex-grow-0 flex-shrink-0'>
