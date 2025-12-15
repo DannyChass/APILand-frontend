@@ -46,5 +46,5 @@ export default function MyApiComponent() {
     myApis = <p>Pas d'Apis crées</p>
   }
 
-  return <div className=" w-full flex bg-sky-200 flex-wrap justify-start">{myApis}</div>;
+  return <div className=" w-full flex  flex-wrap justify-start">{myApis}</div>;
 }

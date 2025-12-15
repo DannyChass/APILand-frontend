@@ -1,180 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import InputText from "../components/ui/InputText";
 import Button from "../components/ui/Button";
+import MyApiComponent from "../components/MyApi";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUpload, faAdd } from "@fortawesome/free-solid-svg-icons";
 
 export default function AddAPI() {
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [officialLink, setOfficialLink] = useState("");
-    const [docLink, setDocLink] = useState("");
-    const [example, setExample] = useState([]);
-    const [tags, setTags] = useState([]);
-    const [newTag, setNewTag] = useState("");
+  const [user, setUser] = useState(null);
 
-    const handleAddTag = () => {
-        if (newTag.trim() !== "") {
-            setTags([...tags, newTag]);
-            setNewTag("");
-        }
-    }
+  
 
-    const handleSubmit = async () => {
-        const apiData = {
-            name,
-            description,
-            officialLink,
-            documentationLink: docLink,
-            category: "",
-            image: null,
-            tags: tags
-        };
+  useEffect(() => {
+    (async () => {
+      const accessToken = localStorage.getItem("accessToken");
 
-        const accessToken = sessionStorage.getItem("accessToken");
+      const response = await fetch("http://localhost:3000/users/me", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const data = await response.json();
+      setUser(data.user);
+    })();
+  }, []);
 
-        try {
-            let response = await fetch("http://localhost:3000/apis/create", {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + accessToken,
-                },
-                body: JSON.stringify(apiData),
-            });
+useEffect(() => {
+    console.log(user);
+  }, [user]);
 
-            let data = await response.json();
-
-            if (data.error === "Invalid or expired access token") {
-                console.log("Access token expired, refreshing...");
-
-                const refresh = await fetch("http://localhost:3000/users/refresh", {
-                    method: "POST",
-                    credentials: "include",
-                });
-
-                const refreshData = await refresh.json();
-
-                console.log("REFRESH DATA:", refreshData);
-
-                if (!refreshData.result) {
-                    alert("Session expired, please log in again");
-                    return;
-                }
-
-                sessionStorage.setItem("accessToken", refreshData.accessToken);
-
-                response = await fetch("http://localhost:3000/apis/create", {
-                    method: "POST",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer " + refreshData.accessToken,
-                    },
-                    body: JSON.stringify(apiData),
-                });
-
-                data = await response.json();
-            }
-
-            if (data.result) {
-                alert("API added successfully!");
-            } else {
-                alert("Error: " + data.error);
-            }
-
-        } catch (error) {
-            console.error("Fetch error:", error);
-        }
-    };
-
-    return (
-        <div className="min-h-screen bg-[#EAF7FF]">
-            <Header />
-
-            <div className="w-[80%] flex justify-between">
-                <div className="w-[300px] h-[300px] bg-stone-200 rounded-x1 flex items-center justify-center">
-                    <img src="" className="h-16 opacity-60"></img>
-                </div>
-
-                <div className="flex flex-col w-[50%] gap-4">
-
-                    <InputText
-                        Type="text"
-                        Name="apiName"
-                        placeHolder="Add name"
-                        classname="h-10 border-gray-300 rounded-md pl-3"
-                        onChange={(e) => setName(e.target.value)}
-                    />
-
-                    <textarea
-                        placeholder="Add description"
-                        className="bg-white h-[140px] border-gray-300 rounded-md p-3"
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-
-                    <div className="flex gap-5">
-                        <InputText
-                            Type="text"
-                            Name="officialLink"
-                            placeHolder="Ajouter lien officiel"
-                            className="w-[50%]"
-                            onChange={(e) => setOfficialLink(e.target.value)}
-                        />
-
-                        <InputText
-                            Type="text"
-                            Name="docLink"
-                            placeHolder="Ajouter lien documentation"
-                            classname="w-[50%]"
-                            onChange={(e) => setDocLink(e.target.value)}
-                        />
-                    </div>
-                </div>
-            </div>
-
-            <div className="w-[80%] mt-10">
-                <textarea
-                    placeholder="Add example"
-                    className="w-full bg-white h-[200px] rounded-xl border border-gray-300 shadow-md p-4"
-                    onChange={(e) => setExample(e.target.value)}
-                />
-            </div>
-
-            <div className="w-[80%] mt-10">
-                <div className="flex gap-5 items-center">
-                    <InputText
-                        Type="text"
-                        placeHolder="New tag"
-                        classname="w-[200px]"
-                        onChange={(e) => setNewTag(e.target.value)} />
-                </div>
-
-                <Button
-                    className="bg-[#B8A9FF] text-white px-6 py-2 rounded-md hover:bg-[#9d90de]"
-                    onClick={handleAddTag}
-                >
-                    Add tag
-                </Button>
-
-                <div className="flex gap-4 mt-6">
-                    {tags.map((tag, index) => (
-                        <div key={index} className="px-5 py-2 bg-[#F5F0FF] text-stone-500 rounded-md shadow">
-                            {tag}
-                        </div>
-                    ))}
-                </div>
-
-                <div className="w-[80%] mt-16">
-                    <Button
-                        className="bg-[#B8A9FF] text-white px-10 py-3 rounded-md hover:bg-[#9d90de]"
-                        onClick={handleSubmit}
-                    >
-                        Add
-                    </Button>
-
-                </div>
-            </div>
+  return (
+    <div>
+        <Header />
+        <div className="h-30 border-b-2 border-slate-300 flex justify-start items-end mx-20 gap-10 px-20 py-5">
+            <button className=" flex gap-2 items-center px-8 py-3 rounded-lg bg-[#B8A9FF] text-white font-bold cursor-pointer hover:bg-[#9d89ff]"><FontAwesomeIcon icon={faAdd}/>Add an Api</button>
+            <p className="text-lg font-normal text-slate-600">nombres d'API publiées : <span className="font-bold text-[#B8A9FF]">{user?.createdApis.length}</span></p>
         </div>
-    );
+
+        <div>
+            {user?.createdApis.length > 0 && (
+                <div>
+                    <MyApiComponent />
+                </div>
+                )}
+        </div>
+    </div>
+  )
 }
