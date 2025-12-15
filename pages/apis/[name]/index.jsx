@@ -25,7 +25,7 @@ export default function API() {
         async function fetchAPI() {
             try {
 
-                const res = await fetch(`http://localhost:3000/apis/${name}`);
+                const res = await fetch(`http://localhost:3000/apis/by-name/${name}`);
                 const data = await res.json();
 
                 if (data.result) {

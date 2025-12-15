@@ -17,6 +17,11 @@ export default function Header() {
   const open = Boolean(anchorEl);
 
   const [user, setUser] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  const [notifAnchorEl, setNotifAnchorEl] = useState(null);
+  const notifOpen = Boolean(notifAnchorEl);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
@@ -24,6 +29,26 @@ export default function Header() {
       setUser(JSON.parse(stored));
     }
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+
+    fetch("http://localhost:3000/notifications", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.result) {
+          setNotifications(data.notifications);
+          const unread = data.notifications.filter(n => !n.read).length;
+          setUnreadCount(unread);
+        }
+      })
+      .catch(err => console.error("Notifications error:", err));
+  }, [user]);
+
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -38,6 +63,14 @@ export default function Header() {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleNotifClick = (event) => {
+    setNotifAnchorEl(event.currentTarget);
+  };
+
+  const handleNotifClose = () => {
+    setNotifAnchorEl(null);
   };
 
   const handleClose = () => setAnchorEl(null);
@@ -72,13 +105,12 @@ export default function Header() {
           <MenuItem value="Docs">Docs</MenuItem>
           <MenuItem value="community">Community</MenuItem>
         </Menu>
-        <button className="flex  gap-3 pl-2 pr-2 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer" id="apiMenu"
-          aria-controls={open ? 'basic-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
-          onClick={handleClick}>
-          News <FontAwesomeIcon icon={faAngleDown} color="#90a1b9" />
-        </button>
+        <Link
+          href="/news"
+          className="flex gap-3 pl-2 pr-2 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer"
+        >
+          News <FontAwesomeIcon icon={faNewspaper} color="#90a1b9" />
+        </Link>
         <Menu
           slot={{ transition: Fade }}
           anchorEl={anchorEl}
@@ -105,13 +137,43 @@ export default function Header() {
               <Button>Add an API</Button>
             </Link>
             <div className="flex gap-5 border-x-2 border-slate-200 px-5 ">
-              <div ><FontAwesomeIcon icon={faBell} color="#050f2a"/></div>
-            <div><FontAwesomeIcon icon={faCommentDots}/></div>
-            <div><FontAwesomeIcon icon={faBookmark}/></div>
+              <div
+                className="relative cursor-pointer"
+                onClick={handleNotifClick}
+              >
+                <FontAwesomeIcon icon={faBell} color="#050f2a" />
+
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] min-w-[16px] h-[16px] flex items-center justify-center rounded-full px-1">
+                    {unreadCount}
+                  </span>
+                )}
+              </div>
+              <Menu
+                anchorEl={notifAnchorEl}
+                open={notifOpen}
+                onClose={handleNotifClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+                className="mt-2"
+              >
+                {notifications.length === 0 && (
+                  <MenuItem>Aucune notification</MenuItem>
+                )}
+
+                {notifications.map((notif) => (
+                  <MenuItem
+                    key={notif._id}
+                    className={!notif.read ? "bg-slate-100 font-semibold" : ""}
+                  >
+                    {notif.message}
+                  </MenuItem>
+                ))}
+              </Menu>
+              <div><FontAwesomeIcon icon={faCommentDots} /></div>
+              <div><FontAwesomeIcon icon={faBookmark} /></div>
             </div>
-            
-            
-            
+
             <UserHeader />
           </>
         ) : (
