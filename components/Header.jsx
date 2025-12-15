@@ -17,6 +17,7 @@ export default function Header() {
   const open = Boolean(anchorEl);
 
   const [user, setUser] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
@@ -24,6 +25,24 @@ export default function Header() {
       setUser(JSON.parse(stored));
     }
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+
+    fetch("http://localhost:3000/notifications", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.result) {
+          const unread = data.notifications.filter(n => !n.read).length;
+          setUnreadCount(unread);
+        }
+      })
+      .catch(err => console.error("Notifications error:", err));
+  }, [user]);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -104,12 +123,18 @@ export default function Header() {
               <Button>Add an API</Button>
             </Link>
             <div className="flex gap-5 border-x-2 border-slate-200 px-5 ">
-              <div ><FontAwesomeIcon icon={faBell} color="#050f2a" /></div>
+              <div className="relative cursor-pointer">
+                <FontAwesomeIcon icon={faBell} color="#050f2a" />
+
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] min-w-[16px] h-[16px] flex items-center justify-center rounded-full px-1">
+                    {unreadCount}
+                  </span>
+                )}
+              </div>
               <div><FontAwesomeIcon icon={faCommentDots} /></div>
               <div><FontAwesomeIcon icon={faBookmark} /></div>
             </div>
-
-
 
             <UserHeader />
           </>
