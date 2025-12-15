@@ -6,13 +6,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark as solidBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as regularBookmark } from "@fortawesome/free-regular-svg-icons";
 import useApiDetails from "./hooks/useApiDetails";
+import useFollowApi from "./hooks/useFollowApi";
 
 export default function API() {
     const router = useRouter();
     const { name } = router.query;
     const { apiData, loading, error } = useApiDetails(name);
+    const { isFollowed, toggleFollow } = useFollowApi(apiData?._id);
 
-    const [isFollowed, setIsFollowed] = useState(false);
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState([]);
     const [activeTab, setActiveTab] = useState("description");
@@ -24,26 +25,6 @@ export default function API() {
         if (apiData?._id) {
             fetchComments();
         }
-    }, [apiData]);
-
-    useEffect(() => {
-        if (!apiData?._id) return;
-
-        async function checkFollow() {
-            const token = localStorage.getItem("accessToken");
-            if (!token) return;
-
-            const res = await fetch(`http://localhost:3000/apis/follow/${apiData._id}/status`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-
-            const data = await res.json();
-            if (data.result) {
-                setIsFollowed(data.isFollowed);
-            }
-        }
-
-        checkFollow();
     }, [apiData]);
 
     useEffect(() => {
@@ -75,34 +56,6 @@ export default function API() {
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div className="text-red-500">{error}</div>;
-
-    async function handleFollow() {
-        const token = localStorage.getItem("accessToken");
-        if (!token) {
-            alert("Vous devez être connecté");
-            return;
-        }
-
-        try {
-            const res = await fetch(`http://localhost:3000/apis/follow/${apiData._id}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                }
-            });
-
-            const data = await res.json();
-
-            if (data.result) {
-                setIsFollowed(data.isFollowed);
-            } else {
-                alert(data.error);
-            }
-        } catch (error) {
-            console.error("Erreur follow", error);
-        }
-    }
 
     async function handleAddComment() {
         const token = localStorage.getItem("accessToken");
@@ -198,7 +151,7 @@ export default function API() {
                             <FontAwesomeIcon
                                 icon={isFollowed ? solidBookmark : regularBookmark}
                                 className="text-purple-500 text-2xl cursor-pointer"
-                                onClick={handleFollow}
+                                onClick={toggleFollow}
                             />
                         </div>
 
