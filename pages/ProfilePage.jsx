@@ -115,7 +115,7 @@ export default function ProfilePage() {
             <div className="flex flex-col h-64 sm:mt-3 md:flex-row justify-center mt-6 items-start md:items-start gap-3 md:gap-10">
               <div className=" w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full overflow-hidden flex ">
                 <img
-                  src="./homme.png"
+                  src={user.image}
                   className="h-full w-full object-cover rounded-full"
                   alt="avatar"
                 />

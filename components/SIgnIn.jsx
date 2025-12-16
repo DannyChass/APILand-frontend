@@ -3,6 +3,9 @@ import Button from "./ui/Button";
 import InputText from "./ui/InputText";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { GoogleOAuthProvider,GoogleLogin } from "@react-oauth/google";
+import GoogleLoginButton from "./ui/GoogleLoginButton";
+
 
 export default function SignIn() {
   const router = useRouter();
@@ -10,6 +13,8 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+
+ 
 
   const handleSignIn = async () => {
     setErrorMsg("");
@@ -35,6 +40,7 @@ export default function SignIn() {
   }
 
   return (
+    <GoogleOAuthProvider clientId='345080811696-7fmah26tmhv08u1qt4sereefmp6rr2pc.apps.googleusercontent.com'>
     <div className="container">
 
       <div className="w-[50%] justify-end flex flex-col  h-full p-6">
@@ -97,6 +103,8 @@ export default function SignIn() {
             Vous n'avez pas de compte ?
           </Link>
         <div className="w-full h-[70%] flex flex-col gap-5 justify-center items-center ">
+
+          <GoogleLoginButton/>
           <Button className="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-300 h-10">
             {" "}
             Connectez-vous avec <img className="h-6" src="../google.png" />{" "}
@@ -110,5 +118,6 @@ export default function SignIn() {
 
       </div>
     </div>
+    </GoogleOAuthProvider>
   );
 }

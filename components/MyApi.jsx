@@ -33,9 +33,11 @@ export default function MyApiComponent() {
   let myApis;
   if (apis.length > 0) {
     myApis = apis.map((data, i) => {
+      console.log(data)
       return (
         <ApiCards
           key={i}
+          image={data.image}
           apiName={data.name}
           theme={data.category}
           price={data.price}
