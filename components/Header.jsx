@@ -51,16 +51,35 @@ export default function Header() {
   }, [user]);
 
   const deleteNotification = async (id) => {
-    await fetch(`http://localhost:3000/notification/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    });
+    try {
+      const res = await fetch(
+        `http://localhost:3000/notifications/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
 
-    setNotifications((prev) => prev.filter((n) => n._id !== id));
-    setUnreadCount((prev) => Math.max(prev - 1, 0));
-  }
+      if (!res.ok) {
+        console.error("HTTP error:", res.status);
+        return;
+      }
+
+      const data = await res.json();
+
+      if (!data.result) {
+        console.error("Delete failed:", data.error);
+        return;
+      }
+
+      setNotifications((prev) => prev.filter((n) => n._id !== id));
+      setUnreadCount((prev) => Math.max(prev - 1, 0));
+    } catch (err) {
+      console.error("Delete notification error:", err);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -176,10 +195,10 @@ export default function Header() {
                 {notifications.map((notif) => (
                   <MenuItem
                     key={notif._id}
-                    className={`flex justify-between gap-4 ${!notif.read ? "bg-slate-100 font-semibold" : ""
+                    className={`flex justify-between items-center gap-4 ${!notif.read ? "bg-slate-100 font-semibold" : ""
                       }`}
                   >
-                    <span>{notif.message}</span>
+                    <span className="text-sm">{notif.message}</span>
 
                     <button
                       onClick={(e) => {
@@ -192,6 +211,7 @@ export default function Header() {
                       <FontAwesomeIcon icon={faXmark} size="sm" />
                     </button>
                   </MenuItem>
+
                 ))}
               </Menu>
               <div><FontAwesomeIcon icon={faCommentDots} /></div>
