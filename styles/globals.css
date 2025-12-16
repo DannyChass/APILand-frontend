@@ -57,7 +57,7 @@ h3{
 
 
 .inputSetting{
-  @apply  w-100 border rounded-md px-5 py-1 border-slate-400 
+  @apply  w-100 border rounded-md px-5 py-1 bg-white border-slate-300 
 }
 
 .label {
