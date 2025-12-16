@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faBell, faBookmark, faCommentDots, faNewspaper } from '@fortawesome/free-solid-svg-icons'
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import Fade from "@mui/material/Fade";
 
 
@@ -49,6 +50,17 @@ export default function Header() {
       .catch(err => console.error("Notifications error:", err));
   }, [user]);
 
+  const deleteNotification = async (id) => {
+    await fetch(`http://localhost:3000/notification/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+
+    setNotifications((prev) => prev.filter((n) => n._id !== id));
+    setUnreadCount((prev) => Math.max(prev - 1, 0));
+  }
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -164,9 +176,21 @@ export default function Header() {
                 {notifications.map((notif) => (
                   <MenuItem
                     key={notif._id}
-                    className={!notif.read ? "bg-slate-100 font-semibold" : ""}
+                    className={`flex justify-between gap-4 ${!notif.read ? "bg-slate-100 font-semibold" : ""
+                      }`}
                   >
-                    {notif.message}
+                    <span>{notif.message}</span>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteNotification(notif._id);
+                      }}
+                      className="text-slate-400 hover:text-red-500 transition"
+                      title="Supprimer la notification"
+                    >
+                      <FontAwesomeIcon icon={faXmark} size="sm" />
+                    </button>
                   </MenuItem>
                 ))}
               </Menu>
