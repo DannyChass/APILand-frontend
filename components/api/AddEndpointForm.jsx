@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "../ui/Button";
 
-export default function AddEndpointForm({ apiId }) {
+export default function AddEndpointForm({ apiId, onCreated }) {
     const [method, setMethod] = useState("GET");
     const [path, setPath] = useState("");
     const [status, setStatus] = useState(200);
@@ -57,6 +57,7 @@ export default function AddEndpointForm({ apiId }) {
                 setPath("");
                 setJsonExample("");
                 setSuccess(true);
+                onCreated?.();
             }
         } catch {
             setError("Server error");
@@ -68,7 +69,7 @@ export default function AddEndpointForm({ apiId }) {
     return (
         <form
             onSubmit={handleSubmit}
-            className="w-full sticky top-24 border rounded-xl p-6 bg-gray-50 shadow flex flex-col gap-4"
+            className="w-full border rounded-xl p-6 bg-gray-50 shadow flex flex-col gap-4"
         >
             <h3 className="text-lg font-semibold">
                 Add API endpoint

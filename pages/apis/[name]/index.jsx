@@ -8,6 +8,7 @@ import ApiTabs from "../../../components/ui/ApiTabs";
 import CommentsSection from "../../../components/api/CommentsSection";
 import ApiHeader from "../../../components/api/ApiHeader";
 import AddEndpointForm from "../../../components/api/AddEndpointForm.jsx";
+import ApiEndpointsList from "../../../components/api/ApiEndpointList.jsx";
 
 export default function API() {
     const router = useRouter();
@@ -19,6 +20,8 @@ export default function API() {
     const [isOwner, setIsOwner] = useState(false);
     const [news, setNews] = useState([]);
     const [newsLoading, setNewsLoading] = useState(false);
+
+    const [endpointRefreshKey, setEndpointRefreshKey] = useState(0);
 
     useEffect(() => {
         async function checkOwnership() {
@@ -196,15 +199,21 @@ export default function API() {
                         <CommentsSection apiId={apiData._id} />
                     </div>
 
-                    {isOwner && (
-                        <>
-                            <div className="w-px bg-gray-200" />
+                    <div className="flex-1">
+                        {isOwner && (
+                            <AddEndpointForm
+                                apiId={apiData._id}
+                                onCreated={() =>
+                                    setEndpointRefreshKey((k) => k + 1)
+                                }
+                            />
+                        )}
 
-                            <div className="flex-1">
-                                <AddEndpointForm apiId={apiData._id} />
-                            </div>
-                        </>
-                    )}
+                        <ApiEndpointsList
+                            apiId={apiData._id}
+                            refreshKey={endpointRefreshKey}
+                        />
+                    </div>
                 </div>
             </div>
         </>
