@@ -93,7 +93,7 @@ export default function AddEndpointForm({ apiId }) {
                 <label className="text-sm font-medium">Path</label>
                 <input
                     type="text"
-                    placeholder="/weather"
+                    placeholder=""
                     value={path}
                     onChange={(e) => setPath(e.target.value)}
                     className="border rounded px-3 py-2 w-full"
@@ -116,7 +116,7 @@ export default function AddEndpointForm({ apiId }) {
                     Response example (JSON)
                 </label>
                 <textarea
-                    placeholder={`{\n  "temp": 18,\n  "humidity": 70\n}`}
+                    placeholder={""}
                     value={jsonExample}
                     onChange={(e) => setJsonExample(e.target.value)}
                     className="border rounded px-3 py-2 w-full font-mono text-sm"
