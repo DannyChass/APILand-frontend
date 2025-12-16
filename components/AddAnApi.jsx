@@ -17,6 +17,7 @@ export default function AddAnAPI() {
   const [officialLink, setOfficialLink] = useState("");
   const [docLink, setDocLink] = useState("");
   const [example, setExample] = useState([]);
+  const [category, setCategory] = useState("")
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
 
@@ -25,6 +26,7 @@ export default function AddAnAPI() {
       setTags([...tags, newTag]);
     }
   };
+  
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
