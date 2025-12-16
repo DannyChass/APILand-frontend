@@ -7,7 +7,7 @@ import * as React from "react";
 import Link from "next/link";
 
 
-function DropDownButton({ title, menu, className, onSelect }) {
+function DropDownButton({ title, menu, className, onSelect, handleSearch }) {
     const [active, setActive] = useState(false);
 
 
@@ -23,6 +23,7 @@ function DropDownButton({ title, menu, className, onSelect }) {
         // 2. Fermeture du menu déroulant
         setActive(false);}
 
+        
         const menuItems = menu.map((item, index) => {
             
             return (
@@ -42,6 +43,8 @@ function DropDownButton({ title, menu, className, onSelect }) {
                 </button>
                 {active && (
                     <div className="absolute left-0 top-full bg-white shadow-lg rounded-[3] z-50">
+                        <input onChange ={(e)=> handleSearch(e.target.value)}>
+                        </input>
                         <ul className="py-2 text-sm text-gray-700">
                             {menuItems}
                         </ul>
