@@ -19,6 +19,8 @@ function ApiSearch() {
     const [resultCount, setResultCount] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
+    const [formatedTagList, setFormatedTagList] = useState([]);
+    const [tagSearchTerm, setTagSearchTerm] = useState('');
 
     useEffect(() => {
         const fetchFilterData = async () => {
@@ -59,7 +61,6 @@ function ApiSearch() {
         if (filters.price) {
             params.append('price', filters.price);
         }
-        console.log(filters)
         if (filters.tag) {
             params.append('tag', filters.tag)
         }
@@ -120,10 +121,13 @@ function ApiSearch() {
         })
     };
 
+
+
+
     const categories = filterData.categories;
     const prices = filterData.prices;
     // Convertir le tableau d'objets tags en tableau de noms pour l'affichage
-    const tags = filterData.tags.map(t => t.name);
+    const tags = filterData.tags.map(t => t.name).filter(t=>t.startsWith(tagSearchTerm));
 
     const handleCategorySelect = (value) => handleFilterChange('category', value);
     const handlePriceSelect = (value) => handleFilterChange('price', value);
@@ -139,6 +143,13 @@ function ApiSearch() {
         return <ThemeButton key={i} theme={data} />;
     });
 
+    const handleTagSearch = ((text) => {
+        if (text.length >= 3) {
+            setTagSearchTerm(text);
+        };
+    })
+
+    
     // const api = apiData.map(data => {
     //     return <ApiCard apiName={data.apiName} theme={data.theme} price={data.price} author={data.author} ratingValue={data.ratingValue}></ApiCard>
     // });
@@ -171,7 +182,7 @@ function ApiSearch() {
                 <div id='dropDownContainer' className='bg-[#050F2A] h-10 flex'>
                     <div id='dropDownButton' className='flex h-10 ml-12'>
                         <DropDownButton title='Category' menu={categories} className='dropDownButtonWhite' onSelect={handleCategorySelect}></DropDownButton>
-                        <DropDownButton title='Tag' menu={tags} className='dropDownButtonWhite' onSelect={handleTagSelect}></DropDownButton>
+                        <DropDownButton title='Tag' menu={tags} handleSearch={handleTagSearch} className='dropDownButtonWhite' onSelect={handleTagSelect}></DropDownButton>
                         <DropDownButton title='Price' menu={prices} className='dropDownButtonWhite' onSelect={handlePriceSelect}></DropDownButton>
                         <DropDownButton title='Follower' menu={follower} className='dropDownButtonWhite'></DropDownButton>
                     </div>
