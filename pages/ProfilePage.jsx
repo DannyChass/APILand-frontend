@@ -186,11 +186,6 @@ export default function ProfilePage() {
               active={activeMenu === "Favs"}
               name="My Fav"
             />
-            <ButtonMenu
-              onClick={() => setActiveMenu("Girlfriends")}
-              active={activeMenu === "Girlfriends"}
-              name="My Girlfriends"
-            />
           </div>
 
           <hr className="border-2 w-full border-slate-200" />
