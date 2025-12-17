@@ -14,7 +14,11 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
- 
+ const handleLogin = () => {
+    // Redirige vers ton backend qui lui-même redirige vers GitHub
+    window.location.href = "http://localhost:3000/users/github";
+  };
+
 
   const handleSignIn = async () => {
     setErrorMsg("");
@@ -105,13 +109,9 @@ export default function SignIn() {
         <div className="w-full h-[70%] flex flex-col gap-5 justify-center items-center ">
 
           <GoogleLoginButton/>
-          <Button className="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-300 h-10">
+          <Button onClick={handleLogin} className="loginButton">
             {" "}
-            Connectez-vous avec <img className="h-6" src="../google.png" />{" "}
-          </Button>
-          <Button className="bg-white w-full justify-center rounded-[3] items-center gap-3 flex text-stone-300 h-10">
-            {" "}
-            Connectez-vous avec <img className="h-6" src="../github.png" />{" "}
+            <img className="h-5" src="../github.png" />Se connecter avec Github <div></div> {" "}
           </Button>
         </div>
         </div>
