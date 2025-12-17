@@ -128,9 +128,7 @@ export default function API() {
                                             <Button
                                                 className="px-6 py-2 bg-purple-300 hover:bg-purple-400 transition rounded-lg"
                                                 onClick={() =>
-                                                    router.push(
-                                                        `/apis/${apiData.name}/news/AddNew`
-                                                    )
+                                                    router.push(`/apis/${apiData.name}/news/AddNew`)
                                                 }
                                             >
                                                 Add news

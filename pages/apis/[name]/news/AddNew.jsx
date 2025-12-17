@@ -7,58 +7,75 @@ export default function AddNews() {
     const router = useRouter();
     const { name } = router.query;
 
-    const [apiData, setApidData] = useState(null);
+    const [apiData, setApiData] = useState(null);
+    const [checking, setChecking] = useState(true);
+    const [loading, setLoading] = useState(false);
+
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [image, setImage] = useState("");
 
-    const [loading, setLoading] = useState(false);
-
     useEffect(() => {
-        if (!name) return;
+        if (!router.isReady || !name) return;
 
         async function fetchAPI() {
-            const res = await fetch(`http://localhost:3000/apis/${name}`);
-            const data = await res.json();
+            try {
+                const res = await fetch(`http://localhost:3000/apis/by-name/${encodeURIComponent(name)}`);
+                const data = await res.json();
 
-            if (data.result) {
-                setApidData(data.api);
-            } else {
-                router.push("/");
+                if (!data.result) {
+                    router.replace("/");
+                    return;
+                }
+
+                setApiData(data.api);
+            } catch (err) {
+                console.error("Fetch API error:", err);
+                router.replace("/");
+            } finally {
+                setChecking(false);
             }
         }
 
         fetchAPI();
-
-    }, [name]);
+    }, [router.isReady, name]);
 
     useEffect(() => {
-        async function checkOwnerShip() {
+        if (!apiData) return;
+
+        async function checkOwnership() {
             const token = localStorage.getItem("accessToken");
-            if (!token || !apiData) return
+            if (!token) {
+                router.replace(`/apis/${name}`);
+                return;
+            }
 
-            const res = await fetch("http://localhost:3000/users/me", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
+            try {
+                const res = await fetch("http://localhost:3000/users/me", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
 
-            const data = await res.json();
+                const data = await res.json();
 
-            if (!data.result || data.user._id !== apiData.user._id) {
-                router.push(`/apis/${name}`);
+                if (!data.result || data.user._id !== apiData.user._id) {
+                    router.replace(`/apis/${name}`);
+                }
+            } catch (err) {
+                console.error("Ownership check error:", err);
+                router.replace(`/apis/${name}`);
             }
         }
 
-        checkOwnerShip();
+        checkOwnership();
     }, [apiData]);
-
 
     async function handleSubmit(e) {
         e.preventDefault();
 
         if (!title || !content) {
-            alert("Title and content required");
+            alert("Title and content are required");
             return;
         }
 
@@ -81,30 +98,29 @@ export default function AddNews() {
                     title,
                     content,
                     image,
-                    apiId: apiData._id
+                    apiId: apiData._id,
                 }),
             });
 
             const data = await res.json();
 
-            if (data.result) {
-                alert("News publiée avec succès !");
-                router.push(`/apis/${name}?tab=news`);
-            } else {
-                alert(data.error || "Erreur lors de la publication de la news");
-                alert(data.error);
+            if (!data.result) {
+                alert(data.error || "Erreur lors de la publication");
+                return;
             }
 
-        } catch (error) {
-            console.error("Create news error :", error);
-            alert("Servor error");
+            router.push(`/apis/${name}?tab=news`);
+        } catch (err) {
+            console.error("Create news error:", err);
+            alert("Server error");
         } finally {
             setLoading(false);
         }
     }
 
-
-    if (!apiData) return <div>Loading...</div>;
+    if (checking || !apiData) {
+        return <div className="p-10 text-center">Loading...</div>;
+    }
 
     return (
         <>
@@ -112,7 +128,8 @@ export default function AddNews() {
 
             <div className="max-w-3xl mx-auto bg-white rounded-xl shadow p-10 mt-10">
                 <h1 className="text-2xl font-bold mb-6">
-                    Add news for <span className="text-purple-500">{apiData.name}</span>
+                    Add news for{" "}
+                    <span className="text-purple-500">{apiData.name}</span>
                 </h1>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-6">
