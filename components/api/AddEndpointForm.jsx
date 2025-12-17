@@ -69,18 +69,18 @@ export default function AddEndpointForm({ apiId, onCreated }) {
     return (
         <form
             onSubmit={handleSubmit}
-            className="w-full border rounded-xl p-6 bg-gray-50 shadow flex flex-col gap-4"
+            className="w-full border border-slate-200 rounded-xl p-6 bg-gray-50 shadow flex flex-col items-center gap-4"
         >
-            <h3 className="text-lg font-semibold">
+            <h3 className="text-lg font-bold text-slate-700">
                 Add API endpoint
             </h3>
 
-            <div>
-                <label className="text-sm font-medium">Method</label>
+            <div className="flex flex-col">
+                <label className="label">Method</label>
                 <select
                     value={method}
                     onChange={(e) => setMethod(e.target.value)}
-                    className="border rounded px-3 py-2 w-full"
+                    className="inputSetting"
                 >
                     <option>GET</option>
                     <option>POST</option>
@@ -90,37 +90,37 @@ export default function AddEndpointForm({ apiId, onCreated }) {
                 </select>
             </div>
 
-            <div>
-                <label className="text-sm font-medium">Path</label>
+            <div className="flex flex-col">
+                <label className="label">Path</label>
                 <input
                     type="text"
-                    placeholder=""
+                    placeholder="http://..."
                     value={path}
                     onChange={(e) => setPath(e.target.value)}
-                    className="border rounded px-3 py-2 w-full"
+                    className="inputSetting"
                     required
                 />
             </div>
 
-            <div>
-                <label className="text-sm font-medium">HTTP status</label>
+            <div className="flex flex-col">
+                <label className="label">HTTP status</label>
                 <input
                     type="number"
                     value={status}
                     onChange={(e) => setStatus(Number(e.target.value))}
-                    className="border rounded px-3 py-2 w-full"
+                    className="inputSetting"
                 />
             </div>
 
-            <div>
-                <label className="text-sm font-medium">
+            <div className="flex flex-col">
+                <label className="label">
                     Response example (JSON)
                 </label>
                 <textarea
                     placeholder={""}
                     value={jsonExample}
                     onChange={(e) => setJsonExample(e.target.value)}
-                    className="border rounded px-3 py-2 w-full font-mono text-sm"
+                    className="inputSetting"
                     rows={6}
                     required
                 />
