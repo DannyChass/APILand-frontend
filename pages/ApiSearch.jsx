@@ -14,12 +14,12 @@ function ApiSearch() {
     const searchTerm = searchParams.get('query');
     console.log("Search Term:", searchTerm);
     const [searchState, setSearchState] = useState(searchTerm || '');
-    const [filters, setFilters] = useState({ category: '', price: '', tagId: '' });
+    const [newSearchState, setNewSearchState] = useState(searchTerm || '')
+    const [filters, setFilters] = useState({ category: '', price: '', tag: '' });
     const [apiCards, setApiCards] = useState([]);
     const [resultCount, setResultCount] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
-    const [formatedTagList, setFormatedTagList] = useState([]);
     const [tagSearchTerm, setTagSearchTerm] = useState('');
 
     useEffect(() => {
@@ -42,6 +42,7 @@ function ApiSearch() {
     }, []);
 
     const ApiSearchResults = async (pageNumber) => {
+        
         const limit = 6;
 
         // --- Construction des Query Parameters ---
@@ -95,15 +96,21 @@ function ApiSearch() {
                     ratingValue={api.ratingValue}
                 />
             )));
+            setNewSearchState(searchState)
         } catch (error) {
             console.error('Error fetching API search results:', error);
         }
     };
 
     useEffect(() => {
-        ApiSearchResults(currentPage)
-    }, [searchState, filters])
+        ApiSearchResults(1)
+    }, [filters])
 
+    useEffect(() => {
+        if(searchState === '') {
+            ApiSearchResults(1)
+        }
+    }, [searchState])
 
 
     const handlePageChange = (event, newPage) => {
@@ -121,22 +128,21 @@ function ApiSearch() {
         })
     };
 
+    const handleSearch = (() => {
+        ApiSearchResults(1)
+
+    })
 
 
-
-    const categories = filterData.categories;
+    const categories = filterData.categories
     const prices = filterData.prices;
     // Convertir le tableau d'objets tags en tableau de noms pour l'affichage
-    const tags = filterData.tags.map(t => t.name).filter(t=>t.startsWith(tagSearchTerm));
+    const tags = filterData.tags.map(t => t.name).filter(t => t.toLocaleLowerCase().startsWith(tagSearchTerm.toLocaleLowerCase()));
 
     const handleCategorySelect = (value) => handleFilterChange('category', value);
     const handlePriceSelect = (value) => handleFilterChange('price', value);
     const handleTagSelect = (value) => handleFilterChange('tag', value);
 
-    const category = ['sport', 'culture', 'weather', 'health']
-    const tag = ['#sport', '#life']
-    const price = ['free', 'paid']
-    const follower = ['matt', 'test']
     const theme = ["Business", "Weather", "Jobs", "Maps"];
 
     const popSearch = theme.map((data, i) => {
@@ -149,7 +155,24 @@ function ApiSearch() {
         };
     })
 
-    
+    const handleDeleteTerm = (() => {
+        setTagSearchTerm('')
+    })
+
+    const handleResetAllFilters = (() => {
+        setFilters({ category: '', price: '', tagId: '' })
+    })
+
+    const resetCategoryFilter = (() => {
+        setFilters({ category: '', price: filters.price, tag: filters.tag })
+    })
+    const resetTagFilter = (() => {
+        setFilters({ category: filters.category, price: filters.price, tag: '' })
+    })
+    const resetPriceFilter = (() => {
+        setFilters({ category: filters.category, price: '', tag: filters.tag })
+    })
+
     // const api = apiData.map(data => {
     //     return <ApiCard apiName={data.apiName} theme={data.theme} price={data.price} author={data.author} ratingValue={data.ratingValue}></ApiCard>
     // });
@@ -160,16 +183,16 @@ function ApiSearch() {
             <main >
                 <div id='search' className='flex h-60 justify-center items-center w-full'>
                     <div className="flex flex-col justify-around gap-5 py-5 bg-[#050F2A] w-[90%] h-[90%]">
-                        {searchState ? <h2 className="text-white text-3xl font-bold ml-6">Results for {searchState} : {resultCount}</h2> : <h2 className="text-white text-3xl font-bold ml-6">Results for all : {resultCount}</h2>}
+                        {searchState ? <h2 className="text-white text-3xl font-bold ml-6">Results for {newSearchState} : {resultCount}</h2> : <h2 className="text-white text-3xl font-bold ml-6">Results for all : {resultCount}</h2>}
                         <div className="bg-white relative justify-between items-center flex w-[90%] ml-6 rounded-xl ">
                             <input
+                                onSearch={(e) => { if (e.target.value === '') console.log('salut') }}
                                 type="search"
                                 placeholder="your search"
-                                className="pl-10 w-[70%] h-11 rounded-l-xl text-slate-700"
-                                value={searchState}
+                                className="pl-10 w-[90%] h-11 rounded-l-xl text-slate-700"
                                 onChange={(e) => setSearchState(e.target.value)}
                             />
-                            <Button classname="h-12 w-40 rounded-xl bg-[#B8A9FF] text-white font-bold shadow hover:bg-[#9d90de] cursor-pointer">
+                            <Button onClick={handleSearch} classname="h-12 w-40 rounded-xl bg-[#B8A9FF] text-white font-bold shadow hover:bg-[#9d90de] cursor-pointer">
                                 Search
                             </Button>
                         </div>
@@ -179,12 +202,30 @@ function ApiSearch() {
                         </div>
                     </div>
                 </div>
-                <div id='dropDownContainer' className='bg-[#050F2A] h-10 flex'>
+                <div id='dropDownContainer' className='bg-[#050F2A] h-10 flex justify-between'>
                     <div id='dropDownButton' className='flex h-10 ml-12'>
-                        <DropDownButton title='Category' menu={categories} className='dropDownButtonWhite' onSelect={handleCategorySelect}></DropDownButton>
-                        <DropDownButton title='Tag' menu={tags} handleSearch={handleTagSearch} className='dropDownButtonWhite' onSelect={handleTagSelect}></DropDownButton>
+                        <DropDownButton title='Category' menu={categories} className='dropDownButtonWhite' onSelect={handleCategorySelect} ></DropDownButton>
+                        <DropDownButton title='Tag' menu={tags} handleSearch={handleTagSearch} handleDelete={handleDeleteTerm} className='dropDownButtonWhite' onSelect={handleTagSelect} searchValue={tagSearchTerm}></DropDownButton>
                         <DropDownButton title='Price' menu={prices} className='dropDownButtonWhite' onSelect={handlePriceSelect}></DropDownButton>
-                        <DropDownButton title='Follower' menu={follower} className='dropDownButtonWhite'></DropDownButton>
+                        <div id='filterContainer' className='flex items-center'>
+                            {(filters.category || filters.price || filters.tag) &&
+                                <p onClick={handleResetAllFilters} className='text-[#9d90de] text-xs w-30 cursor-pointer'>Reset all filters</p>}
+                            {filters.category &&
+                                <div className="bg-[#B8A9FF] text-white text-[10px] px-2 py-1 rounded flex items-center gap-2 m-1">
+                                    {filters.category}
+                                    <span onClick={resetCategoryFilter} className="cursor-pointer font-bold hover:text-[#050F2A]">✕</span>
+                                </div>}
+                            {filters.tag &&
+                                <div className="bg-[#B8A9FF] text-white text-[10px] px-2 py-1 rounded flex items-center gap-2 m-1">
+                                    {filters.tag}
+                                    <span onClick={resetTagFilter} className="cursor-pointer font-bold hover:text-[#050F2A]">✕</span>
+                                </div>}
+                            {filters.price &&
+                                <div className="bg-[#B8A9FF] text-white text-[10px] px-2 py-1 rounded flex items-center gap-2 m-1">
+                                    {filters.price}
+                                    <span onClick={resetPriceFilter} className="cursor-pointer font-bold hover:text-[#050F2A]">✕</span>
+                                </div>}
+                        </div>
                     </div>
                 </div>
                 <div className='flex flex-wrap ml-6'>
