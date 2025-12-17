@@ -98,7 +98,7 @@ export default function Comments({ comment, apiId }) {
             Answer
           </button>
           <div className="flex gap-1 items-center">
-            <span className="text-[#7763da]">(8)</span>
+            <span className="text-[#7763da]">({replies.length})</span>
             {allReply === true ? (
               <FontAwesomeIcon
                 icon={faAngleUp}
