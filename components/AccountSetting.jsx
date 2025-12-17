@@ -1,68 +1,67 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faUpload } from "@fortawesome/free-solid-svg-icons"
 
-export default function AccountSetting() {
-  
-const [showModal, setShowModal] = useState(false);
+export default function AccountSettings() {
+  const [showModal, setShowModal] = useState(false)
 
+  const [user, setUser] = useState({})
 
+  const [email, setEmail] = useState("")
+  const [gender, setGender] = useState("")
+  const [phoneNumber, setPhoneNumber] = useState("")
+  const [birthDate, setBirthDate] = useState("")
+  const [country, setCountry] = useState("")
 
-  const [user, setUser] = useState({});
-  const [email, setEmail] = useState(user.email || "");
-  const [gender, setGender] = useState(user.gender || "");
-  const [telephoneNumber, setTelephoneNumber] = useState(user?.telephoneNumber ||"");
-  const [birthDate, setBirthDate] = useState( user?.birthDate || "");
-  const [country, setCountry] = useState(user?.country || "");
+  /* -------------------- Handlers -------------------- */
 
-  const handleChange = (e) => {
-    setGender(e.target.value);
-  };
+  const handleGenderChange = (e) => {
+    setGender(e.target.value)
+  }
 
   const handleCancel = () => {
-  setEmail(user.email || "");
-  setTelephoneNumber(user.telephoneNumber || "");
-  setBirthDate(user.birthDate || "");
-  setGender(user.gender || "");
-  setCountry(user.country || "");
-};
-
-
-  useEffect(() => {
-  if (user) {
-    setEmail(user.email || "");
-    setGender(user.gender || "");
-    setTelephoneNumber(user.telephoneNumber || "");
-    setBirthDate(user.birthDate || "");
-    setCountry(user.country || "");
+    setEmail(user.email || "")
+    setPhoneNumber(user.telephoneNumber || "")
+    setBirthDate(user.birthDate || "")
+    setGender(user.gender || "")
+    setCountry(user.country || "")
   }
-}, [user]);
 
-const deletedProfile = async () => {
-  const accessToken = localStorage.getItem('accessToken')
-  const response = await fetch('http://localhost:3000/users/me', {
-    method: 'DELETE', 
-    headers: {
-      "Content-Type" : "application/json",
-      "Authorization" : `Bearer ${accessToken}`
+  /* -------------------- API calls -------------------- */
+
+  const deleteAccount = async () => {
+    const accessToken = localStorage.getItem("accessToken")
+
+    const response = await fetch("http://localhost:3000/users/me", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+
+    const data = await response.json()
+
+    if (data) {
+      console.log("Account deleted")
+      localStorage.removeItem("accessToken")
+      localStorage.removeItem("user")
+      window.location.href = "/HomePage"
+    } else {
+      console.error("Account deletion error")
     }
-  })
-  const data = await response.json()
-
-  if(data){
-    console.log('utilisateur supprimé');
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
-    window.location.href = "/HomePage";
-  }else {
-    console.log('erreur de suppression', dataerror)
   }
-}
 
   const updateAccount = async () => {
+    const accessToken = localStorage.getItem("accessToken")
 
-  const infos = {email, telephoneNumber, birthDate, gender, country}
-    const accessToken = localStorage.getItem("accessToken");
+    const payload = {
+      email,
+      telephoneNumber: phoneNumber,
+      birthDate,
+      gender,
+      country,
+    }
 
     const response = await fetch("http://localhost:3000/users/me", {
       method: "PUT",
@@ -70,216 +69,219 @@ const deletedProfile = async () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify(infos)
-    });
-    const data = await response.json();
+      body: JSON.stringify(payload),
+    })
 
-    if(data.result) {
+    const data = await response.json()
+
+    if (data.result) {
       setShowModal(true)
     }
 
-    console.log("reponse du back", data)
-  };
+    console.log("Backend response:", data)
+  }
+
+  /* -------------------- Fetch user -------------------- */
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = localStorage.getItem("accessToken")
 
-    if (accessToken) {
-      (async () => {
-        const response = await fetch("http://localhost:3000/users/me", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
+    if (!accessToken) return
 
-        setUser(data.user);
-      
-      })();
-    }
-  }, []);
+    ;(async () => {
+      const response = await fetch("http://localhost:3000/users/me", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      })
+
+      const data = await response.json()
+      setUser(data.user)
+    })()
+  }, [])
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
+    if (!user) return
 
-  useEffect(() => {}, []);
+    setEmail(user.email || "")
+    setGender(user.gender || "")
+    setPhoneNumber(user.telephoneNumber || "")
+    setBirthDate(user.birthDate || "")
+    setCountry(user.country || "")
+  }, [user])
+
+  /* -------------------- UI -------------------- */
 
   return (
-    <div className="flex flex-col gap-20  w-150 py-20">
+    <div className="flex flex-col gap-20 w-150 py-20">
+      {/* Header */}
       <div className="flex flex-col ml-25">
         <h2 className="text-2xl font-bold text-slate-800">
-          Gestion de votre compte
+          Account Management
         </h2>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Error sed, ex
-          fuga doloribus aliquam, soluta explicabo voluptates temporibus
-          molestiae ullam debitis quis aut tempore eum ipsa eos alias, ipsam
-          sint.
+          Manage your personal information, security settings, and account
+          preferences.
         </p>
       </div>
-      <div className=" flex flex-col w-full gap-5 ml-25    ">
-        <h4 className="text-lg font-bold text-slate-700">Votre compte</h4>
+
+      {/* Account */}
+      <div className="flex flex-col w-full gap-5 ml-25">
+        <h4 className="text-lg font-bold text-slate-700">Your Account</h4>
 
         <div className="divSetting">
-          <label htmlFor="inputUsername" className="label">
-            email
-          </label>
+          <label className="label">Email</label>
           <input
             type="email"
-            placeholder="Email"
-            name="inputUsername"
+            placeholder="Email address"
             className="inputSetting"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
+
         <div className="divSetting">
-          <label htmlFor="inputUsername" className="label">
-            Password
-          </label>
+          <label className="label">Password</label>
           <input
             type="password"
             placeholder="Password"
-            name="inputUsername"
             className="inputSetting"
           />
         </div>
 
-        <div className="flex flex-col w-full gap-5 mt-10 ">
+        {/* Personal info */}
+        <div className="flex flex-col w-full gap-5 mt-10">
           <h4 className="text-lg font-bold text-slate-700">
-            Informations personnelles
+            Personal Information
           </h4>
+
           <div className="divSetting">
-            <label htmlFor="inputUsername" className="label">
-              téléphone
-            </label>
+            <label className="label">Phone number</label>
             <input
               type="text"
-              placeholder="Téléphone por. (optional)"
-              name="inputUsername"
+              placeholder="Phone number (optional)"
               className="inputSetting"
-              value={telephoneNumber}
-              onChange={(e) => setTelephoneNumber(e.target.value)}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
             />
           </div>
+
           <div className="divSetting">
-            <label htmlFor="inputUsername" className="label">
-              Date de Naissance
-            </label>
+            <label className="label">Date of birth</label>
             <input
               type="date"
-              placeholder="Date de naissance (optional)"
-              name="inputUsername"
               className="inputSetting"
               value={birthDate}
               onChange={(e) => setBirthDate(e.target.value)}
             />
           </div>
-          <div className="divSetting">
-            <label htmlFor="" className="label">
-              Identité de genre
-            </label>
-            <div className="flex gap-20">
-              <div className="flex gap-5 items-center">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="homme"
-                  checked={gender === "homme"}
-                  onChange={handleChange}
-                  id=""
-                  className="accent-blue-500 h-5 w-5 border-slate-400"
-                />
-                <p>Homme</p>
-              </div>
 
-              <div className="flex gap-5 items-center">
+          <div className="divSetting">
+            <label className="label">Gender identity</label>
+            <div className="flex gap-20">
+              <label className="flex gap-5 items-center">
                 <input
                   type="radio"
                   name="gender"
-                  value="femme"
-                  checked={gender === "femme"}
-                  onChange={handleChange}
-                  id=""
-                  className="accent-blue-500 h-5 w-5 border-slate-400"
+                  value="male"
+                  checked={gender === "male"}
+                  onChange={handleGenderChange}
+                  className="accent-blue-500 h-5 w-5"
                 />
-                <p>Femme</p>
-              </div>
+                Male
+              </label>
+
+              <label className="flex gap-5 items-center">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  checked={gender === "female"}
+                  onChange={handleGenderChange}
+                  className="accent-blue-500 h-5 w-5"
+                />
+                Female
+              </label>
             </div>
           </div>
+
           <div className="divSetting">
-            <label
-              htmlFor="inputUsername"
-              onChange={(e) => setCountry(e.target.value)}
-              className="label"
-            >
-              Pays/region
-            </label>
+            <label className="label">Country / Region</label>
             <input
               type="text"
-              placeholder="Pays/région"
-              name="inputUsername"
+              placeholder="Country / region"
               className="inputSetting"
-              onChange={(e) => setCountry(e.target.value)}
               value={country}
+              onChange={(e) => setCountry(e.target.value)}
             />
           </div>
         </div>
 
+        {/* Danger zone */}
         <div className="flex items-center gap-10 mt-10">
-          <button className="flex items-center rounded-lg p-2 h-10 cursor-pointer hover:bg-slate-300 bg-slate-200 gap-5">
-            Desactiver le compte
+          <button className="rounded-lg p-2 h-10 bg-slate-200 hover:bg-slate-300">
+            Deactivate account
           </button>
           <div className="w-70">
-            <h4 className="font-bold text-slate-700">Désactiver le compte</h4>
-            <p>
-              Masquez temporairement votre profil, vos Épingles et vos tableaux
-            </p>
+            <h4 className="font-bold text-slate-700">Deactivate account</h4>
+            <p>Temporarily hide your profile and activity.</p>
           </div>
         </div>
+
         <div className="flex items-center gap-10 mt-10">
-          <button onClick={() => deletedProfile()} className="flex items-center rounded-lg p-2 h-10 cursor-pointer hover:bg-slate-300 bg-slate-200 gap-5">
-            Supprimer le compte
+          <button
+            onClick={deleteAccount}
+            className="rounded-lg p-2 h-10 bg-slate-200 hover:bg-slate-300"
+          >
+            Delete account
           </button>
           <div className="w-70">
-            <h4 className="font-bold text-slate-700">Supprimer le compte</h4>
+            <h4 className="font-bold text-slate-700">Delete account</h4>
             <p className="text-sm">
-              Supprimer définitivement vos données et tout ce qui est associé à
-              votre compte
+              Permanently delete your data and everything associated with your
+              account.
             </p>
           </div>
         </div>
       </div>
-      {showModal && (
-  <div className="fixed z-100 inset-0 bg-slate-400/80 flex items-center justify-center">
-    <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-      <h2 className="text-xl font-bold text-green-600 mb-4">
-        ✅ Informations mises à jour
-      </h2>
-      <p className="text-gray-700 mb-6">
-        Vos informations de compte ont bien été modifiées.
-      </p>
-      <button
-        onClick={() => setShowModal(false)}
-        className="px-4 py-2 bg-slate-200  rounded hover:bg-slate-300 cursor-pointer"
-      >
-        Fermer
-      </button>
-    </div>
-  </div>
-)}
 
-      <footer className=" flex h-20 bg-white fixed bottom-0 w-full shadow-[0_-4px_6px_rgba(0,0,0,0.1)] items-center justify-start ">
-        <button onClick={updateAccount} className="flex items-center rounded-lg p-2 h-10 -py bg-slate-200 gap-5 ml-45 cursor-pointer hover:bg-slate-300">
-          Enregistrer
+      {/* Success modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-slate-400/80 flex items-center justify-center">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
+            <h2 className="text-xl font-bold text-green-600 mb-4">
+              ✅ Information updated
+            </h2>
+            <p className="text-gray-700 mb-6">
+              Your account information has been successfully updated.
+            </p>
+            <button
+              onClick={() => setShowModal(false)}
+              className="px-4 py-2 bg-slate-200 rounded hover:bg-slate-300"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Footer */}
+      <footer className="fixed bottom-0 w-full h-20 bg-white shadow-[0_-4px_6px_rgba(0,0,0,0.1)] flex items-center">
+        <button
+          onClick={updateAccount}
+          className="ml-45 rounded-lg p-2 h-10 bg-slate-200 hover:bg-slate-300"
+        >
+          Save changes
         </button>
-        
-        <button onClick={handleCancel} className="flex items-center rounded-lg p-2 h-10 -py bg-slate-200 gap-5 ml-10 cursor-pointer hover:bg-slate-300">
-          annuler
+
+        <button
+          onClick={handleCancel}
+          className="ml-10 rounded-lg p-2 h-10 bg-slate-200 hover:bg-slate-300"
+        >
+          Cancel
         </button>
       </footer>
     </div>
-  );
+  )
 }

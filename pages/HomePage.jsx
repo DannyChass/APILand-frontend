@@ -110,7 +110,7 @@ function Home() {
             </div>
           </div>
           <div className="flex gap-10 justify-center items-center ">
-            <h5 className="text-white font-bold">Recherches populaires:</h5>
+            <h5 className="text-white font-bold">Popular searches:</h5>
             <div className="flex gap-10">{popSearch}</div>
           </div>
         </div>

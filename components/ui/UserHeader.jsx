@@ -53,7 +53,7 @@ export default function UserHeader() {
     <div ref={dropDownRef} className="relative flex text-left  hover:bg-slate-100   ">
       <button onClick={toggleDropdown} className="flex justify-end items-end rounded-[3] border border-slate-200 px-3 py-1 gap-3 cursor-pointer">
         <div className="flex flex-col justify-end items-start text-left px-1">
-          <h6 className="text-[12px] px-1 font-bold text-slate-400 -m-1">Bonjour</h6>
+          <h6 className="text-[12px] px-1 font-bold text-slate-400 -m-1">Good morning</h6>
           <h5 className="text-sm  text-left font-bold text-slate-800">{user?.username} </h5>
         </div>
         <img className="w-10 h-10 rounded-full" src="./homme.png" alt="" />
