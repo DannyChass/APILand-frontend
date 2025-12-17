@@ -192,7 +192,7 @@ function ApiSearch() {
                                 className="pl-10 w-[90%] h-11 rounded-l-xl text-slate-700"
                                 onChange={(e) => setSearchState(e.target.value)}
                             />
-                            <Button onClick={handleSearch} classname="h-12 w-40 rounded-xl bg-[#B8A9FF] text-white font-bold shadow hover:bg-[#9d90de] cursor-pointer">
+                            <Button onClick={handleSearch} className="h-12 w-40 rounded-xl bg-[#B8A9FF] text-white font-bold shadow hover:bg-[#9d90de] cursor-pointer">
                                 Search
                             </Button>
                         </div>
