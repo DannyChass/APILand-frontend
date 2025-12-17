@@ -11,13 +11,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function AddAnAPI() {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [officialLink, setOfficialLink] = useState("");
   const [docLink, setDocLink] = useState("");
   const [example, setExample] = useState([]);
-  const [category, setCategory] = useState("")
+  const [category, setCategory] = useState("Business")
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
 
@@ -42,12 +42,14 @@ export default function AddAnAPI() {
 
   const handleSubmit = async () => {
     const formData = new FormData();
+    if (file && file instanceof File) {
     formData.append("image", file);
+  }
     formData.append("name", name);
     formData.append("description", description);
     formData.append("officialLink", officialLink);
     formData.append("documentationLink", docLink);
-    formData.append("category", "");
+    formData.append("category", category);
     tags.forEach((tag) => formData.append("tags[]", tag));
     // const apiData = {
     //   name,
@@ -129,7 +131,7 @@ export default function AddAnAPI() {
         <div className=" w-full flex gap-20  justify-center">
           <div className="w-70 h-40  gap-4 flex items-center justify-center">
             <img
-              src={file ? URL.createObjectURL(file) : "/homme.png"}
+              src={file ? URL.createObjectURL(file) : "./homme.png"}
               className="h-30 w-30 border "
             ></img>
             <label htmlFor="fileInput"
@@ -209,12 +211,14 @@ export default function AddAnAPI() {
               <select
                 name="category"
                 id="category"
+                value={category}
+                onChange={((e) => setCategory(e.target.value))}
                 className="inputSetting relative z-50"
               >
-                <option value="Business">Business</option>
-                <option value="Fashion">Fashion</option>
-                <option value="Geography">Geography</option>
-                <option value="Movies">Movies</option>
+                <option value="Business" >Business</option>
+                <option value="Fashion" >Fashion</option>
+                <option value="Geography" >Geography</option>
+                <option value="Movies" >Movies</option>
                 <option value="Jobs">Jobs</option>
                 <option value="Security">Security</option>
               </select>
