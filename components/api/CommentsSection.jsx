@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "../ui/Button";
+import Comments from "../ui/Comments";
 
 export default function CommentsSection({ apiId }) {
     const [comment, setComment] = useState("");
@@ -69,6 +70,10 @@ export default function CommentsSection({ apiId }) {
         }
     }
 
+    const showComments = comments.map((data,i) => {
+        <Comments key={i} username={data.author?.username} image={data.author?.image} content={data.author?.content} />
+    })
+
     return (
         <div className="max-w-5xl w-full mt-10">
             <h2 className="text-xl font-semibold mb-4">Comments</h2>
@@ -98,18 +103,7 @@ export default function CommentsSection({ apiId }) {
                 )}
 
                 {comments.map((c) => (
-                    <div key={c._id} className="flex items-start gap-4">
-                        <img
-                            src={c.author?.image || "https://i.pravatar.cc/80"}
-                            className="w-12 h-12 rounded-full"
-                            alt={c.author?.username}
-                        />
-
-                        <div>
-                            <p className="font-semibold">{c.author?.username}</p>
-                            <p className="text-gray-700">{c.content}</p>
-                        </div>
-                    </div>
+                   <Comments key={c._id} comment={c}/>
                 ))}
             </div>
         </div>
