@@ -73,7 +73,7 @@ export default function Comments({ comment, apiId }) {
   return (
     <div
       key={comment._id}
-      className={`flex flex-col justify-between items-start gap-4 py-4 border-y  border-slate-200 ${isReply ? "ml-6 border-l-2 border-y-0 pl-4 py-2  gap-2 text-sm" : 'text-md'}`}
+      className={`flex flex-col justify-between items-start gap-4 py-4 border-y  border-slate-200 ${isReply ? "ml-6 border-l-2 border-y-0 pl-4 py-2  gap-1 text-sm" : 'text-md'}`}
 
     >
       <div className={`flex w-full px-5 justify-between gap-3 ${isReply ? "" : "py-3"}`}>
@@ -84,16 +84,16 @@ export default function Comments({ comment, apiId }) {
             alt={comment.author?.username}
           />
           <div className="w-full">
-            <p className={`font-semibold ${isReply ? "text-xs":""}`}>{comment.author?.username}</p>
-            <p className={`text-gray-700 ${isReply ? "text-xs m-0 p-0":""}`}>{comment.content}</p>
+            <p className={`font-semibold ${isReply ? "text-sm":""}`}>{comment.author?.username}</p>
+            <p className={`text-gray-700 ${isReply ? "text-sm m-0 p-0":""}`}>{comment.content}</p>
           </div>{" "}
         </div>
       </div>
-      <div className={`flex items-center px-5  ${isReply ? "gap-3 text-xs   " : "gap-5"}`}>
+      <div className={`flex items-center px-5  ${isReply ? "gap-3 text-sm   " : "gap-5"}`}>
         <div className={`flex items-center  ${isReply ? "gap-1":"gap-2"}`}>
           <button
             onClick={() => setShowReply(!showReply)}
-            className={`"text-sm text-[#7763da] hover:underline hover:underline-offset-2 hover:font-bold cursor-pointer" ${isReply ? "text-xs" :""}`}
+            className={`"text-sm text-[#7763da] hover:underline hover:underline-offset-2 hover:font-bold cursor-pointer" ${isReply ? "text-sm" :""}`}
           >
             Answer
           </button>
