@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 export default function GoogleLoginButton() {
   const router = useRouter();
 
+  
+
 
   return (
     <GoogleOAuthProvider clientId="345080811696-7fmah26tmhv08u1qt4sereefmp6rr2pc.apps.googleusercontent.com">
@@ -12,7 +14,7 @@ export default function GoogleLoginButton() {
           onSuccess={async (credentialResponse) => {
             console.log("Token Google:", credentialResponse.credential);
 
-            const response = await fetch("http://localhost:3000/auth/google", {
+            const response = await fetch("http://localhost:3000/users/google", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ token: credentialResponse.credential }),
@@ -25,9 +27,13 @@ export default function GoogleLoginButton() {
             localStorage.setItem("user", JSON.stringify(data.user));
             router.push("/");
           }}
+          render={renderProps => (
+      <GoogleButton onClick={renderProps.onClick} disabled={renderProps.disabled}>Sign in with Google</GoogleButton>
+    )}
           onError={() => {
             console.log("Échec de la connexion Google");
           }}
+          
         />
       </div>
     </GoogleOAuthProvider>
