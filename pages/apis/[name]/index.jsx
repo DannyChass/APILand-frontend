@@ -211,7 +211,9 @@ export default function API() {
 
                         <ApiEndpointsList
                             apiId={apiData._id}
+                            isOwner={isOwner}
                             refreshKey={endpointRefreshKey}
+                            onDeleted={() => setEndpointRefreshKey(k => k + 1)}
                         />
                     </div>
                 </div>

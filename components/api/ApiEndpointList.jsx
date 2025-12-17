@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 
-export default function ApiEndpointsList({ apiId, refreshKey }) {
+export default function ApiEndpointsList({
+    apiId,
+    isOwner,
+    refreshKey,
+    onDeleted,
+}) {
     const [endpoints, setEndpoints] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -29,6 +34,39 @@ export default function ApiEndpointsList({ apiId, refreshKey }) {
         fetchEndpoints();
     }, [apiId, refreshKey]);
 
+    async function handleDelete(endpointId) {
+        const confirm = window.confirm(
+            "Are you sure you want to delete this endpoint?"
+        );
+        if (!confirm) return;
+
+        try {
+            const token = localStorage.getItem("accessToken");
+
+            const res = await fetch(
+                `http://localhost:3000/api/${apiId}/endpoints/${endpointId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            const data = await res.json();
+
+            if (!res.ok || !data.result) {
+                console.error(data.error || "Delete failed");
+                return;
+            }
+
+            onDeleted?.();
+
+        } catch (error) {
+            console.error("Error deleting endpoint:", error);
+        }
+    }
+
     if (loading) {
         return <p className="text-gray-400">Loading endpoints ...</p>;
     }
@@ -48,8 +86,19 @@ export default function ApiEndpointsList({ apiId, refreshKey }) {
             {endpoints.map((endpoint) => (
                 <div
                     key={endpoint._id}
-                    className="border rounded-lg p-4 bg-gray-50"
+                    className="relative border rounded-lg p-4 bg-gray-50"
                 >
+                    {isOwner && (
+                        <button
+                            onClick={() => handleDelete(endpoint._id)}
+                            className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
+                            title="Delete endpoint"
+                        >
+                            ✕
+                        </button>
+                    )}
+
+
                     <div className="flex items-center gap-3 mb-2">
                         <span className="px-2 py-1 text-xs rounded bg-blue-100 text-blue-700 font-mono">
                             {endpoint.method}
