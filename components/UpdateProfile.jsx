@@ -177,6 +177,24 @@ export default function UpdateProfile() {
           </div>
         </div>
       </div>
+      {showModal && (
+        <div className="fixed inset-0 bg-slate-400/80 flex items-center justify-center">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
+            <h2 className="text-xl font-bold text-green-600 mb-4">
+              ✅ Information updated
+            </h2>
+            <p className="text-gray-700 mb-6">
+              Your profile information has been successfully updated.
+            </p>
+            <button
+              onClick={() => setShowModal(false)}
+              className="px-4 py-2 bg-slate-200 rounded hover:bg-slate-300"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
       <footer className=" flex h-20 bg-white fixed bottom-0 w-full shadow-[0_-4px_6px_rgba(0,0,0,0.1)] items-center justify-start ">
         <button
           onClick={() => updateProfile()}

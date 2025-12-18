@@ -4,12 +4,32 @@ import CategoryCard from "../components/ui/CategoryCard";
 import Header from "../components/Header";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar, faBookmark as solidBookmark } from "@fortawesome/free-solid-svg-icons";
+import { faBookmark as regularBookmark } from "@fortawesome/free-regular-svg-icons";
 
 function Home() {
   const [query, setQuery] = useState("");
+  const [userFollow, setUserFollow ] = useState([])
   const [suggestions, setSuggestions] = useState([]);
   const [topRatedApis, setTopRatedApis] = useState([]);
   const [allApis, setAllApis] = useState([]);
+
+  useEffect(()=>{
+    const accessToken = localStorage.getItem('accessToken')
+    const user = localStorage.getItem('user')
+    (async () => {
+      const response = await fetch(`http://localhost:3000/users/follow/${user.id}`, {
+        method: 'GET',
+        headers: {
+          "Content-Type" : "application/json",
+          Authorization: `Bearer ${accessToken}`
+        },
+      })  
+      const data = await response.json()
+      setUserFollow(data)
+    })()
+  },[])
 
   useEffect(() => {
     async function loadAllApis() {
@@ -153,22 +173,36 @@ function Home() {
               All APIs
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="flex flex-wrap gap-6 justify-center items-center">
               {allApis.map((api) => (
                 <Link key={api._id} href={`/apis/${api.name}`}>
-                  <div className="bg-white rounded-xl shadow p-5 hover:shadow-lg transition cursor-pointer">
-                    <h4 className="font-bold text-lg">{api.name}</h4>
+                  <div className="bg-slate-50 flex flex-col justify-between  rounded-xl border border-slate-300 h-80 w-90 shadow p-5 hover:shadow-lg transition cursor-pointer">
+                    <div className="flex justify-between items-center gap-3">
+                      <div className="flex gap-3 items-center">
+                        <img className="h-15 w-15 fa-lg  rounded-full" src={api.image}/>
+                      <FontAwesomeIcon  icon={faStar} size="lg"/>
+                      </div>
+                      <FontAwesomeIcon icon={isFollowed ? solidBookmark : regularBookmark} size="lg"/>
+                    </div>
+                    
+                    <div>
+                      <div className="flex flex-col justify-between">
+                        <h4 className="font-bold text-xl text-slate-500">{api.name}</h4>
 
-                    <p className="text-xs text-blue-500 font-medium mt-1">
+                    <p className="text-sm text-blue-500 font-medium mt-1">
                       {api.category}
                     </p>
-
-                    <p className="text-sm text-slate-500 mt-2">
-                      {truncate(api.description, 200)}
+                      </div>
+                      <p className="text-xs text-slate-500 h-15 mt-2">
+                      {truncate(api.description, 150)}
                     </p>
+                    </div>
+                    
+
+                    
 
                     {api.user && (
-                      <div className="flex items-center gap-2 mt-4">
+                      <div className="flex w-full justify-end items-center gap-2 mt-4">
                         <img
                           src={api.user.image}
                           alt={api.user.username}
