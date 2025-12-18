@@ -73,7 +73,7 @@ h3{
 
 .listeSetting{
 
-  @apply flex py-5 border-b-2 gap-5 items-center justify-between rounded-sm transition border-slate-200 text-base cursor-pointer font-bold text-slate-700  hover:bg-slate-100
+  @apply flex py-2 border-b-2 gap-5 items-center justify-between rounded-sm transition border-slate-200 text-base cursor-pointer font-bold text-slate-700  hover:bg-slate-100 active:bg-slate-200 active:scale-95 
 }
 
 .inputText {

@@ -1,42 +1,50 @@
-"use client"; // si tu es en app router
-
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import {Atom} from 'react-loading-indicators'
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/userSlice";
+import { useRouter } from "next/router";
 
-export default function GitHubCallback() {
-  const router = useRouter();
+export default function Callback() {
+    const router = useRouter();
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get("code");
+    useEffect(() => {
+        const code = new URLSearchParams(window.location.search).get("code");
+        if (!code) return;
 
-      if (code) {
-        try {
-          const res = await fetch(`http://localhost:3000/users/auth/github/callback?code=${code}`);
-          const data = await res.json();
+        console.log("CODE:", code);
 
-          if (data.result) {
-            // 👉 Stocke les infos
+        const login = async () => {
+            const res = await fetch(
+                `http://localhost:3000/users/auth/github/callback?code=${code}`
+            );
+            const data = await res.json();
+
+            console.log("BACK RESPONSE:", data);
+
+            if (!data.result) {
+                router.push("/");
+                return;
+            }
+
             localStorage.setItem("accessToken", data.accessToken);
-            localStorage.setItem("user", JSON.stringify(data.user));
 
-            // 👉 Redirige vers Home
-            router.push("/");
-          } else {
-            console.error("Erreur login GitHub:", data.error);
-          }
-        } catch (err) {
-          console.error("Erreur réseau:", err);
-        }
-      }
-    };
+            const meRes = await fetch("http://localhost:3000/users/me", {
+                headers: {
+                    Authorization: `Bearer ${data.accessToken}`,
+                },
+            });
+            const meData = await meRes.json();
 
-    fetchUser();
-  }, [router]);
+            console.log(meData);
 
-  return <div className="h-screen w-full flex justify-center items-center">
-    <Atom color="#B8A9FF" size="medium" text="" textColor="" />;
-    </div>
+            if (meData.result) {
+                dispatch(setUser(meData.user));
+                router.push("/");
+            }
+        };
+
+        login();
+    }, []);
+
+    return <p>Connexion GitHub en cours…</p>;
 }

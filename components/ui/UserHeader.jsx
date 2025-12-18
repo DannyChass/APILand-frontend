@@ -11,10 +11,14 @@ import {
   faArrowRightFromBracket,
   faAngleDown,
 } from "@fortawesome/free-solid-svg-icons";
+import { useSelector, useDispatch } from "react-redux";
+import { clearUser } from "../../store/userSlice";
 
 export default function UserHeader() {
+  const user = useSelector(state => state.user.data);
+  const dispatch = useDispatch();
+
   const [active, setActive] = useState(false)
-  const [user, setUser] = useState({});
   const dropDownRef = useRef(null)
 
   const toggleDropdown = () => {
@@ -33,19 +37,10 @@ export default function UserHeader() {
     }
   }, [])
 
-  useEffect(() => {
-    const stored = localStorage.getItem("user");
-
-    if (stored) {
-      setUser(JSON.parse(stored));
-    }
-  }, []);
-
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
     localStorage.removeItem("accessToken");
-    setUser(null);
+    dispatch(clearUser());
     window.location.href = "/";
   };
 
@@ -56,7 +51,11 @@ export default function UserHeader() {
           <h6 className="text-[12px] px-1 font-bold text-slate-400 -m-1">Good morning</h6>
           <h5 className="text-sm  text-left font-bold text-slate-800">{user?.username} </h5>
         </div>
-        <img className="w-10 h-10 rounded-full" src="./homme.png" alt="" />
+        <img
+          className="w-10 h-10 rounded-full object-cover"
+          src={user?.image || "/default.avatar.png"}
+          alt="avatar"
+        />
       </button>
 
 
@@ -76,10 +75,10 @@ export default function UserHeader() {
           </div> */}
 
           <ul className="py-2 text-sm text-gray-700">
-          <Link  href='/ProfilePage' ><li className="px-4 py-2 hover:bg-gray-100 flex  items-center gap-5 active:bg-slate-200 active:shadow "><FontAwesomeIcon icon={faUser}/> Account </li></Link>
-          <Link href='/SettingPage' className="flex gap-5 items-center hover:bg-gray-100"><li className="px-4 py-2  flex justify-end items-center gap-5 active:bg-slate-200 active:shadow"><FontAwesomeIcon icon={faGear}/>Setting </li></Link>
-          <li onClick={handleLogout} className="px-4 py-2 hover:bg-gray-100 flex items-center gap-5 active:bg-slate-200 active:shadow">Logout <FontAwesomeIcon icon={faArrowRightFromBracket}/></li>
-          
+            <Link href='/ProfilePage' ><li className="px-4 py-2 hover:bg-gray-100 flex  items-center gap-5 active:bg-slate-200 active:shadow "><FontAwesomeIcon icon={faUser} /> Account </li></Link>
+            <Link href='/SettingPage' className="flex gap-5 items-center hover:bg-gray-100"><li className="px-4 py-2  flex justify-end items-center gap-5 active:bg-slate-200 active:shadow"><FontAwesomeIcon icon={faGear} />Setting </li></Link>
+            <li onClick={handleLogout} className="px-4 py-2 hover:bg-gray-100 flex items-center gap-5 active:bg-slate-200 active:shadow">Logout <FontAwesomeIcon icon={faArrowRightFromBracket} /></li>
+
           </ul>
         </div>
       )}

@@ -10,26 +10,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faBell, faBookmark, faCommentDots, faNewspaper } from '@fortawesome/free-solid-svg-icons'
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import Fade from "@mui/material/Fade";
+import { useSelector } from "react-redux";
 
 
 export default function Header() {
+  const user = useSelector(state => state.user.data);
+  
   const [select, setSelect] = useState("API");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  const [user, setUser] = useState(null);
   const [unreadCount, setUnreadCount] = useState(0);
 
   const [notifAnchorEl, setNotifAnchorEl] = useState(null);
   const notifOpen = Boolean(notifAnchorEl);
   const [notifications, setNotifications] = useState([]);
-
-  useEffect(() => {
-    const stored = localStorage.getItem("user");
-    if (stored) {
-      setUser(JSON.parse(stored));
-    }
-  }, []);
 
   useEffect(() => {
     if (!user) return;

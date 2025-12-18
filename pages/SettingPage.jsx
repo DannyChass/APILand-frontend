@@ -1,18 +1,44 @@
-import { useState } from "react"
-import Header from "../components/Header"
-import AccountSettings from "../components/AccountSetting"
-import UpdateProfile from "../components/UpdateProfile"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useState, useEffect } from "react";
+import Header from "../components/Header";
+import AccountSettings from "../components/AccountSetting";
+import UpdateProfile from "../components/UpdateProfile";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGear,
   faPencil,
   faBell,
   faCircleHalfStroke,
   faArrowRightFromBracket,
-} from "@fortawesome/free-solid-svg-icons"
+} from "@fortawesome/free-solid-svg-icons";
+import Privacy from "../components/Privacy";
+
+
 
 export default function SettingsPage() {
-  const [activeSection, setActiveSection] = useState("account")
+  const [activeSection, setActiveSection] = useState("account");
+  const [user, setUser] = useState({});
+  
+
+  // useEffect(()=> {
+  //   if (location.state?.activeSection) {
+  //     setActiveSection(location.state.activeSection)
+  //   }
+  // }, [location.state])
+
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+
+    if (stored) {
+      setUser(JSON.parse(stored));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
+    setUser(null);
+    window.location.href = "/";
+  };
 
   return (
     <div className="overflow-hidden">
@@ -35,19 +61,14 @@ export default function SettingsPage() {
               Update Profile <FontAwesomeIcon icon={faPencil} />
             </li>
 
-            <li className="listeSetting">
-              Notifications <FontAwesomeIcon icon={faBell} />
-            </li>
-
-            <li className="listeSetting">
+            <li
+              className="listeSetting"
+              onClick={() => setActiveSection("privacy")}
+            >
               Privacy & Security <FontAwesomeIcon icon={faGear} />
             </li>
 
-            <li className="listeSetting">
-              Appearance <FontAwesomeIcon icon={faCircleHalfStroke} />
-            </li>
-
-            <li className="listeSetting">
+            <li className="listeSetting" onClick={handleLogout}>
               Logout <FontAwesomeIcon icon={faArrowRightFromBracket} />
             </li>
           </ul>
@@ -56,8 +77,9 @@ export default function SettingsPage() {
         <div className="ml-[400px] pb-60 h-screen w-200 overflow-y-scroll">
           {activeSection === "account" && <AccountSettings />}
           {activeSection === "profile" && <UpdateProfile />}
+          {activeSection === "privacy" && <Privacy />}
         </div>
       </div>
     </div>
-  )
+  );
 }

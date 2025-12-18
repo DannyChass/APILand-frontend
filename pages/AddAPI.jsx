@@ -42,14 +42,10 @@ useEffect(() => {
             <p className="text-lg font-normal text-slate-600">nombres d'API publiées : <span className="font-bold text-[#B8A9FF]">{user?.createdApis.length}</span></p>
         </div>
         <div className="flex">
-          <div className="flex justify-center   w-100 pl-25 ">
-                        <ul className="flex flex-col gap-5  px-5 py-5 w-full border-r-2 border-slate-200">
+          <div className="flex justify-start bg-slate-100  w-70 pl-3 ">
+                        <ul className="flex flex-col gap-3 px-3 py-5 w-full border-r-2 border-slate-200">
                             <li onClick={() => setActiveMenu('addApi')} className="listeSetting">Create an API <FontAwesomeIcon icon={faAdd}/></li>
                             <li onClick={() => setActiveMenu('myApi')} className="listeSetting">My API <FontAwesomeIcon icon={faBook}/></li>
-                            <li className="listeSetting">Dashboard <FontAwesomeIcon icon={faChartLine}/> </li>
-                            <li className="listeSetting">Private and security </li>
-                            <li className="listeSetting">Theme</li>
-                            <li className="listeSetting">Logout    </li>
                         </ul>
                         </div>
         <div className="w-full">

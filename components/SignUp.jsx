@@ -4,9 +4,11 @@ import InputText from "../components/ui/InputText";
 import Header from "../components/Header";
 import { useState } from 'react'
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/userSlice";
 
 export default function SignUp() {
-
+  const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -20,7 +22,7 @@ export default function SignUp() {
 
     if (password !== confirmPassword) {
       setError("Les mots de passes ne correspondent pas");
-      return
+      return;
     }
 
     const response = await fetch("http://localhost:3000/users/signup", {
@@ -31,23 +33,32 @@ export default function SignUp() {
         username,
         email,
         password,
-      })
+      }),
     });
 
     const data = await response.json();
 
-    console.log(data);
-
     if (!data.result) {
       setError(data.error);
-      return
+      return;
     }
 
     localStorage.setItem("accessToken", data.accessToken);
-    localStorage.setItem("user", JSON.stringify(data.user));
+
+    const meRes = await fetch("http://localhost:3000/users/me", {
+      headers: {
+        Authorization: `Bearer ${data.accessToken}`,
+      },
+    });
+
+    const meData = await meRes.json();
+
+    if (meData.result) {
+      dispatch(setUser(meData.user));
+    }
 
     router.push("/");
-  }
+  };
 
   return (
     <div className="flex flex-col w-screen h-screen">
