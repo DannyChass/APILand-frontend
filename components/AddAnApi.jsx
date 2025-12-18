@@ -62,7 +62,6 @@ export default function AddAnAPI() {
     // };
 
     const accessToken = localStorage.getItem("accessToken");
-    console.log(accessToken);
 
     try {
       let response = await fetch("http://localhost:3000/apis/create", {
@@ -75,7 +74,6 @@ export default function AddAnAPI() {
       });
 
       let data = await response.json();
-      console.log(data);
 
       if (data.error === "Invalid or expired access token") {
         console.log("Access token expired, refreshing...");
@@ -94,7 +92,7 @@ export default function AddAnAPI() {
           return;
         }
 
-        sessionStorage.setItem("accessToken", refreshData.accessToken);
+        localStorage.setItem("accessToken", refreshData.accessToken);
 
         response = await fetch("http://localhost:3000/apis/create", {
           method: "POST",
