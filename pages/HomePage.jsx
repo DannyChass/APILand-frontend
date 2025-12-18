@@ -202,62 +202,81 @@ function Home() {
   // });
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       <Header />
       <main className="w-full flex flex-col gap-5 items-center ">
-        <div className="flex flex-col justify-around gap-10 items-center bg-[#050F2A] w-screen h-[30%] py-5">
-          <h2 className="text-white text-4xl font-bold">Welcome on APIHub</h2>
-          <div className="bg-white relative justify-between items-center flex w-[50%] rounded-xl ">
+        <div className="flex flex-col justify-around gap-10 items-center bg-[#050F2A] w-full h-[30%] py-5">
+          <h2 className="text-white text-2xl sm:text-3xl md:text-4xl font-bold text-center">Welcome on APIHub</h2>
+          <div className="
+      bg-white relative flex items-center 
+      w-full sm:w-[80%] md:w-[60%] lg:w-[50%]
+      rounded-xl px-3 py-2
+    ">
             <input
               type="search"
               placeholder="Search API"
               value={query}
               onChange={(e) => handleChange(e.target.value)}
-              className="pl-10 w-[70%] h-11 rounded-l-xl text-slate-700"
+              className="
+          pl-10 w-full h-11 rounded-l-xl text-slate-700
+          text-sm sm:text-base
+        "
+
             />
             {suggestions.length > 0 && (
               <ul className="absolute left-0 right-0  top-11 text-slate-500 z-10 border rounded shadow bg-white">
                 {suggests}
               </ul>
             )}
-            <div className="h-11 w-40 rounded-xl bg-[#B8A9FF] text-white font-bold shadow hover:bg-[#9d90de] cursor-pointer flex items-center justify-center">
+            <div className="
+        h-11 px-5 sm:px-8 rounded-xl bg-[#B8A9FF] text-white font-bold 
+        shadow hover:bg-[#9d90de] cursor-pointer flex items-center justify-center
+        ml-2 whitespace-nowrap
+      ">
               <Link href={{ pathname: `/ApiSearch`, query: { query: query } }}>
                 Search
               </Link>
             </div>
           </div>
-          <div className="flex gap-4 justify-center items-center ">
-            <h5 className="text-white font-bold justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center text-center">
+            <h5 className="text-white font-bold text-sm sm:text-base">
               Popular searches:
             </h5>
-            <div className="flex gap-5 w-fit">{popSearch}</div>
+            <div className="
+      flex flex-wrap justify-center gap-3 sm:gap-5 
+      w-full sm:w-auto
+    ">{popSearch}</div>
           </div>
         </div>
 
         <ApiCarousel title="Top Rated APIs" items={topRatedApis} />
-        <div className="w-[90%] flex flex-col justify-center gap-5">
-          <div className=" flex justify-end w-full px-10 text-left text-sm text-blue-400  ">
+        <div className="w-full max-w-[90%] flex flex-col justify-center gap-5 mx-auto">
+          <div className="flex justify-end w-full px-4 sm:px-6 md:px-10">
             <p
               onClick={() => setAllCategory(!allCategory)}
-              className="hover:underline hover:underline-offset-2 cursor-pointer active:scale-95"
+              className="
+        text-blue-400 text-sm sm:text-base 
+        hover:underline hover:underline-offset-2 
+        cursor-pointer active:scale-95
+      "
             >
-              View All Category
+              {allCategory ? 'Hide All Category' : 'View All Category'}
             </p>
           </div>
           <div className="w-full flex flex-col gap-10">
   {/* Première ligne de catégories */}
   <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-6">
-  <CategoryCard title="Movies" img="/icon.cinema.png" category="Movies" />
-  <CategoryCard title="Business" img="/icon.business.png" category="Business" />
-  <CategoryCard title="Geography" img="/icon.geography.png" category="Geography" />
-  <CategoryCard title="Fashion" img="/icon.fashion.png" category="Fashion" />
+  <CategoryCard title="Movies" img="/icon/icon.cinema.png" category="Movies" />
+  <CategoryCard title="Business" img="/icon/icon.business.png" category="Business" />
+  <CategoryCard title="Geography" img="/icon/icon.geography.png" category="Geography" />
+  <CategoryCard title="Fashion" img="/icon/icon.fashion.png" category="Fashion" />
   {allCategory && (
     <>
-      <CategoryCard title="Sciences" img="/icon.fashion.png" category="Sciences" />
-      <CategoryCard title="Sport" img="/icon.fashion.png" category="Sport" />
-      <CategoryCard title="Music" img="/icon.fashion.png" category="Music" />
-      <CategoryCard title="Data" img="/icon.fashion.png" category="Data" />
-      <CategoryCard title="Transport" img="/icon.fashion.png" category="Transport" />
+      <CategoryCard title="Sciences" img="/icon/icon.sciences.png" category="Sciences" />
+      <CategoryCard title="Sport" img="/icon/icon.sport.png" category="Sport" />
+      <CategoryCard title="Music" img="/icon/icon.music.png" category="Music" />
+      <CategoryCard title="Data" img="/icon/icon.data.png" category="Data" />
+      <CategoryCard title="Transport" img="/icon/icon.transport.png" category="Transport" />
     </>
   )}
 </div>
@@ -265,11 +284,16 @@ function Home() {
 </div>
         </div>
 
-        <div className="w-[95%] flex flex-col gap-6 mt-10">
-          <h3 className="text-2xl font-bold pl-20 text-slate-800">All APIs</h3>
-          <hr className="border-slate-100 mx-20 border-2" />
+        <div className="w-full max-w-[95%] mx-auto flex flex-col gap-6 mt-10">
+          <h3 className="text-2xl font-bold text-slate-800 px-4 sm:px-10">All APIs</h3>
+          <hr className="border-slate-100 border-2 mx-4 sm:mx-10" />
 
-          <div className="flex ml-30 flex-wrap gap-10 px-5 justify-start  items-center">
+          <div className="
+      flex flex-wrap gap-6 sm:gap-8 md:gap-10 
+      justify-start items-start 
+      px-0.1 sm:px-6 sm:ml-30 md:px-10 md:ml-25
+    "
+>
             {apiFollowed}
           </div>
         </div>
