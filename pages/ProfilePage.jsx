@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ApiCards from "../components/ui/ApiCard";
 
+
 export default function ProfilePage() {
   const router = useRouter();
   const { name } = router.query;
@@ -21,6 +22,7 @@ export default function ProfilePage() {
   const [expanded, setExpanded] = useState(false);
   const [apiFollow, setApiFollow] = useState([]);
   const [apiData, setApiData] = useState(null);
+  
 
   useEffect(() => {
     if (!name) return;
@@ -40,6 +42,10 @@ export default function ProfilePage() {
 
     fetchAPI();
   }, [name]);
+
+  // const handleUpdateProfile = () => {
+  //   navigate('/SettingPage', {state: {activeSection: 'updateProfile'}})
+  // }
 
   useEffect(() => {
     console.log(apiData);
@@ -120,7 +126,7 @@ export default function ProfilePage() {
                   alt="avatar"
                 />
               </div>
-              <div className="w-full md:w-1/3 flex flex-col   gap-10 items-center justify-start px-3 md:px-5 border-t-2 md:border-t-0 md:border-l-2 border-slate-200 ">
+              <div className="w-full md:w-1/3 flex flex-col gap-10 items-start justify-start px-3 md:px-3 border-t-2 md:border-t-0 md:border-l-2 border-slate-200 ">
                 <div className="text-center md:text-left">
                   <h3 className="text-lg sm:text-base md:text-xl font-semibold">
                     {user.username}
@@ -129,7 +135,7 @@ export default function ProfilePage() {
                     {user.email}
                   </h6>
                   <h6 className="text-sm md:text-base text-gray-500">
-                    Location
+                    {user.country ? `${user.country}` : ""}
                   </h6>
                   <div className="mt-2 w-full">
                     <p className="flex flex-wrap text-sm wrap-break-word whitespace-normal">
@@ -147,13 +153,13 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="gap-5 flex">
-                  <Button className="bg-[#050F2A] rounded-[3] flex justify-between gap-3 items-center text-sm text-white p-2 hover:bg-slate-700 cursor-pointer">
+                  {/* <Button  className="bg-[#050F2A] rounded-[3] flex justify-between gap-3 items-center text-sm text-white p-2 hover:bg-slate-700 cursor-pointer">
                     Update Profile <FontAwesomeIcon icon={faPencil} />
                   </Button>
                   <Button className="bg-[#B8A9FF] justify-between flex items-center rounded-[3] text-[#F2FDFF] text-sm w-[150px] p-2 text-shadow-2xs hover:bg-[#9d90de] cursor-pointer">
                     Share Profile{" "}
                     <FontAwesomeIcon icon={faArrowRightFromBracket} />
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
               <div className="w-full md:w-1/3 flex  md:flex-row justify-center items-center md:items-end gap-6 md:gap-10 px-6 md:px-10 border-t-2 md:border-t-0 md:border-l-2 border-slate-200">
@@ -191,7 +197,7 @@ export default function ProfilePage() {
           <hr className="border-2 w-full border-slate-200" />
         </div>
 
-        <div className="border border-slate-200 flex w-[80%] ">
+        <div className="border border-slate-200 flex  w-[85%] px-5">
           {activeMenu === "Apis" && (
             <div className="w-full flex flex-wrap">{<MyApiComponent />}</div>
           )}
