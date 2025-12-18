@@ -18,7 +18,8 @@ export default function ApiHeader({ api, isFollowed, onFollow }) {
         </div>
 
         <img
-          src="https://i.pravatar.cc/160"
+          src={api.user?.image || "https://i.pravatar.cc/160"}
+          alt={api.user?.username}
           className="w-16 h-16 rounded-full object-cover"
         />
       </div>
