@@ -14,6 +14,7 @@ function Home() {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [topRatedApis, setTopRatedApis] = useState([]);
+  const [cat, setCat] = useState([]);
 
   useEffect(() => {
     async function loadTopRated() {
@@ -56,10 +57,6 @@ function Home() {
     }
   };
 
-  // const searchAPI = () => {
-
-  //   navigate("#")
-  // }
 
   const handleSelect = (title) => {
     setQuery(title);
@@ -78,11 +75,32 @@ function Home() {
     );
   });
 
-  const theme = ["Business", "Weather", "Jobs", "Maps"];
+  useEffect (() =>{
+    const thematique = async () => {
 
-  const popSearch = theme.map((data, i) => {
-    return <ThemeButton key={i} theme={data} />;
+    const response = await fetch(`http://localhost:3000/apis/filters`);
+    const data = await response.json();
+    console.log(data);
+
+    if (data.result) {
+      const cleanCat = data.filters.categories.filter((c => c && c.trim()!==''))
+      setCat(cleanCat.slice(0, 6))
+    }
+  };
+  thematique();
+  },[])
+  
+  const popSearch = cat.map((catName, i)=> {
+    return (<ThemeButton key={i} theme={catName} category={catName} />)
   });
+
+
+  // const theme = ["Business", "Weather", "Jobs", "Maps"];
+
+  // const popSearch = theme.map((data, i) => {
+  //   return <ThemeButton key={i} theme={data} category={data} />;
+  // });
+
 
   return (
     <div>
@@ -109,9 +127,9 @@ function Home() {
               </Link>
             </div>
           </div>
-          <div className="flex gap-10 justify-center items-center ">
-            <h5 className="text-white font-bold">Popular searches:</h5>
-            <div className="flex gap-10">{popSearch}</div>
+          <div className="flex gap-4 justify-center items-center ">
+            <h5 className="text-white font-bold justify-center">Popular searches:</h5>
+            <div className="flex gap-5 w-fit">{popSearch}</div>
           </div>
         </div>
 
@@ -123,20 +141,20 @@ function Home() {
             </p>
           </div>
           <div className="flex justify-center w-full gap-15">
-            <CategoryCard title="Movies" img="./icon.cinema.png" />
-            <CategoryCard title="Business" img="./icon.business.png" />
-            <CategoryCard title="Geography" img="./icon.geography.png" />
-            <CategoryCard title="Fashion" img="./icon.fashion.png" />
+            <CategoryCard title="Movies" img="./icon.cinema.png" category='Movies' />
+            <CategoryCard title="Business" img="./icon.business.png" category='Business' />
+            <CategoryCard title="Geography" img="./icon.geography.png" category='Geography' />
+            <CategoryCard title="Fashion" img="./icon.fashion.png" category='Fashion' />
           </div>
           <div>
             <div className="bg-white shadow rounded-lg p-4 w-80 flex cursor-pointer flex-col gap-3 hover:bg-slate-100">
               <div className="w-full flex justify-between items-center px-2">
                 <img src="#" alt="logo" className="w-10 h-10" />
                 <div className="flex gap-2 items-center">
-                  <FontAwesomeIcon icon={faBookmark}/>
+                  <FontAwesomeIcon icon={faBookmark} />
                   <div className=" bg-green-400 w-3 h-3 rounded-full"></div>
                 </div>
-                
+
               </div>
               <div className="w-full flex flex-col gap-2">
                 <p className="text-sm">Category</p>

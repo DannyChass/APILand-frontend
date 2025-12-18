@@ -12,15 +12,18 @@ function ApiSearch() {
     const [filterData, setFilterData] = useState({ categories: [], prices: [], tags: [], follower: [] })
     const searchParams = useSearchParams();
     const searchTerm = searchParams.get('query');
+    const searchCat = searchParams.get ('category')
+    console.log('search Cat:', searchCat)
     console.log("Search Term:", searchTerm);
     const [searchState, setSearchState] = useState(searchTerm || '');
     const [newSearchState, setNewSearchState] = useState(searchTerm || '')
-    const [filters, setFilters] = useState({ category: '', price: '', tag: '' });
+    const [filters, setFilters] = useState({ category: searchCat || '', price: '', tag: '' });
     const [apiCards, setApiCards] = useState([]);
     const [resultCount, setResultCount] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
     const [tagSearchTerm, setTagSearchTerm] = useState('');
+
 
     useEffect(() => {
         const fetchFilterData = async () => {
@@ -49,7 +52,7 @@ function ApiSearch() {
         const params = new URLSearchParams();
         params.append('page', pageNumber);
         params.append('limit', limit);
-
+        
         // Ajouter le terme de recherche (si présent)
         if (searchState) {
             params.append('search', searchState);
@@ -65,7 +68,7 @@ function ApiSearch() {
         if (filters.tag) {
             params.append('tag', filters.tag)
         }
-
+console.log(filters)
         const apiUrl = `http://localhost:3000/apis/allApi?${params.toString()}`;
         console.log("API URL:", apiUrl);
 
@@ -181,9 +184,9 @@ function ApiSearch() {
         <div>
             <Header />
             <main >
-                <div id='search' className='flex h-60 justify-center items-center w-full'>
+                <div id='search' className='flex h-40 justify-center items-center w-full'>
                     <div className="flex flex-col justify-around gap-5 py-5 bg-[#050F2A] w-[90%] h-[90%]">
-                        {searchState ? <h2 className="text-white text-3xl font-bold ml-6">Results for {newSearchState} : {resultCount}</h2> : <h2 className="text-white text-3xl font-bold ml-6">Results for all : {resultCount}</h2>}
+                        {searchState ? <h2 className="text-white text-2xl ml-6">Results for {newSearchState} : {resultCount}</h2> : <h2 className="text-white text-2xl ml-6">Results for all : {resultCount}</h2>}
                         <div className="bg-white relative justify-between items-center flex w-[90%] ml-6 rounded-xl ">
                             <input
                                 onSearch={(e) => { if (e.target.value === '') console.log('salut') }}
@@ -196,10 +199,10 @@ function ApiSearch() {
                                 Search
                             </Button>
                         </div>
-                        <div className="flex gap-10 ml-6 items-center ">
+                        {/* <div className="flex gap-10 ml-6 items-center ">
                             <h5 className="text-white font-bold">similar search :</h5>
                             <div className="flex gap-10 p-0">{popSearch}</div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div id='dropDownContainer' className='bg-[#050F2A] h-10 flex justify-between'>
