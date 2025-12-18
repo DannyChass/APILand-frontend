@@ -1,10 +1,12 @@
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/userSlice";
 
 export default function GoogleLoginButton() {
+  const dispatch = useDispatch();
   const router = useRouter();
 
-  
 
 
   return (
@@ -12,28 +14,39 @@ export default function GoogleLoginButton() {
       <div className="w-full font-bold text-slate-400">
         <GoogleLogin
           onSuccess={async (credentialResponse) => {
-            console.log("Token Google:", credentialResponse.credential);
+            try {
+              const response = await fetch("http://localhost:3000/users/google", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: credentialResponse.credential }),
+              });
 
-            const response = await fetch("http://localhost:3000/users/google", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ token: credentialResponse.credential }),
-            });
-            const data = await response.json();
+              const data = await response.json();
 
-            console.log("Réponse backend:", data);
+              if (!data.result) {
+                console.error(data.error);
+                return;
+              }
 
-            localStorage.setItem("accessToken", data.accessToken);
-            localStorage.setItem("user", JSON.stringify(data.user));
-            router.push("/");
+              localStorage.setItem("accessToken", data.accessToken);
+
+              const meRes = await fetch("http://localhost:3000/users/me", {
+                headers: {
+                  Authorization: `Bearer ${data.accessToken}`,
+                },
+              });
+
+              const meData = await meRes.json();
+
+              if (meData.result) {
+                dispatch(setUser(meData.user));
+              }
+
+              router.push("/");
+            } catch (err) {
+              console.error("Google login error:", err);
+            }
           }}
-          render={renderProps => (
-      <GoogleButton onClick={renderProps.onClick} disabled={renderProps.disabled}>Sign in with Google</GoogleButton>
-    )}
-          onError={() => {
-            console.log("Échec de la connexion Google");
-          }}
-          
         />
       </div>
     </GoogleOAuthProvider>

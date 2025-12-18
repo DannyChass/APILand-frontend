@@ -1,18 +1,15 @@
 import '../styles/globals.css';
-import Head from 'next/head';
 import "@fontsource/montserrat";
 import "@fontsource/montserrat/700.css";
-import Home from './HomePage';
-import Header from '../components/Header';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { Provider } from "react-redux";
+import { store } from "../store";
+import BootstrapUser from '../components/BootstrapUser';
 
-function App({ Component, pageProps }) {
+export default function MyApp({ Component, pageProps }) {
   return (
-    <>
-      
+    <Provider store={store}>
+      <BootstrapUser />
       <Component {...pageProps} />
-    </>
+    </Provider>
   );
 }
-
-export default App;

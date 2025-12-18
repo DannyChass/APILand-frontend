@@ -34,8 +34,6 @@ function Home() {
         const response = await fetch("http://localhost:3000/apis/top");
         const data = await response.json();
 
-        console.log(data);
-
         if (data.result) {
           setTopRatedApis(data.apis);
         }
