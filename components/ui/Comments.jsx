@@ -16,6 +16,10 @@ export default function Comments({ comment, apiId }) {
   const [showReplies, setShowReplies] = useState(false);
   const isReply = !!comment.parentComment;
 
+  useEffect(()=>{
+    fetchReplies()
+  },[])
+
 
   useEffect(() => {
     if (!apiId) return;
