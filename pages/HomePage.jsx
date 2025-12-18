@@ -6,6 +6,10 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faBookmark as solidBookmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faStar,
+  faBookmark as solidBookmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as regularBookmark } from "@fortawesome/free-regular-svg-icons";
 
 function Home() {
@@ -13,11 +17,9 @@ function Home() {
   const [userFollow, setUserFollow ] = useState([])
   const [suggestions, setSuggestions] = useState([]);
   const [topRatedApis, setTopRatedApis] = useState([]);
+  const [cat, setCat] = useState([]);
   const [allApis, setAllApis] = useState([]);
 
-  useEffect(()=>{
-    const accessToken = localStorage.getItem('accessToken')
-    const user = localStorage.getItem('user')
     (async () => {
       const response = await fetch(`http://localhost:3000/users/follow/${user.id}`, {
         method: 'GET',
@@ -25,11 +27,20 @@ function Home() {
           "Content-Type" : "application/json",
           Authorization: `Bearer ${accessToken}`
         },
-      })  
       const data = await response.json()
       setUserFollow(data)
     })()
   },[])
+  //   const user = localStorage.getItem('user')
+  //   (async () => {
+  //     const response = await fetch(`http://localhost:3000/users/follow/${user.id}`, {
+  //       method: 'GET',
+  //       headers: {
+  //         "Content-Type" : "application/json",
+  //         Authorization: `Bearer ${accessToken}`
+  //       },
+  //   })()
+  // },[])
 
   useEffect(() => {
     async function loadAllApis() {
@@ -87,9 +98,6 @@ function Home() {
     }
   };
 
-  // const searchAPI = () => {
-
-  //   navigate("#")
   // }
 
   const handleSelect = (title) => {
@@ -117,11 +125,21 @@ function Home() {
     );
   });
 
-  const theme = ["Business", "Weather", "Jobs", "Maps"];
+  useEffect(() => {
+    const thematique = async () => {
+      const response = await fetch(`http://localhost:3000/apis/filters`);
 
-  const popSearch = theme.map((data, i) => {
-    return <ThemeButton key={i} theme={data} />;
+      if (data.result) {
+      }
+  }, []);
+
+  const popSearch = cat.map((catName, i) => {
+    return <ThemeButton key={i} theme={catName} category={catName} />;
   });
+
+
+  //   return <ThemeButton key={i} theme={data} category={data} />;
+  // });
 
   return (
     <div>
@@ -166,57 +184,78 @@ function Home() {
             <CategoryCard title="Business" img="./icon.business.png" />
             <CategoryCard title="Geography" img="./icon.geography.png" />
             <CategoryCard title="Fashion" img="./icon.fashion.png" />
+              title="Movies"
+              img="./icon.cinema.png"
+              category="Movies"
+            />
+            <CategoryCard
+              title="Business"
+              img="./icon.business.png"
+              category="Business"
+            />
+            <CategoryCard
+              title="Geography"
+              img="./icon.geography.png"
+              category="Geography"
+            />
+            <CategoryCard
+              title="Fashion"
+              img="./icon.fashion.png"
+              category="Fashion"
+            />
           </div>
+        </div>
 
-          <div className="w-[90%] flex flex-col gap-6 mt-10">
-            <h3 className="text-2xl font-bold text-slate-800">
-              All APIs
-            </h3>
+        <div className="w-[90%] flex flex-col gap-6 mt-10">
+          <h3 className="text-2xl font-bold pl-20 text-slate-800">All APIs</h3>
+          <hr  className="border-slate-100 mx-20 border-2"/>
 
-            <div className="flex flex-wrap gap-6 justify-center items-center">
-              {allApis.map((api) => (
-                <Link key={api._id} href={`/apis/${api.name}`}>
-                  <div className="bg-slate-50 flex flex-col justify-between  rounded-xl border border-slate-300 h-80 w-90 shadow p-5 hover:shadow-lg transition cursor-pointer">
-                    <div className="flex justify-between items-center gap-3">
-                      <div className="flex gap-3 items-center">
-                        <img className="h-15 w-15 fa-lg  rounded-full" src={api.image}/>
-                      <FontAwesomeIcon  icon={faStar} size="lg"/>
-                      </div>
-                      <FontAwesomeIcon icon={isFollowed ? solidBookmark : regularBookmark} size="lg"/>
+          <div className="flex flex-wrap gap-2 px-5 justify-around  items-center">
+            {allApis.map((api) => (
+              <Link key={api._id} href={`/apis/${api.name}`}>
+                <div className="bg-slate-50 flex flex-col justify-between  rounded-xl border border-slate-300 h-80 w-90 shadow p-5 hover:shadow-lg transition cursor-pointer">
+                  <div className="flex justify-between items-center gap-3">
+                    <div className="flex gap-3 items-center">
+                      <img
+                        className="h-15 w-15 fa-lg  rounded-full"
+                        src={api.image}
+                      />
+                      <div className="flex items-center "><FontAwesomeIcon  icon={faStar} size="md"/> (5)</div>
+                      
                     </div>
-                    
-                    <div>
-                      <div className="flex flex-col justify-between">
-                        <h4 className="font-bold text-xl text-slate-500">{api.name}</h4>
+                    {/* <FontAwesomeIcon icon={isFollowed ? solidBookmark : regularBookmark} size="lg"/> */}
+                  </div>
 
-                    <p className="text-sm text-blue-500 font-medium mt-1">
-                      {api.category}
-                    </p>
-                      </div>
-                      <p className="text-xs text-slate-500 h-15 mt-2">
+                  <div>
+                    <div className="flex flex-col justify-between">
+                      <h4 className="font-bold text-xl text-slate-500">
+                        {api.name}
+                      </h4>
+
+                      <p className="text-sm text-blue-500 font-medium mt-1">
+                        {api.category}
+                      </p>
+                    </div>
+                    <p className="text-xs text-slate-500 h-15 mt-2">
                       {truncate(api.description, 150)}
                     </p>
-                    </div>
-                    
-
-                    
-
-                    {api.user && (
-                      <div className="flex w-full justify-end items-center gap-2 mt-4">
-                        <img
-                          src={api.user.image}
-                          alt={api.user.username}
-                          className="w-6 h-6 rounded-full object-cover"
-                        />
-                        <span className="text-xs text-slate-600">
-                          by {api.user.username}
-                        </span>
-                      </div>
-                    )}
                   </div>
-                </Link>
-              ))}
-            </div>
+
+                  {api.user && (
+                    <div className="flex w-full justify-end items-center gap-2 mt-4">
+                      <img
+                        src={api.user.image}
+                        alt={api.user.username}
+                        className="w-6 h-6 rounded-full object-cover"
+                      />
+                      <span className="text-xs text-slate-600">
+                        by {api.user.username}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </main>
