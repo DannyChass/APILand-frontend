@@ -12,7 +12,7 @@ function ApiSearch() {
     const [filterData, setFilterData] = useState({ categories: [], prices: [], tags: [], follower: [] })
     const searchParams = useSearchParams();
     const searchTerm = searchParams.get('query');
-    const searchCat = searchParams.get ('category')
+    const searchCat = searchParams.get('category')
     console.log('search Cat:', searchCat)
     console.log("Search Term:", searchTerm);
     const [searchState, setSearchState] = useState(searchTerm || '');
@@ -23,6 +23,7 @@ function ApiSearch() {
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
     const [tagSearchTerm, setTagSearchTerm] = useState('');
+    const [suggestions, setSuggestions] = useState([]);
 
 
     useEffect(() => {
@@ -44,15 +45,54 @@ function ApiSearch() {
         fetchFilterData();
     }, []);
 
+    const handleInputChange = async (text) => {
+        setSearchState(text);
+
+        if (text.length >= 3) {
+            try {
+                const response = await fetch(
+                    `http://localhost:3000/apis/allApi/${text}`
+                );
+                const data = await response.json();
+
+                const result = data.map((api) => api.name);
+                console.log(data);
+                setSuggestions(result);
+            } catch (error) {
+                console.log(error);
+                setSuggestions([]);
+            }
+        } else {
+            setSuggestions([]);
+        }
+    };
+
+    const handleSelectSuggestion = (name) => {
+        setSearchState(name);
+        setSuggestions([]);
+    }
+
+    const suggests = suggestions.map((data, i) => {
+        return (
+            <li
+                key={i}
+                className="p-2 text-sm   hover:bg-gray-200 cursor-pointer"
+                onClick={() => handleSelectSuggestion(data)}
+            >
+                {data}
+            </li>
+        );
+    });
+
     const ApiSearchResults = async (pageNumber) => {
-        
+
         const limit = 18;
 
         // --- Construction des Query Parameters ---
         const params = new URLSearchParams();
         params.append('page', pageNumber);
         params.append('limit', limit);
-        
+
         // Ajouter le terme de recherche (si présent)
         if (searchState) {
             params.append('search', searchState);
@@ -68,7 +108,7 @@ function ApiSearch() {
         if (filters.tag) {
             params.append('tag', filters.tag)
         }
-console.log(filters)
+        console.log(filters)
         const apiUrl = `http://localhost:3000/apis/allApi?${params.toString()}`;
         console.log("API URL:", apiUrl);
 
@@ -110,7 +150,7 @@ console.log(filters)
     }, [filters])
 
     useEffect(() => {
-        if(searchState === '') {
+        if (searchState === '') {
             ApiSearchResults(1)
         }
     }, [searchState])
@@ -192,9 +232,15 @@ console.log(filters)
                                 onSearch={(e) => { if (e.target.value === '') console.log('salut') }}
                                 type="search"
                                 placeholder="your search"
+                                value={searchState}
                                 className="pl-10 w-[90%] h-11 rounded-l-xl text-slate-700"
-                                onChange={(e) => setSearchState(e.target.value)}
+                                onChange={(e) => handleInputChange(e.target.value)}
                             />
+                            {suggestions.length > 0 && (
+                                <ul className="absolute left-0 right-0  top-11 text-slate-500 z-10 border rounded shadow bg-white">
+                                    {suggests}
+                                </ul>
+                            )}
                             <Button onClick={handleSearch} className="h-12 w-40 rounded-xl bg-[#B8A9FF] text-white font-bold shadow hover:bg-[#9d90de] cursor-pointer">
                                 Search
                             </Button>
