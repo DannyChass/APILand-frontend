@@ -5,7 +5,6 @@ import Header from "../components/Header";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faBookmark as solidBookmark } from "@fortawesome/free-solid-svg-icons";
 import {
   faStar,
   faBookmark as solidBookmark,
@@ -14,23 +13,14 @@ import { faBookmark as regularBookmark } from "@fortawesome/free-regular-svg-ico
 
 function Home() {
   const [query, setQuery] = useState("");
-  const [userFollow, setUserFollow ] = useState([])
+  const [userFollow, setUserFollow] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [topRatedApis, setTopRatedApis] = useState([]);
   const [cat, setCat] = useState([]);
   const [allApis, setAllApis] = useState([]);
 
-    (async () => {
-      const response = await fetch(`http://localhost:3000/users/follow/${user.id}`, {
-        method: 'GET',
-        headers: {
-          "Content-Type" : "application/json",
-          Authorization: `Bearer ${accessToken}`
-        },
-      const data = await response.json()
-      setUserFollow(data)
-    })()
-  },[])
+  // useEffect(()=>{
+  //   const accessToken = localStorage.getItem('accessToken')
   //   const user = localStorage.getItem('user')
   //   (async () => {
   //     const response = await fetch(`http://localhost:3000/users/follow/${user.id}`, {
@@ -39,6 +29,9 @@ function Home() {
   //         "Content-Type" : "application/json",
   //         Authorization: `Bearer ${accessToken}`
   //       },
+  //     })
+  //     const data = await response.json()
+  //     setUserFollow(data)
   //   })()
   // },[])
 
@@ -98,8 +91,6 @@ function Home() {
     }
   };
 
-  // }
-
   const handleSelect = (title) => {
     setQuery(title);
     setSuggestions([]);
@@ -128,16 +119,26 @@ function Home() {
   useEffect(() => {
     const thematique = async () => {
       const response = await fetch(`http://localhost:3000/apis/filters`);
+      const data = await response.json();
+      console.log(data);
 
       if (data.result) {
+        const cleanCat = data.filters.categories.filter(
+          (c) => c && c.trim() !== ""
+        );
+        setCat(cleanCat.slice(0, 6));
       }
+    };
+    thematique();
   }, []);
 
   const popSearch = cat.map((catName, i) => {
     return <ThemeButton key={i} theme={catName} category={catName} />;
   });
 
+  // const theme = ["Business", "Weather", "Jobs", "Maps"];
 
+  // const popSearch = theme.map((data, i) => {
   //   return <ThemeButton key={i} theme={data} category={data} />;
   // });
 
@@ -166,9 +167,11 @@ function Home() {
               </Link>
             </div>
           </div>
-          <div className="flex gap-10 justify-center items-center ">
-            <h5 className="text-white font-bold">Popular searches:</h5>
-            <div className="flex gap-10">{popSearch}</div>
+          <div className="flex gap-4 justify-center items-center ">
+            <h5 className="text-white font-bold justify-center">
+              Popular searches:
+            </h5>
+            <div className="flex gap-5 w-fit">{popSearch}</div>
           </div>
         </div>
 
@@ -180,10 +183,7 @@ function Home() {
             </p>
           </div>
           <div className="flex justify-center w-full gap-15">
-            <CategoryCard title="Movies" img="./icon.cinema.png" />
-            <CategoryCard title="Business" img="./icon.business.png" />
-            <CategoryCard title="Geography" img="./icon.geography.png" />
-            <CategoryCard title="Fashion" img="./icon.fashion.png" />
+            <CategoryCard
               title="Movies"
               img="./icon.cinema.png"
               category="Movies"
