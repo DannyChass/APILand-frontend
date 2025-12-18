@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 
 export default function Header() {
   const user = useSelector(state => state.user.data);
-  
+
   const [select, setSelect] = useState("API");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -109,7 +109,7 @@ export default function Header() {
           {" "}
           APIhub
         </Link>
-        <button className="flex gap-3 pl-2 pr-2 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer" id="apiMenu"
+        {/* <button className="flex gap-3 pl-2 pr-2 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer" id="apiMenu"
           aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
@@ -130,7 +130,7 @@ export default function Header() {
           <MenuItem value="api">API</MenuItem>
           <MenuItem value="Docs">Docs</MenuItem>
           <MenuItem value="community">Community</MenuItem>
-        </Menu>
+        </Menu> */}
         <Link
           href="/news"
           className="flex gap-3 pl-2 pr-2 justify-center font-bold text-sm text-slate-400 items-center border-0 border-r-2 border-slate-200 cursor-pointer"
