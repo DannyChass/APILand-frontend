@@ -21,6 +21,7 @@ function Home() {
   const [cat, setCat] = useState([]);
   const [allApis, setAllApis] = useState([]);
   const user = useSelector((state) => state.user.data);
+  const [allCategory, setAllCategory] = useState(false);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -51,7 +52,7 @@ function Home() {
         const data = await res.json();
 
         if (data.result) {
-          console.log(data.allAPI)
+          console.log(data.allAPI);
           setAllApis(data.allAPI);
         }
       } catch (err) {
@@ -142,53 +143,53 @@ function Home() {
     thematique();
   }, []);
 
-
   const apiFollowed = allApis.map((api) => {
-  const isFollowed = userFollow.some(f => f.api?._id === api._id);
+    const isFollowed = userFollow.some((f) => f.api?._id === api._id);
 
-  return (
-    <Link key={api._id} href={`/apis/${api.name}`}>
-      <div className="bg-slate-50 flex flex-col justify-between rounded-xl border border-slate-300 h-80 w-90 shadow p-5 hover:shadow-lg transition cursor-pointer">
-        <div className="flex justify-between items-center gap-3">
-          <div className="flex gap-3 items-center">
-            <img
-              className="h-15 w-15 fa-lg rounded-full"
-              src={api.image}
-            />
-            <div className="flex items-center">
-              <FontAwesomeIcon icon={faStar} size="md" /> (5)
+    return (
+      <Link key={api._id} href={`/apis/${api.name}`}>
+        <div className="bg-slate-50 flex flex-col justify-between rounded-xl border border-slate-300 h-80 w-90 shadow p-5 hover:shadow-lg transition cursor-pointer">
+          <div className="flex justify-between items-center gap-3">
+            <div className="flex gap-3 items-center">
+              <img className="h-15 w-15 fa-lg rounded-full" src={api.image} />
+              <div className="flex items-center">
+                <FontAwesomeIcon icon={faStar} size="md" /> (5)
+              </div>
             </div>
-          </div>
-          <FontAwesomeIcon
-            icon={isFollowed ? solidBookmark : regularBookmark}
-            size="lg"
-          />
-        </div>
-
-        <div>
-          <div className="flex flex-col justify-between">
-            <h4 className="font-bold text-xl text-slate-500">{api.name}</h4>
-            <p className="text-sm text-blue-500 font-medium mt-1">{api.category}</p>
-          </div>
-          <p className="text-xs text-slate-500 h-15 mt-2">
-            {truncate(api.description, 150)}
-          </p>
-        </div>
-
-        {api.user && (
-          <div className="flex w-full justify-end items-center gap-2 mt-4">
-            <img
-              src={api.user.image}
-              alt={api.user.username}
-              className="w-6 h-6 rounded-full object-cover"
+            <FontAwesomeIcon
+              icon={isFollowed ? solidBookmark : regularBookmark}
+              size="lg"
             />
-            <span className="text-xs text-slate-600">by {api.user.username}</span>
           </div>
-        )}
-      </div>
-    </Link>
-  );
-});
+
+          <div>
+            <div className="flex flex-col justify-between">
+              <h4 className="font-bold text-xl text-slate-500">{api.name}</h4>
+              <p className="text-sm text-blue-500 font-medium mt-1">
+                {api.category}
+              </p>
+            </div>
+            <p className="text-xs text-slate-500 h-15 mt-2">
+              {truncate(api.description, 150)}
+            </p>
+          </div>
+
+          {api.user && (
+            <div className="flex w-full justify-end items-center gap-2 mt-4">
+              <img
+                src={api.user.image}
+                alt={api.user.username}
+                className="w-6 h-6 rounded-full object-cover"
+              />
+              <span className="text-xs text-slate-600">
+                by {api.user.username}
+              </span>
+            </div>
+          )}
+        </div>
+      </Link>
+    );
+  });
 
   const popSearch = cat.map((catName, i) => {
     return <ThemeButton key={i} theme={catName} category={catName} />;
@@ -236,32 +237,32 @@ function Home() {
         <ApiCarousel title="Top Rated APIs" items={topRatedApis} />
         <div className="w-[90%] flex flex-col justify-center gap-5">
           <div className=" flex justify-end w-full px-10 text-left text-sm text-blue-400  ">
-            <p className="hover:underline hover:underline-offset-2 cursor-pointer">
+            <p
+              onClick={() => setAllCategory(!allCategory)}
+              className="hover:underline hover:underline-offset-2 cursor-pointer active:scale-95"
+            >
               View All Category
             </p>
           </div>
-          <div className="flex justify-center w-full gap-15">
-            <CategoryCard
-              title="Movies"
-              img="./icon.cinema.png"
-              category="Movies"
-            />
-            <CategoryCard
-              title="Business"
-              img="./icon.business.png"
-              category="Business"
-            />
-            <CategoryCard
-              title="Geography"
-              img="./icon.geography.png"
-              category="Geography"
-            />
-            <CategoryCard
-              title="Fashion"
-              img="./icon.fashion.png"
-              category="Fashion"
-            />
-          </div>
+          <div className="w-full flex flex-col gap-10">
+  {/* Première ligne de catégories */}
+  <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  <CategoryCard title="Movies" img="/icon.cinema.png" category="Movies" />
+  <CategoryCard title="Business" img="/icon.business.png" category="Business" />
+  <CategoryCard title="Geography" img="/icon.geography.png" category="Geography" />
+  <CategoryCard title="Fashion" img="/icon.fashion.png" category="Fashion" />
+  {allCategory && (
+    <>
+      <CategoryCard title="Sciences" img="/icon.fashion.png" category="Sciences" />
+      <CategoryCard title="Sport" img="/icon.fashion.png" category="Sport" />
+      <CategoryCard title="Music" img="/icon.fashion.png" category="Music" />
+      <CategoryCard title="Data" img="/icon.fashion.png" category="Data" />
+      <CategoryCard title="Transport" img="/icon.fashion.png" category="Transport" />
+    </>
+  )}
+</div>
+
+</div>
         </div>
 
         <div className="w-[95%] flex flex-col gap-6 mt-10">
