@@ -26,7 +26,7 @@ export default function AddAnAPI() {
       setTags([...tags, newTag]);
     }
   };
-  
+
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -43,8 +43,8 @@ export default function AddAnAPI() {
   const handleSubmit = async () => {
     const formData = new FormData();
     if (file && file instanceof File) {
-    formData.append("image", file);
-  }
+      formData.append("image", file);
+    }
     formData.append("name", name);
     formData.append("description", description);
     formData.append("officialLink", officialLink);
@@ -61,7 +61,8 @@ export default function AddAnAPI() {
     //   tags: tags,
     // };
 
-    const accessToken = sessionStorage.getItem("accessToken");
+    const accessToken = localStorage.getItem("accessToken");
+    console.log(accessToken);
 
     try {
       let response = await fetch("http://localhost:3000/apis/create", {
@@ -74,6 +75,7 @@ export default function AddAnAPI() {
       });
 
       let data = await response.json();
+      console.log(data);
 
       if (data.error === "Invalid or expired access token") {
         console.log("Access token expired, refreshing...");
@@ -140,7 +142,7 @@ export default function AddAnAPI() {
               <FontAwesomeIcon icon={faUpload} />
               Upload Icon
               <input
-              id="fileInput"
+                id="fileInput"
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
