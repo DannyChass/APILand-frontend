@@ -43,7 +43,7 @@ function ApiSearch() {
 
     const ApiSearchResults = async (pageNumber) => {
         
-        const limit = 6;
+        const limit = 18;
 
         // --- Construction des Query Parameters ---
         const params = new URLSearchParams();
@@ -83,7 +83,7 @@ function ApiSearch() {
 
             console.log(apiData);
             if (Array.isArray(apiData))
-                setResultCount(apiData.length)
+                setResultCount(paginationInfo.totalCount)
             setApiCards(apiData.map(api => (
                 <ApiCard
                     key={api._id}

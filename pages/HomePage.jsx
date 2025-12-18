@@ -1,19 +1,32 @@
-import styles from "../styles/Home.module.css";
-import Button from "../components/ui/Button";
-import InputText from "../components/ui/InputText";
 import ThemeButton from "../components/ui/ThemeButton";
 import ApiCarousel from "../components/ui/ApiCarousel";
 import CategoryCard from "../components/ui/CategoryCard";
 import Header from "../components/Header";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 
 function Home() {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [topRatedApis, setTopRatedApis] = useState([]);
+  const [allApis, setAllApis] = useState([]);
+
+  useEffect(() => {
+    async function loadAllApis() {
+      try {
+        const res = await fetch("http://localhost:3000/apis/allApi?limit=20");
+        const data = await res.json();
+
+        if (data.result) {
+          setAllApis(data.allAPI);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    loadAllApis();
+  }, []);
 
   useEffect(() => {
     async function loadTopRated() {
@@ -64,6 +77,14 @@ function Home() {
   const handleSelect = (title) => {
     setQuery(title);
     setSuggestions([]);
+  };
+
+  const truncate = (text, maxLength = 120) => {
+    if (!text) return "";
+
+    if (text.length <= maxLength) return text;
+
+    return text.slice(0, text.lastIndexOf(" ", maxLength)) + "…";
   };
 
   const suggests = suggestions.map((data, i) => {
@@ -128,75 +149,41 @@ function Home() {
             <CategoryCard title="Geography" img="./icon.geography.png" />
             <CategoryCard title="Fashion" img="./icon.fashion.png" />
           </div>
-          <div>
-            <div className="bg-white shadow rounded-lg p-4 w-80 flex cursor-pointer flex-col gap-3 hover:bg-slate-100">
-              <div className="w-full flex justify-between items-center px-2">
-                <img src="#" alt="logo" className="w-10 h-10" />
-                <div className="flex gap-2 items-center">
-                  <FontAwesomeIcon icon={faBookmark}/>
-                  <div className=" bg-green-400 w-3 h-3 rounded-full"></div>
-                </div>
-                
-              </div>
-              <div className="w-full flex flex-col gap-2">
-                <p className="text-sm">Category</p>
-                <h4 className="text-lg font-bold">title</h4>
-              </div>
-              <div className="flex justify-around gap-2">
-                <div className="flex flex-col items-center">
-                  <p className="text-[12px]">Requêtes</p>
-                  <h6>152</h6>
-                </div>
-                <div className="flex flex-col items-center">
-                  <p className="text-[12px]">Latence</p>
-                  <h6>152ms</h6>
-                </div>
-                <div className="flex flex-col items-center">
-                  <p className="text-[12px]">Quotas utilisé</p>
-                  <h6>152</h6>
-                </div>
-              </div>
-            </div>
 
-            <div className="bg-white shadow rounded-lg p-4 w-72">
-              {/* Header */}
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <img
-                    src="/logos/stripe.png"
-                    alt="Stripe"
-                    className="w-6 h-6"
-                  />
-                  <h3 className="font-semibold">Stripe API</h3>
-                </div>
-                <span className="text-green-500 font-bold">🟢 OK</span>
-              </div>
+          <div className="w-[90%] flex flex-col gap-6 mt-10">
+            <h3 className="text-2xl font-bold text-slate-800">
+              All APIs
+            </h3>
 
-              {/* Stats */}
-              <div className="text-sm text-slate-600 space-y-1">
-                <p>
-                  Requêtes : <span className="font-medium">12,500</span>
-                </p>
-                <p>
-                  Latence moyenne : <span className="font-medium">120 ms</span>
-                </p>
-                <p>
-                  Erreurs : <span className="font-medium">0.5%</span>
-                </p>
-                <p>
-                  Quota utilisé : <span className="font-medium">70%</span>
-                </p>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {allApis.map((api) => (
+                <Link key={api._id} href={`/apis/${api.name}`}>
+                  <div className="bg-white rounded-xl shadow p-5 hover:shadow-lg transition cursor-pointer">
+                    <h4 className="font-bold text-lg">{api.name}</h4>
 
-              {/* Actions */}
-              <div className="mt-3 flex gap-2">
-                <button className="px-3 py-1 bg-blue-500 text-white rounded text-sm">
-                  Détails
-                </button>
-                <button className="px-3 py-1 bg-slate-200 rounded text-sm">
-                  Docs
-                </button>
-              </div>
+                    <p className="text-xs text-blue-500 font-medium mt-1">
+                      {api.category}
+                    </p>
+
+                    <p className="text-sm text-slate-500 mt-2">
+                      {truncate(api.description, 200)}
+                    </p>
+
+                    {api.user && (
+                      <div className="flex items-center gap-2 mt-4">
+                        <img
+                          src={api.user.image}
+                          alt={api.user.username}
+                          className="w-6 h-6 rounded-full object-cover"
+                        />
+                        <span className="text-xs text-slate-600">
+                          by {api.user.username}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
