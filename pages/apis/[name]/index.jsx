@@ -81,6 +81,7 @@ export default function API() {
             <div className="w-full bg-white rounded-xl shadow p-10 flex gap-12">
 
                 <div className="w-60 h-60 bg-gray-300 rounded-xl flex items-center justify-center shrink-0">
+                {apiData.image ? <img src={apiData.image} alt={apiData.name} /> : "NO IMAGE AVAILABLE"}
                     <span className="text-gray-600 text-3xl"></span>
                 </div>
 
