@@ -2,18 +2,26 @@ import Button from "../ui/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark as solidBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as regularBookmark } from "@fortawesome/free-regular-svg-icons";
+import RatingStars from "../ui/RatingStars";
 
 export default function ApiHeader({ api, isFollowed, onFollow }) {
   return (
     <>
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <h1 className="text-3xl font-bold">{api.name}</h1>
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-4">
+            <h1 className="text-3xl font-bold">{api.name}</h1>
 
-          <FontAwesomeIcon
-            icon={isFollowed ? solidBookmark : regularBookmark}
-            className="text-purple-500 text-2xl cursor-pointer"
-            onClick={onFollow}
+            <FontAwesomeIcon
+              icon={isFollowed ? solidBookmark : regularBookmark}
+              className="text-purple-500 text-2xl cursor-pointer"
+              onClick={onFollow}
+            />
+          </div>
+
+          <RatingStars
+            average={api.rating?.average || 0}
+            count={api.rating?.count || 0}
           />
         </div>
 
