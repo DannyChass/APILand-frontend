@@ -48,10 +48,6 @@ export default function ProfilePage() {
   // }
 
   useEffect(() => {
-    console.log(apiData);
-  }, [apiData]);
-
-  useEffect(() => {
     (async () => {
       const accessToken = localStorage.getItem("accessToken");
 
