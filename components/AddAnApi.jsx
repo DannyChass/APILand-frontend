@@ -8,7 +8,7 @@ import {
   faDeleteLeft,
   faUpload,
   faXmark,
-  faBasketball
+  faBasketball,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function AddAnAPI() {
@@ -18,14 +18,14 @@ export default function AddAnAPI() {
   const [officialLink, setOfficialLink] = useState("");
   const [docLink, setDocLink] = useState("");
   const [example, setExample] = useState([]);
-  const [category, setCategory] = useState("Business")
+  const [category, setCategory] = useState("Business");
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
 
   const handleAddTag = () => {
     if (newTag.trim() !== "") {
       setTags([...tags, newTag]);
-      setNewTag('')
+      setNewTag("");
     }
   };
 
@@ -111,7 +111,7 @@ export default function AddAnAPI() {
 
       if (data.result) {
         alert("API added successfully!");
-        handleCancel()
+        handleCancel();
       } else {
         alert("Error: " + data.error);
       }
@@ -137,7 +137,8 @@ export default function AddAnAPI() {
               src={file ? URL.createObjectURL(file) : "./homme.png"}
               className="h-30 w-30 border "
             ></img>
-            <label htmlFor="fileInput"
+            <label
+              htmlFor="fileInput"
               className=" flex items-center h-10 cursor-pointer bg-slate-300 rounded-lg text-sm px-3 hover:bg-slate-400"
             >
               <FontAwesomeIcon icon={faUpload} />
@@ -215,13 +216,13 @@ export default function AddAnAPI() {
                 name="category"
                 id="category"
                 value={category}
-                onChange={((e) => setCategory(e.target.value))}
+                onChange={(e) => setCategory(e.target.value)}
                 className="inputSetting relative z-50"
               >
-                  <option value="Business">Business</option>
+                <option value="Business">Business</option>
                 <option value="Fashion">Fashion</option>
-                <option value="Geography" >Geography</option>
-                <option value="Movies" >Movies</option>
+                <option value="Geography">Geography</option>
+                <option value="Movies">Movies</option>
                 <option value="Jobs">Jobs</option>
                 <option value="Security">Security</option>
                 <option value="Sport">Sport</option>
@@ -229,7 +230,6 @@ export default function AddAnAPI() {
                 <option value="Data">Data</option>
                 <option value="Sciences">Sciences</option>
                 <option value="Music">Music</option>
-                
               </select>
             </div>
           </div>

@@ -309,11 +309,14 @@ function ApiSearch() {
                         </div>
                     </div>
                 </div>
-                <div className='flex flex-wrap gap-6 sm:gap-8 md:gap-10 
+                <div className='"w-full max-w-[95%] mx-auto flex flex-col gap-6 mt-10"'>
+<div className='flex flex-wrap gap-6 sm:gap-8 md:gap-10 
       justify-start items-start 
-      px-0.1 sm:px-6 sm:ml-30 md:px-10 md:ml-35 mt-10 '>
+      px-0.1 sm:px-6 sm:ml-30 md:px-10 md:ml-25 mt-10'>
                     {apiCards}
                 </div>
+                </div>
+                
                 <div id='pagination' className='flex justify-center'>
                     <PaginationApiHub
                         totalPages={totalPages}
