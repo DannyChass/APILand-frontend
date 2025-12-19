@@ -192,15 +192,21 @@ console.log(apiFollow)
 
           <hr className="border-2 w-full border-slate-200" />
         </div>
-
-        <div className="flex  w-[85%] px-5">
+                    
+        <div className="w-full max-w-[95%] mx-auto flex flex-col gap-6 mt-10">
           {activeMenu === "Apis" && (
-            <div className="w-full flex flex-wrap">{<MyApiComponent />}</div>
+            <div className='flex flex-wrap gap-6 sm:gap-8 md:gap-10 
+      justify-start items-start 
+      px-0.1 sm:px-6 sm:ml-30 md:px-10 md:ml-25'>{<MyApiComponent />}</div>
           )}
 
           {activeMenu === "Favs" &&
-            (<div className="w-full flex flex-wrap">{favorites}</div> || (
-              <div className="w-full flex flex-wrap">pas d'apis follow</div>
+            (<div className='flex flex-wrap gap-6 sm:gap-8 md:gap-10 
+      justify-start items-start 
+      px-0.1 sm:px-6 sm:ml-30 md:px-10 md:ml-25 '>{favorites}</div> || (
+              <div className='flex flex-wrap gap-6 sm:gap-8 md:gap-10 
+      justify-start items-start 
+      px-0.1 sm:px-6 sm:ml-30 md:px-10 md:ml-30 '>pas d'apis follow</div>
             ))}
         </div>
       </div>

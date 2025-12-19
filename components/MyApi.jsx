@@ -43,7 +43,7 @@ export default function MyApiComponent() {
   console.log("apis:" ,apis)
 
   return (
-    <div className="w-full flex flex-wrap gap-4">
+    <div className="w-full flex flex-wrap gap-10">
       {apis.map((api, i) => (
         <ApiCardV2
         key={i}
