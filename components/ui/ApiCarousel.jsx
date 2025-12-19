@@ -56,7 +56,7 @@ export default function ApiCarousel(props) {
                 >
                   <div className="text-center">
                     <div className="text-gray-500 text-sm mb-2">
-                      {api.image ? <img src={api.image} alt={api.name} /> : "NO IMAGE AVAILABLE"}
+                      {api.image ? <img src={api.image} alt={api.name} className="w-full h-30 "/> : "NO IMAGE AVAILABLE"}
                     </div>
 
                     <div className="text-lg font-semibold">{api.name}</div>
