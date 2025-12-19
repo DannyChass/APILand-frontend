@@ -1,52 +1,56 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import ApiCards from "./ui/ApiCard";
 
 export default function MyApiComponent() {
-  const [user, setUser] = useState({});
+  const user = useSelector((state) => state.user.data);
   const [apis, setApis] = useState([]);
 
   useEffect(() => {
-    const stored = localStorage.getItem("user");
-    console.log(stored);
+    if (!user) return;
+    if (!user.id && !user._id) return;
 
-    if (!stored) return;
-
-    const object = JSON.parse(stored);
-    
+    const userId = user.id || user._id;
 
     (async () => {
-      const res = await fetch(`http://localhost:3000/apis/user/${object.id}`);
-      const data = await res.json();
-      console.log(data)
+      try {
+        const res = await fetch(
+          `http://localhost:3000/apis/user/${userId}`
+        );
+        const data = await res.json();
 
-      if(data.result){
-
-        setApis(data.apis)
+        if (data.result && Array.isArray(data.apis)) {
+          setApis(data.apis);
+        }
+      } catch (err) {
+        console.error("Failed to fetch user APIs", err);
       }
-
-      
-
-      
     })();
-  }, []);
-  
-  let myApis;
-  if (apis.length > 0) {
-    myApis = apis.map((data, i) => {
-      console.log(data)
-      return (
-        <ApiCards
-          key={i}
-          image={data.image}
-          apiName={data.name}
-          theme={data.category}
-          price={data.price}
-        />
-      );
-    });
-  } else {
-    myApis = <p>Pas d'Apis crées</p>
+  }, [user]);
+
+  if (user === null) {
+    return <p>Chargement...</p>;
   }
 
-  return <div className=" w-full flex flex-wrap ">{myApis}</div>;
+  if (!user) {
+    return <p>Veuillez vous connecter</p>;
+  }
+
+  if (apis.length === 0) {
+    return <p>Pas d'APIs créées</p>;
+  }
+
+  return (
+    <div className="w-full flex flex-wrap gap-4">
+      {apis.map((api) => (
+        <ApiCards
+          key={api._id}
+          image={api.image}
+          apiName={api.name}
+          theme={api.category}
+          price={api.price}
+        />
+      ))}
+    </div>
+  );
 }
