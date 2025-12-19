@@ -261,7 +261,7 @@ function Home() {
         cursor-pointer active:scale-95
       "
             >
-              {allCategory ? 'Hide All Category' : 'View All Category'}
+              {allCategory ? 'Hide All Categor' : 'View All Categories'}
             </p>
           </div>
           <div className="w-full flex flex-col gap-10">

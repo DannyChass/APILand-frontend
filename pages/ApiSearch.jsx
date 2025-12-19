@@ -311,7 +311,7 @@ function ApiSearch() {
                 </div>
                 <div className='flex flex-wrap gap-6 sm:gap-8 md:gap-10 
       justify-start items-start 
-      px-0.1 sm:px-6 sm:ml-30 md:px-10 md:ml-25 mt-10'>
+      px-0.1 sm:px-6 sm:ml-30 md:px-10 md:ml-35 mt-10 '>
                     {apiCards}
                 </div>
                 <div id='pagination' className='flex justify-center'>
