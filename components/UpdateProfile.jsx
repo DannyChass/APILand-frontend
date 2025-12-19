@@ -1,10 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../store/userSlice";
 
 export default function UpdateProfile() {
   const [showModal, setShowModal] = useState(false);
-  const [user, setUser] = useState({});
+  const user = useSelector((state) => state.user.data);
+  const dispatch = useDispatch();
   const [email, setEmail] = useState(user.email || "");
   const [username, setUsername] = useState(user.username || "");
   const [description, setDescription] = useState(user.description || "");
@@ -17,21 +20,22 @@ export default function UpdateProfile() {
   };
 
   useEffect(() => {
-    if (user) {
-      setEmail(user.email || "");
-      setUsername(user.username || "");
-      setDescription(user.description || "");
-      setGithubLink(user.githubLink || "");
-      setCountry(user.country || "");
-    }
+    if (!user) return;
+
+    setEmail(user.email || "");
+    setUsername(user.username || "");
+    setDescription(user.description || "");
+    setGithubLink(user.githubLink || "");
+    setCountry(user.country || "");
   }, [user]);
 
   const updateProfile = async () => {
     const formData = new FormData();
     formData.append("description", description);
-    formData.append("link", githubLink);
-    formData.append("image", file);
-    // const infos = {description, link}
+    formData.append("githubLink", githubLink);
+    formData.append("country", country);
+    if (file) formData.append("image", file);
+
     const accessToken = localStorage.getItem("accessToken");
 
     const response = await fetch("http://localhost:3000/users/me", {
@@ -41,31 +45,17 @@ export default function UpdateProfile() {
       },
       body: formData,
     });
+
     const data = await response.json();
 
     if (data.result) {
+      console.log("✅ Updated user from backend:", data.user);
+
+      dispatch(updateUser(data.user));
+
       setShowModal(true);
     }
-    console.log("Reponse du back", data);
   };
-
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-
-    if (accessToken) {
-      (async () => {
-        const response = await fetch("http://localhost:3000/users/me", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
-
-        setUser(data.user);
-      })();
-    }
-  }, []);
 
   return (
     <div className="flex flex-col gap-20  w-150 py-20">
@@ -108,7 +98,7 @@ export default function UpdateProfile() {
 
         <div className="divSetting">
           <label htmlFor="inputUsername" className="label">
-            email
+            Email
           </label>
           <input
             type="email"
@@ -164,7 +154,7 @@ export default function UpdateProfile() {
 
           <div className="divSetting">
             <label htmlFor="inputUsername" className="label">
-              Pays/region
+              Country/Region
             </label>
             <input
               type="text"
@@ -200,10 +190,10 @@ export default function UpdateProfile() {
           onClick={() => updateProfile()}
           className="flex items-center rounded-lg p-2 h-10 -py bg-slate-200 gap-5 ml-45 cursor-pointer hover:bg-slate-300"
         >
-          Enregistrer
+          Save
         </button>
         <button className="flex items-center rounded-lg p-2 h-10 -py bg-slate-200 gap-5 ml-10 cursor-pointer hover:bg-slate-300">
-          annuler
+          Cancel
         </button>
       </footer>
     </div>
