@@ -4,6 +4,7 @@ import CategoryCard from "../components/ui/CategoryCard";
 import Header from "../components/Header";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Footer from "../components/Footer";
 import useFollowApi from "./apis/[name]/hooks/useFollowApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -152,9 +153,9 @@ function Home() {
           <div className="flex justify-between items-center gap-3">
             <div className="flex gap-3 items-center">
               <img className="h-15 w-15 fa-lg rounded-full" src={api.image} />
-              <div className="flex items-center">
+              {/* <div className="flex items-center">
                 <FontAwesomeIcon icon={faStar} size="md" /> (5)
-              </div>
+              </div> */}
             </div>
             <FontAwesomeIcon
               icon={isFollowed ? solidBookmark : regularBookmark}
@@ -298,6 +299,7 @@ function Home() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from "../components/Header";
 import Button from "../components/ui/Button";
 import MyApiComponent from "../components/MyApi";
+import Footer from "../components/Footer";
 import {
   faArrowRightFromBracket,
   faPencil,
@@ -204,6 +205,7 @@ export default function ProfilePage() {
             ))}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

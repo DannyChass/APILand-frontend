@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import InputText from "../components/ui/InputText";
 import Button from "../components/ui/Button";
+import Footer from "../components/Footer";
 import AddAnAPI from "../components/AddAnApi";
 import MyApiComponent from "../components/MyApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -68,7 +69,7 @@ useEffect(() => {
             
         </div>
         </div>
-
+<Footer />
     </div>
   )
 }

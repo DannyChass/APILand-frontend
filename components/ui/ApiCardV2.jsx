@@ -30,9 +30,9 @@ function ApiCardV2({ name, _id, image, category, description, user, author, pric
                                 className="h-15 w-15 fa-lg rounded-full"
                                 src={image}
                             />
-                            <div className="flex items-center">
+                            {/* <div className="flex items-center">
                                 <FontAwesomeIcon icon={faStar} size="md" /> (5)
-                            </div>
+                            </div> */}
                         </div>
                         <FontAwesomeIcon
                             icon={isFollowed ? solidBookmark : regularBookmark}

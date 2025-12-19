@@ -4,6 +4,7 @@ import ApiCard from '../components/ui/ApiCard';
 import ApiCardV2 from '../components/ui/ApiCardV2';
 import DropDownButton from '../components/ui/DropDownButton';
 import Button from '../components/ui/Button';
+import Footer from '../components/Footer.jsx';
 import ThemeButton from '../components/ui/ThemeButton'
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -320,6 +321,7 @@ function ApiSearch() {
                         onPageChange={handlePageChange}
                     /></div>
             </main>
+            <Footer />
         </div>
     );
 }

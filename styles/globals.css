@@ -29,6 +29,14 @@ body {
  padding-top: 5;
 }
 
+.logoFooter{
+ font-family: "Aqua";
+ font-size: 2rem;
+ text-align: center;
+ padding-top: 5;
+ color: white;
+}
+
 #button:hover {
   cursor: pointer;
   background-color: #9d90de;

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export default function NewsPage() {
   const [news, setNews] = useState([]);
@@ -34,7 +35,7 @@ export default function NewsPage() {
         {loading && <p className="text-zinc-400">Loading news...</p>}
 
         {!loading && news.length === 0 && (
-          <p className="text-zinc-400">No news available.</p>
+          <p className="text-zinc-400 h-screen border border-slate-200 p-10 rounded-2xlxl">No news available.</p>
         )}
 
         <div className="space-y-6">
@@ -78,6 +79,7 @@ export default function NewsPage() {
           ))}
         </div>
       </main>
+      <Footer />
     </>
   );
 }
