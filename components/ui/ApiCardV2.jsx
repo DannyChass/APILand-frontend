@@ -9,7 +9,8 @@ import {
   } from "@fortawesome/free-solid-svg-icons";
   import { faBookmark as regularBookmark } from "@fortawesome/free-regular-svg-icons";
 
-function ApiCardV2({ apiName, _id, image, category, description, user, author, price, isFollowed}) {
+function ApiCardV2({ name, _id, image, category, description, user, author, price, isFollowed}) {
+    console.log('Mes props:' ,{name,_id})
     const truncate = (text, maxLength = 120) => {
         if (!text) return "";
     
@@ -17,10 +18,11 @@ function ApiCardV2({ apiName, _id, image, category, description, user, author, p
     
         return text.slice(0, text.lastIndexOf(" ", maxLength)) + "…";
       };
-    const apiDetailUrl = `/apis/${apiName}`
+    const apiDetailUrl = `/apis/${name}`
+    console.log(apiDetailUrl)
 
         return (
-            <Link key={_id} href={apiDetailUrl}>
+            <Link key={_id} href={apiDetailUrl} className = 'active:scale-95'>
                 <div className="bg-slate-50 flex flex-col justify-between rounded-xl border border-slate-300 h-80 w-90 shadow p-5 hover:shadow-lg transition cursor-pointer">
                     <div className="flex justify-between items-center gap-3">
                         <div className="flex gap-3 items-center">
@@ -40,7 +42,7 @@ function ApiCardV2({ apiName, _id, image, category, description, user, author, p
 
                     <div>
                         <div className="flex flex-col justify-between">
-                            <h4 className="font-bold text-xl text-slate-500">{apiName}</h4>
+                            <h4 className="font-bold text-xl text-slate-500">{name}</h4>
                             <p className="text-sm text-blue-500 font-medium mt-1">{category}</p>
                         </div>
                         <p className="text-xs text-slate-500 h-15 mt-2">
