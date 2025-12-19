@@ -146,7 +146,7 @@ export default function SignUp() {
           <hr className="bg-white border-white border-2 w-[80%]"></hr>
 
           <div className="flex flex-col w-[60%] py-5 justify-between items-center h-[30%]">
-            <Link href="/SignIn" className="text-[14px] text-stone-300 hover:underline underline-offset-2">
+            <Link href="/AuthPage?mode=login" className="text-lg font-sans font-bold text-center w-[60%] text-slate-300 hover:underline">
               Already sign up ?
             </Link>
 

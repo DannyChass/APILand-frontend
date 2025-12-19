@@ -16,6 +16,7 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [passwordForgetten, setPasswordForgetten] = useState(false)
 
   const handleLogin = () => {
     // Redirige vers ton backend qui lui-même redirige vers GitHub
@@ -92,7 +93,7 @@ export default function SignIn() {
             />
           </div>
 
-          <div className=" w-[60%] justify-items-center items-center">
+          <div className=" w-[60%] gap-3 justify-items-center items-center">
             <label htmlFor="Password" className="text-sm">Password</label>
             <InputText
               placeHolder="Password"
@@ -102,10 +103,13 @@ export default function SignIn() {
               Type='password'
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Link href="#" className="text-sm text-stone-300 hover:underline">
+            <div className="w-full flex items-center gap-3">
+              <Link href="#" onClick={() => setPasswordForgetten(!passwordForgetten)} className="text-sm text-stone-300 hover:underline">
               {" "}
               Mot de passe oublié?
-            </Link>
+            </Link> {passwordForgetten && ( <p className="text-red-400 font-bold text-sm ">in development</p>)}
+            </div>
+            
           </div>
           <div className="w-[70%] flex flex-col justify-start items-center">
 
@@ -118,7 +122,7 @@ export default function SignIn() {
           </div>
           <hr className="bg-white border-white border-2 w-[80%]"></hr>
           <div className="flex flex-col w-[60%] py-5 justify-between items-center h-[40%]">
-            <Link href="#" className="text-lg font-sans font-bold text-center w-[60%] text-slate-300 hover:underline">
+            <Link href="/AuthPage?mode=signup" className="text-lg font-sans font-bold text-center w-[60%] text-slate-300 hover:underline">
               Vous n'avez pas de compte ?
             </Link>
             <div className="w-full h-[70%] flex flex-col gap-5 justify-center items-center ">

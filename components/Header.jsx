@@ -137,7 +137,7 @@ export default function Header() {
         >
           News <FontAwesomeIcon icon={faNewspaper} color="#90a1b9" />
         </Link>
-        <Menu
+        {/* <Menu
           slot={{ transition: Fade }}
           anchorEl={anchorEl}
           open={open}
@@ -152,7 +152,7 @@ export default function Header() {
           <MenuItem value="mySub" className="border-b-2 border-slate-200">My Subs</MenuItem>
           <MenuItem value="explorer">Explorer</MenuItem>
           <MenuItem value="community">Community</MenuItem>
-        </Menu>
+        </Menu> */}
       </div>
 
 
@@ -170,7 +170,7 @@ export default function Header() {
                 <FontAwesomeIcon icon={faBell} color="#050f2a" />
 
                 {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] min-w-[16px] h-[16px] flex items-center justify-center rounded-full px-1">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] min-w-4 h-4 flex items-center justify-center rounded-full px-1">
                     {unreadCount}
                   </span>
                 )}
@@ -209,8 +209,8 @@ export default function Header() {
 
                 ))}
               </Menu>
-              <div><FontAwesomeIcon icon={faCommentDots} /></div>
-              <div><FontAwesomeIcon icon={faBookmark} /></div>
+              {/* <div><FontAwesomeIcon icon={faCommentDots} /></div>
+              <div><FontAwesomeIcon icon={faBookmark} /></div> */}
             </div>
 
             <UserHeader />
@@ -221,12 +221,12 @@ export default function Header() {
               <Button>Add an API</Button>
             </Link>
             <Link href="/AuthPage?mode=signup">
-              <Button className="font-sans text-white font-normal text-sm border-2 border-[#050f2a] p-2 bg-[#050F2A] rounded-lg hover:bg-slate-800 cursor-pointer">
+              <Button className="font-sans text-white font-normal text-sm border-2 border-[#050f2a] p-2 bg-[#050F2A] rounded-lg hover:bg-slate-800 active:scale-95 cursor-pointer">
                 Sign Up
               </Button>
             </Link>
             <Link href="/AuthPage?mode=login">
-              <Button className="font-sans text-black font-normal text-sm border-2 p-2 border-slate-400 rounded-lg hover:bg-slate-200 transition cursor-pointer">
+              <Button className="font-sans text-black font-normal text-sm border-2 p-2 border-slate-400 rounded-lg hover:bg-slate-200 active:scale-95 transition cursor-pointer">
                 Sign In
               </Button>
             </Link>

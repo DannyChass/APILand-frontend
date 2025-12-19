@@ -12,7 +12,7 @@ export default function Button({ className, children, onClick }) {
 
     return (
         <button
-            className="bg-[#B8A9FF] rounded text-[#F2FDFF] text-sm w-[150px] p-2 hover:bg-[#9d90de] cursor-pointer active:scale-95"
+            className="bg-[#B8A9FF] font-sans font-normal border-2 border-[#B8A9FF] rounded text-[#F2FDFF] text-sm w-[150px] p-2 hover:bg-[#9d90de] cursor-pointer active:scale-95"
             onClick={onClick}
         >
             {children}
