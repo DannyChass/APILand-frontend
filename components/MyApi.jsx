@@ -40,6 +40,7 @@ export default function MyApiComponent() {
   if (apis.length === 0) {
     return <p>Pas d'APIs créées</p>;
   }
+  console.log("apis:" ,apis)
 
   return (
     <div className="w-full flex flex-wrap gap-4">
@@ -47,8 +48,8 @@ export default function MyApiComponent() {
         <ApiCardV2
         key={i}
         {...api}
-        author={api.user.username}
-        user={api.user}
+        author={user.username}
+        user={user}
         />
       ))}
     </div>

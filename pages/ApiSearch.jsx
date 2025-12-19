@@ -116,7 +116,7 @@ function ApiSearch() {
 
     const ApiSearchResults = async (pageNumber) => {
 
-        const limit = 18;
+        const limit = 10;
 
         // --- Construction des Query Parameters ---
         const params = new URLSearchParams();
@@ -161,6 +161,8 @@ function ApiSearch() {
 
                 <ApiCardV2
                     {...api} isFollowed={userFollow.some(f => f.api?._id === api._id)}
+                    user={api.user}
+                    author={api.user.username}
 
 
                 />
