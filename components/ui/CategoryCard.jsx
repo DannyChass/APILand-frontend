@@ -11,7 +11,7 @@ export default function CategoryCard(props) {
   className="
     flex items-center gap-3 p-3
     border border-slate-300 cursor-pointer rounded-lg hover:bg-slate-100
-    w-full sm:w-[200px] md:w-[280px] lg:w-[320px]
+    w-full
     min-h-[100px] sm:min-h-[120px] md:min-h-[140px]
     overflow-hidden active:scale-95
   "
@@ -27,7 +27,7 @@ export default function CategoryCard(props) {
       Lorem ipsumitisdsd laborum.
     </p>
     <div className="text-[11px] sm:text-[12px] md:text-sm font-bold hover:underline hover:underline-offset-2 text-right cursor-pointer">
-      Explore Category <FontAwesomeIcon icon={faArrowRight}/>
+      Go to Category <FontAwesomeIcon icon={faArrowRight}/>
     </div>
   </div>
 </Link>
