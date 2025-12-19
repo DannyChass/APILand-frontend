@@ -100,7 +100,7 @@ console.log(apiFollow)
         {...data.api}
         author={data.api.user.username}
         user={data.api.user}
-        isFollwed ={true}
+        isFollowed ={true}
       />
     );
   });
