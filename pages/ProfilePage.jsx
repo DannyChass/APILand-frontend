@@ -11,7 +11,7 @@ import ButtonMenu from "../components/ui/ButtonMenu";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ApiCards from "../components/ui/ApiCard";
-
+import ApiCardV2 from "../components/ui/ApiCardV2";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -92,16 +92,15 @@ export default function ProfilePage() {
 
     //console.log(apiFollow);
   };
-
+console.log(apiFollow)
   const favorites = apiFollow.map((data, i) => {
     return (
-      <ApiCards
+      <ApiCardV2
         key={i}
-        apiName={data.api.name}
-        image={data.api.image}
-        ratingValue={data.api.ratingValue}
-        theme={data.api.category}
+        {...data.api}
         author={data.api.user.username}
+        user={data.api.user}
+        isFollwed ={true}
       />
     );
   });
@@ -194,7 +193,7 @@ export default function ProfilePage() {
           <hr className="border-2 w-full border-slate-200" />
         </div>
 
-        <div className="border border-slate-200 flex  w-[85%] px-5">
+        <div className="flex  w-[85%] px-5">
           {activeMenu === "Apis" && (
             <div className="w-full flex flex-wrap">{<MyApiComponent />}</div>
           )}

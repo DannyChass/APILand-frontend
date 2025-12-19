@@ -22,7 +22,7 @@ function ApiCardV2({ name, _id, image, category, description, user, author, pric
     console.log(apiDetailUrl)
 
         return (
-            <Link key={_id} href={apiDetailUrl} className = 'active:scale-95'>
+            <Link key={_id} href={apiDetailUrl} className = 'active:scale-95 flex flex-wrap gap-6 sm:gap-8 md:gap-10 justify-start items-start px-0.1 sm:px-6 sm:ml-30 md:px-10 md:ml-25'>
                 <div className="bg-slate-50 flex flex-col justify-between rounded-xl border border-slate-300 h-80 w-90 shadow p-5 hover:shadow-lg transition cursor-pointer">
                     <div className="flex justify-between items-center gap-3">
                         <div className="flex gap-3 items-center">

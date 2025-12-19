@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ApiCards from "./ui/ApiCard";
+import ApiCardV2 from "./ui/ApiCardV2";
 
 export default function MyApiComponent() {
   const user = useSelector((state) => state.user.data);
@@ -42,13 +43,12 @@ export default function MyApiComponent() {
 
   return (
     <div className="w-full flex flex-wrap gap-4">
-      {apis.map((api) => (
-        <ApiCards
-          key={api._id}
-          image={api.image}
-          apiName={api.name}
-          theme={api.category}
-          price={api.price}
+      {apis.map((api, i) => (
+        <ApiCardV2
+        key={i}
+        {...api}
+        author={api.user.username}
+        user={api.user}
         />
       ))}
     </div>
