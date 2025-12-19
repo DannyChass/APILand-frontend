@@ -1,3 +1,5 @@
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
 
 
@@ -11,7 +13,7 @@ export default function CategoryCard(props) {
     border border-slate-300 cursor-pointer rounded-lg hover:bg-slate-100
     w-full sm:w-[200px] md:w-[280px] lg:w-[320px]
     min-h-[100px] sm:min-h-[120px] md:min-h-[140px]
-    overflow-hidden
+    overflow-hidden active:scale-95
   "
 >
   <img
@@ -24,8 +26,8 @@ export default function CategoryCard(props) {
     <p className="text-[10px] sm:text-xs md:text-sm text-slate-600">
       Lorem ipsumitisdsd laborum.
     </p>
-    <div className="text-[11px] sm:text-[12px] md:text-sm text-blue-400 hover:underline hover:underline-offset-2 cursor-pointer">
-      Explore Category
+    <div className="text-[11px] sm:text-[12px] md:text-sm font-bold hover:underline hover:underline-offset-2 text-right cursor-pointer">
+      Explore Category <FontAwesomeIcon icon={faArrowRight}/>
     </div>
   </div>
 </Link>

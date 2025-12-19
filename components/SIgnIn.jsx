@@ -83,10 +83,10 @@ export default function SignIn() {
           </div>
 
           <div className="w-[60%] justify-items-center flex flex-col text-left items-center">
-            <label htmlFor="Username" className="text-sm w-full">Username</label>
+            <label htmlFor="Email" className="text-sm w-full">Email</label>
             <InputText
-              placeHolder="Username or email"
-              Name='Username'
+              placeHolder="Email"
+              Name='Email'
               classname=" bg-[#ffffff] rounded-[5] text-sm  text-stone-400  h-10 pl-10 shadow w-full hover:bg-[#eeeeee]"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
