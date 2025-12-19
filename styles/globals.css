@@ -53,6 +53,10 @@ h3{
   @apply flex flex-col w-100 gap-1
 }
 
+.option {
+  @apply h-10 py-5
+}
+
 .loginButton {
    @apply bg-white w-full justify-between px-3 rounded-[3] items-center gap-3  flex h-10;
    font-family:Arial, Helvetica, sans-serif;

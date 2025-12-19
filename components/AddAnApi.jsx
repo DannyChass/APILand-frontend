@@ -8,6 +8,7 @@ import {
   faDeleteLeft,
   faUpload,
   faXmark,
+  faBasketball
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function AddAnAPI() {
@@ -123,8 +124,8 @@ export default function AddAnAPI() {
         <h5>Create an API</h5>
       </div>
 
-      <div className="flex flex-col  gap-10 bg-slate-50    ml-20 mr-20">
-        <h5 className=" h-20 mx-20 border-b flex items-end text-xl font-bold text-slate-500 border-b-slate-200">
+      <div className="flex flex-col  gap-10 rounded-xl border border-slate-300 bg-slate-100    ml-20 mr-20">
+        <h5 className=" h-20 mx-20 border-b flex items-end text-xl font-bold text-slate-500 border-b-slate-300">
           Informations
         </h5>
 
@@ -215,17 +216,23 @@ export default function AddAnAPI() {
                 onChange={((e) => setCategory(e.target.value))}
                 className="inputSetting relative z-50"
               >
-                <option value="Business" >Business</option>
-                <option value="Fashion" >Fashion</option>
+                  <option value="Business">Business</option>
+                <option value="Fashion">Fashion</option>
                 <option value="Geography" >Geography</option>
                 <option value="Movies" >Movies</option>
                 <option value="Jobs">Jobs</option>
                 <option value="Security">Security</option>
+                <option value="Sport">Sport</option>
+                <option value="Transport">Transport</option>
+                <option value="Data">Data</option>
+                <option value="Sciences">Sciences</option>
+                <option value="Music">Music</option>
+                
               </select>
             </div>
           </div>
         </div>
-        <h5 className=" h-20 mx-20 border-b flex items-end text-xl font-bold text-slate-500 border-b-slate-200">
+        <h5 className=" h-20 mx-20 border-b flex items-end text-xl font-bold text-slate-500 border-b-slate-300">
           Add a documentation on your API
         </h5>
         <div className="w-full  justify-center items-center flex flex-col gap-2 ">
@@ -235,11 +242,11 @@ export default function AddAnAPI() {
           <textarea
             placeholder="Add documentation"
             value={example}
-            className="w-[80%] bg-white h-[200px] rounded-xl border border-slate-300 shadow-md p-4"
+            className="w-[80%] bg-white h-[200px] rounded-xl border border-slate-300  p-4"
             onChange={(e) => setExample(e.target.value)}
           />
         </div>
-        <h5 className=" h-20 mx-20 border-b flex items-end text-xl font-bold text-slate-500 border-b-slate-200">
+        <h5 className=" h-20 mx-20 border-b flex items-end text-xl font-bold text-slate-500 border-b-slate-300">
           tags
         </h5>
         <div className="w-full * h-30 justify-center items-center flex flex-col gap-10">

@@ -147,7 +147,7 @@ function Home() {
     const isFollowed = userFollow.some((f) => f.api?._id === api._id);
 
     return (
-      <Link key={api._id} href={`/apis/${api.name}`}>
+      <Link key={api._id} href={`/apis/${api.name}`} className=" active:scale-95">
         <div className="bg-slate-50 flex flex-col justify-between rounded-xl border border-slate-300 h-80 w-90 shadow p-5 hover:shadow-lg transition cursor-pointer">
           <div className="flex justify-between items-center gap-3">
             <div className="flex gap-3 items-center">
