@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 
 
 export default function Header() {
+  const router = useRouter();
   const user = useSelector(state => state.user.data);
 
   const [select, setSelect] = useState("API");
@@ -73,6 +74,14 @@ export default function Header() {
       setUnreadCount((prev) => Math.max(prev - 1, 0));
     } catch (err) {
       console.error("Delete notification error:", err);
+    }
+  };
+
+  const handleAddApiClick = () => {
+    if (!user) {
+      router.push("/AuthPage?mode=login&redirect=/AddAPI");
+    } else {
+      router.push("/AddAPI");
     }
   };
 
@@ -217,9 +226,9 @@ export default function Header() {
           </>
         ) : (
           <>
-            <Link href="/AddAPI">
-              <Button>Add an API</Button>
-            </Link>
+            <Button onClick={handleAddApiClick}>
+              Add an API
+            </Button>
             <Link href="/AuthPage?mode=signup">
               <Button className="font-sans text-white font-normal text-sm border-2 border-[#050f2a] p-2 bg-[#050F2A] rounded-lg hover:bg-slate-800 active:scale-95 cursor-pointer">
                 Sign Up

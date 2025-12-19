@@ -12,8 +12,6 @@ export default function AddAPI() {
   const [user, setUser] = useState(null);
   const [activeMenu, setActiveMenu] = useState('addApi')
 
-  
-
   useEffect(() => {
     (async () => {
       const accessToken = localStorage.getItem("accessToken");
