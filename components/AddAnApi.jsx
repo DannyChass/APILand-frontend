@@ -25,6 +25,7 @@ export default function AddAnAPI() {
   const handleAddTag = () => {
     if (newTag.trim() !== "") {
       setTags([...tags, newTag]);
+      setNewTag('')
     }
   };
 
@@ -110,6 +111,7 @@ export default function AddAnAPI() {
 
       if (data.result) {
         alert("API added successfully!");
+        handleCancel()
       } else {
         alert("Error: " + data.error);
       }
@@ -256,6 +258,7 @@ export default function AddAnAPI() {
                 Type="text"
                 placeHolder="New tag"
                 className="inputSetting"
+                value={newTag}
                 onChange={(e) => setNewTag(e.target.value)}
               />
             </div>
