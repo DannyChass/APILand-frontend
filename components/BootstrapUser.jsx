@@ -9,11 +9,15 @@ export default function BootstrapUser() {
         const token = localStorage.getItem("accessToken");
         if (!token) return;
 
-        fetch("http://localhost:3000/users/me", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
+        fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                credentials: "include",
+            }
+        )
             .then(res => res.json())
             .then(data => {
                 if (data.result) {

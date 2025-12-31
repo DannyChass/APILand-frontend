@@ -32,13 +32,17 @@ export default function AccountSettings() {
   const deleteAccount = async () => {
     const accessToken = localStorage.getItem("accessToken")
 
-    const response = await fetch("http://localhost:3000/users/me", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        credentials: "include",
+      }
+    );
 
     const data = await response.json()
 
@@ -63,14 +67,18 @@ export default function AccountSettings() {
       country,
     }
 
-    const response = await fetch("http://localhost:3000/users/me", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(payload),
-    })
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(payload),
+        credentials: "include",
+      }
+    );
 
     const data = await response.json()
 
@@ -88,17 +96,22 @@ export default function AccountSettings() {
 
     if (!accessToken) return
 
-    ;(async () => {
-      const response = await fetch("http://localhost:3000/users/me", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      })
+      ; (async () => {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
 
-      const data = await response.json()
-      setUser(data.user)
-    })()
+
+        const data = await response.json()
+        setUser(data.user)
+      })()
   }, [])
 
   useEffect(() => {

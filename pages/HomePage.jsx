@@ -31,13 +31,14 @@ function Home() {
 
     (async () => {
       const response = await fetch(
-        `http://localhost:3000/users/follow/${user._id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/follow/${user._id}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
+          credentials: "include",
         }
       );
       const data = await response.json();
@@ -49,7 +50,10 @@ function Home() {
   useEffect(() => {
     async function loadAllApis() {
       try {
-        const res = await fetch("http://localhost:3000/apis/allApi?limit=20");
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/apis/allApi?limit=20`
+        );
+
         const data = await res.json();
 
         if (data.result) {
@@ -67,7 +71,10 @@ function Home() {
   useEffect(() => {
     async function loadTopRated() {
       try {
-        const response = await fetch("http://localhost:3000/apis/top");
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/apis/top`
+        );
+
         const data = await response.json();
 
         if (data.result) {
@@ -87,8 +94,9 @@ function Home() {
     if (text.length >= 3) {
       try {
         const response = await fetch(
-          `http://localhost:3000/apis/allApi/${text}`
+          `${process.env.NEXT_PUBLIC_API_URL}/apis/allApi/${text}`
         );
+
         const data = await response.json();
 
         const result = data.map((api) => api.name);
@@ -130,7 +138,9 @@ function Home() {
 
   useEffect(() => {
     const thematique = async () => {
-      const response = await fetch(`http://localhost:3000/apis/filters`);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/apis/filters`
+      );
       const data = await response.json();
       console.log(data);
 
@@ -265,24 +275,24 @@ function Home() {
             </p>
           </div>
           <div className="w-full flex flex-col gap-10">
-  {/* Première ligne de catégories */}
-  <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-6">
-  <CategoryCard title="Movies" img="/icon/icon.cinema.png" category="Movies" />
-  <CategoryCard title="Business" img="/icon/icon.business.png" category="Business" />
-  <CategoryCard title="Geography" img="/icon/icon.geography.png" category="Geography" />
-  <CategoryCard title="Fashion" img="/icon/icon.fashion.png" category="Fashion" />
-  {allCategory && (
-    <>
-      <CategoryCard title="Sciences" img="/icon/icon.sciences.png" category="Sciences" />
-      <CategoryCard title="Sport" img="/icon/icon.sport.png" category="Sport" />
-      <CategoryCard title="Music" img="/icon/icon.music.png" category="Music" />
-      <CategoryCard title="Data" img="/icon/icon.data.png" category="Data" />
-      <CategoryCard title="Transport" img="/icon/icon.transport.png" category="Transport" />
-    </>
-  )}
-</div>
+            {/* Première ligne de catégories */}
+            <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <CategoryCard title="Movies" img="/icon/icon.cinema.png" category="Movies" />
+              <CategoryCard title="Business" img="/icon/icon.business.png" category="Business" />
+              <CategoryCard title="Geography" img="/icon/icon.geography.png" category="Geography" />
+              <CategoryCard title="Fashion" img="/icon/icon.fashion.png" category="Fashion" />
+              {allCategory && (
+                <>
+                  <CategoryCard title="Sciences" img="/icon/icon.sciences.png" category="Sciences" />
+                  <CategoryCard title="Sport" img="/icon/icon.sport.png" category="Sport" />
+                  <CategoryCard title="Music" img="/icon/icon.music.png" category="Music" />
+                  <CategoryCard title="Data" img="/icon/icon.data.png" category="Data" />
+                  <CategoryCard title="Transport" img="/icon/icon.transport.png" category="Transport" />
+                </>
+              )}
+            </div>
 
-</div>
+          </div>
         </div>
 
         <div className="w-full max-w-[95%] mx-auto flex flex-col gap-6 mt-10">
@@ -294,7 +304,7 @@ function Home() {
       justify-start items-start 
       px-0.1 sm:px-6 sm:ml-30 md:px-10 md:ml-25
     "
->
+          >
             {apiFollowed}
           </div>
         </div>

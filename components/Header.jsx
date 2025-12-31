@@ -30,11 +30,15 @@ export default function Header() {
   useEffect(() => {
     if (!user) return;
 
-    fetch("http://localhost:3000/notifications", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/notifications`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        credentials: "include",
+      }
+    )
       .then(res => res.json())
       .then(data => {
         if (data.result) {
@@ -49,12 +53,13 @@ export default function Header() {
   const deleteNotification = async (id) => {
     try {
       const res = await fetch(
-        `http://localhost:3000/notifications/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/notifications/${id}`,
         {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
+          credentials: "include",
         }
       );
 

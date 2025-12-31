@@ -15,7 +15,7 @@ export default function CommentsSection({ apiId }) {
     async function fetchComments() {
         try {
             const res = await fetch(
-                `http://localhost:3000/apis/${apiId}/comments`
+                `${process.env.NEXT_PUBLIC_API_URL}/apis/${apiId}/comments`
             );
             const data = await res.json();
 
@@ -44,7 +44,7 @@ export default function CommentsSection({ apiId }) {
 
         try {
             const res = await fetch(
-                `http://localhost:3000/apis/${apiId}/comments`,
+                `${process.env.NEXT_PUBLIC_API_URL}/apis/${apiId}/comments`,
                 {
                     method: "POST",
                     headers: {
@@ -52,6 +52,7 @@ export default function CommentsSection({ apiId }) {
                         Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify({ content: comment }),
+                    credentials: "include",
                 }
             );
 
@@ -70,7 +71,7 @@ export default function CommentsSection({ apiId }) {
         }
     }
 
-    const showComments = comments.map((data,i) => {
+    const showComments = comments.map((data, i) => {
         <Comments key={i} username={data.author?.username} image={data.author?.image} content={data.author?.content} />
     })
 
@@ -103,7 +104,7 @@ export default function CommentsSection({ apiId }) {
                 )}
 
                 {comments.map((c) => (
-                   <Comments key={c._id} comment={c}/>
+                    <Comments key={c._id} comment={c} />
                 ))}
             </div>
         </div>

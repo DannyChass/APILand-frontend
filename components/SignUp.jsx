@@ -25,16 +25,19 @@ export default function SignUp() {
       return;
     }
 
-    const response = await fetch("http://localhost:3000/users/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({
-        username,
-        email,
-        password,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/signup`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+      }
+    );
 
     const data = await response.json();
 
@@ -45,11 +48,15 @@ export default function SignUp() {
 
     localStorage.setItem("accessToken", data.accessToken);
 
-    const meRes = await fetch("http://localhost:3000/users/me", {
-      headers: {
-        Authorization: `Bearer ${data.accessToken}`,
-      },
-    });
+    const meRes = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+      {
+        headers: {
+          Authorization: `Bearer ${data.accessToken}`,
+        },
+        credentials: "include",
+      }
+    );
 
     const meData = await meRes.json();
 

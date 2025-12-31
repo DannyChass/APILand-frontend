@@ -35,7 +35,9 @@ function ApiSearch() {
     useEffect(() => {
         const fetchFilterData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/apis/filters');
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/apis/filters`
+                );
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -59,15 +61,17 @@ function ApiSearch() {
 
         (async () => {
             const response = await fetch(
-                `http://localhost:3000/users/follow/${user._id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/users/follow/${user._id}`,
                 {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${accessToken}`,
                     },
+                    credentials: "include",
                 }
             );
+
             const data = await response.json();
             console.log(data.data);
             setUserFollow(data.data);
@@ -81,7 +85,7 @@ function ApiSearch() {
         if (text.length >= 3) {
             try {
                 const response = await fetch(
-                    `http://localhost:3000/apis/allApi/${text}`
+                    `${process.env.NEXT_PUBLIC_API_URL}/apis/allApi/${text}`
                 );
                 const data = await response.json();
 
@@ -139,7 +143,7 @@ function ApiSearch() {
             params.append('tag', filters.tag)
         }
         console.log(filters)
-        const apiUrl = `http://localhost:3000/apis/allApi?${params.toString()}`;
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/apis/allApi?${params.toString()}`;
         console.log("API URL:", apiUrl);
 
         try {
@@ -312,13 +316,13 @@ function ApiSearch() {
                     </div>
                 </div>
                 <div className="w-full max-w-[95%] mx-auto flex flex-col gap-6 mt-10">
-<div className='flex flex-wrap gap-6 sm:gap-8 md:gap-10 
+                    <div className='flex flex-wrap gap-6 sm:gap-8 md:gap-10 
       justify-start items-start 
       px-0.1 sm:px-6 sm:ml-30 md:px-10 md:ml-25 mt-10'>
-                    {apiCards}
+                        {apiCards}
+                    </div>
                 </div>
-                </div>
-                
+
                 <div id='pagination' className='flex justify-center'>
                     <PaginationApiHub
                         totalPages={totalPages}

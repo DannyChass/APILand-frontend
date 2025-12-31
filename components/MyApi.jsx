@@ -16,8 +16,9 @@ export default function MyApiComponent() {
     (async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/apis/user/${userId}`
+          `${process.env.NEXT_PUBLIC_API_URL}/apis/user/${userId}`
         );
+
         const data = await res.json();
 
         if (data.result && Array.isArray(data.apis)) {
@@ -40,16 +41,16 @@ export default function MyApiComponent() {
   if (apis.length === 0) {
     return <p>Pas d'APIs créées</p>;
   }
-  console.log("apis:" ,apis)
+  console.log("apis:", apis)
 
   return (
     <div className="w-full flex flex-wrap gap-10">
       {apis.map((api, i) => (
         <ApiCardV2
-        key={i}
-        {...api}
-        author={user.username}
-        user={user}
+          key={i}
+          {...api}
+          author={user.username}
+          user={user}
         />
       ))}
     </div>

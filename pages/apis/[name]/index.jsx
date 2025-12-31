@@ -29,11 +29,16 @@ export default function API() {
             const token = localStorage.getItem("accessToken");
             if (!token || !apiData?.user?._id) return;
 
-            const res = await fetch("http://localhost:3000/users/me", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    credentials: "include",
+                }
+            );
+
 
             const data = await res.json();
 
@@ -58,7 +63,7 @@ export default function API() {
 
         try {
             const res = await fetch(
-                `http://localhost:3000/apis/${apiData._id}/news`
+                `${process.env.NEXT_PUBLIC_API_URL}/apis/${apiData._id}/news`
             );
             const data = await res.json();
 
@@ -82,7 +87,7 @@ export default function API() {
             <div className="w-full bg-white rounded-xl shadow p-10 flex gap-12">
 
                 <div className="w-60 h-60 bg-gray-300 rounded-xl flex items-center justify-center shrink-0">
-                {apiData.image ? <img src={apiData.image} alt={apiData.name} /> : "NO IMAGE AVAILABLE"}
+                    {apiData.image ? <img src={apiData.image} alt={apiData.name} /> : "NO IMAGE AVAILABLE"}
                     <span className="text-gray-600 text-3xl"></span>
                 </div>
 
@@ -218,7 +223,7 @@ export default function API() {
                     </div>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </>
     );
 }

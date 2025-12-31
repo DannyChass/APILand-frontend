@@ -23,14 +23,16 @@ export default function ProfilePage() {
   const [expanded, setExpanded] = useState(false);
   const [apiFollow, setApiFollow] = useState([]);
   const [apiData, setApiData] = useState(null);
-  
+
 
   useEffect(() => {
     if (!name) return;
 
     async function fetchAPI() {
       try {
-        const res = await fetch(`http://localhost:3000/apis/by-name/${name}`);
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/apis/by-name/${name}`
+        );
         const data = await res.json();
 
         if (data.result) {
@@ -52,13 +54,18 @@ export default function ProfilePage() {
     (async () => {
       const accessToken = localStorage.getItem("accessToken");
 
-      const response = await fetch("http://localhost:3000/users/me", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          credentials: "include",
+        }
+      );
+
       const data = await response.json();
       setUser(data.user);
     })();
@@ -76,13 +83,14 @@ export default function ProfilePage() {
     const accessToken = localStorage.getItem("accessToken");
 
     const response = await fetch(
-      `http://localhost:3000/users/follow/${user._id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/users/follow/${user._id}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
+        credentials: "include",
       }
     );
 
@@ -92,7 +100,7 @@ export default function ProfilePage() {
 
     //console.log(apiFollow);
   };
-console.log(apiFollow)
+  console.log(apiFollow)
   const favorites = apiFollow.map((data, i) => {
     return (
       <ApiCardV2
@@ -100,7 +108,7 @@ console.log(apiFollow)
         {...data.api}
         author={data.api.user.username}
         user={data.api.user}
-        isFollowed ={true}
+        isFollowed={true}
       />
     );
   });
@@ -192,7 +200,7 @@ console.log(apiFollow)
 
           <hr className="border-2 w-full border-slate-200" />
         </div>
-                    
+
         <div className="w-full max-w-[95%] mx-auto flex flex-col gap-6 mt-10">
           {activeMenu === "Apis" && (
             <div className='flex flex-wrap gap-6 sm:gap-8 md:gap-10 
@@ -204,10 +212,10 @@ console.log(apiFollow)
             (<div className='flex flex-wrap gap-6 sm:gap-8 md:gap-10 
       justify-start items-start 
       px-0.1 sm:px-6 sm:ml-30 md:px-10 md:ml-25 '>{favorites}</div> || (
-              <div className='flex flex-wrap gap-6 sm:gap-8 md:gap-10 
+                <div className='flex flex-wrap gap-6 sm:gap-8 md:gap-10 
       justify-start items-start 
       px-0.1 sm:px-6 sm:ml-30 md:px-10 md:ml-30 '>pas d'apis follow</div>
-            ))}
+              ))}
         </div>
       </div>
       <Footer />

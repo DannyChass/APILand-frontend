@@ -15,11 +15,16 @@ export default function GoogleLoginButton() {
         <GoogleLogin
           onSuccess={async (credentialResponse) => {
             try {
-              const response = await fetch("http://localhost:3000/users/google", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token: credentialResponse.credential }),
-              });
+              const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/users/google`,
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ token: credentialResponse.credential }),
+                  credentials: "include",
+                }
+              );
+
 
               const data = await response.json();
 
@@ -30,11 +35,16 @@ export default function GoogleLoginButton() {
 
               localStorage.setItem("accessToken", data.accessToken);
 
-              const meRes = await fetch("http://localhost:3000/users/me", {
-                headers: {
-                  Authorization: `Bearer ${data.accessToken}`,
-                },
-              });
+              const meRes = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${data.accessToken}`,
+                  },
+                  credentials: "include",
+                }
+              );
+
 
               const meData = await meRes.json();
 

@@ -20,7 +20,10 @@ export default function AddNews() {
 
         async function fetchAPI() {
             try {
-                const res = await fetch(`http://localhost:3000/apis/by-name/${encodeURIComponent(name)}`);
+                const res = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/apis/by-name/${encodeURIComponent(name)}`
+                );
+
                 const data = await res.json();
 
                 if (!data.result) {
@@ -51,11 +54,15 @@ export default function AddNews() {
             }
 
             try {
-                const res = await fetch("http://localhost:3000/users/me", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const res = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                        credentials: "include",
+                    }
+                );
 
                 const data = await res.json();
 
@@ -88,19 +95,23 @@ export default function AddNews() {
         setLoading(true);
 
         try {
-            const res = await fetch("http://localhost:3000/news", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    title,
-                    content,
-                    image,
-                    apiId: apiData._id,
-                }),
-            });
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/news`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        title,
+                        content,
+                        image,
+                        apiId: apiData._id,
+                    }),
+                    credentials: "include",
+                }
+            );
 
             const data = await res.json();
 

@@ -9,7 +9,7 @@ export default function NewsPage() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch("http://localhost:3000/news");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news`);
         const data = await res.json();
 
         if (data.result) {

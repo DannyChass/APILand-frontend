@@ -66,24 +66,30 @@ export default function AddAnAPI() {
     const accessToken = localStorage.getItem("accessToken");
 
     try {
-      let response = await fetch("http://localhost:3000/apis/create", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Authorization: "Bearer " + accessToken,
-        },
-        body: formData,
-      });
+      let response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/apis/create`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: formData,
+        }
+      );
 
       let data = await response.json();
 
       if (data.error === "Invalid or expired access token") {
         console.log("Access token expired, refreshing...");
 
-        const refresh = await fetch("http://localhost:3000/users/refresh", {
-          method: "POST",
-          credentials: "include",
-        });
+        const refresh = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/users/refresh`,
+          {
+            method: "POST",
+            credentials: "include",
+          }
+        );
 
         const refreshData = await refresh.json();
 
@@ -96,15 +102,19 @@ export default function AddAnAPI() {
 
         localStorage.setItem("accessToken", refreshData.accessToken);
 
-        response = await fetch("http://localhost:3000/apis/create", {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + refreshData.accessToken,
-          },
-          body: formData,
-        });
+        response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/apis/create`,
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${refreshData.accessToken}`,
+            },
+            body: formData,
+          }
+        );
+
 
         data = await response.json();
       }

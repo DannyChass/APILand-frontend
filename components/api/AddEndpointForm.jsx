@@ -29,7 +29,7 @@ export default function AddEndpointForm({ apiId, onCreated }) {
             const token = localStorage.getItem("accessToken");
 
             const res = await fetch(
-                `http://localhost:3000/api/${apiId}/endpoints`,
+                `${process.env.NEXT_PUBLIC_API_URL}/api/${apiId}/endpoints`,
                 {
                     method: "POST",
                     headers: {
@@ -46,6 +46,7 @@ export default function AddEndpointForm({ apiId, onCreated }) {
                             },
                         ],
                     }),
+                    credentials: "include",
                 }
             );
 

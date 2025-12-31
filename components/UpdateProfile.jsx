@@ -38,13 +38,17 @@ export default function UpdateProfile() {
 
     const accessToken = localStorage.getItem("accessToken");
 
-    const response = await fetch("http://localhost:3000/users/me", {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: formData,
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: formData,
+        credentials: "include",
+      }
+    );
 
     const data = await response.json();
 

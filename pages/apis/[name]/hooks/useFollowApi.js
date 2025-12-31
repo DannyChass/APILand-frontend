@@ -13,11 +13,12 @@ export default function useFollowApi(apiId) {
         async function checkFollow() {
             try {
                 const res = await fetch(
-                    `http://localhost:3000/apis/follow/${apiId}/status`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/apis/follow/${apiId}/status`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
+                        credentials: "include",
                     }
                 );
 
@@ -44,13 +45,14 @@ export default function useFollowApi(apiId) {
 
         try {
             const res = await fetch(
-                `http://localhost:3000/apis/follow/${apiId}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/apis/follow/${apiId}`,
                 {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`,
                     },
+                    credentials: "include",
                 }
             );
 

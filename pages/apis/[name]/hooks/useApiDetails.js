@@ -15,7 +15,7 @@ export default function useApiDetails(name) {
         async function fetchApi() {
             try {
                 const res = await fetch(
-                    `http://localhost:3000/apis/by-name/${name}`
+                    `${process.env.NEXT_PUBLIC_API_URL}/apis/by-name/${name}`
                 );
 
                 const data = await res.json();

@@ -15,7 +15,7 @@ export default function Callback() {
 
         const login = async () => {
             const res = await fetch(
-                `http://localhost:3000/users/auth/github/callback?code=${code}`
+                `${process.env.NEXT_PUBLIC_API_URL}/users/auth/github/callback?code=${code}`
             );
             const data = await res.json();
 
@@ -28,11 +28,16 @@ export default function Callback() {
 
             localStorage.setItem("accessToken", data.accessToken);
 
-            const meRes = await fetch("http://localhost:3000/users/me", {
-                headers: {
-                    Authorization: `Bearer ${data.accessToken}`,
-                },
-            });
+            const meRes = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${data.accessToken}`,
+                    },
+                    credentials: "include",
+                }
+            );
+
             const meData = await meRes.json();
 
             console.log(meData);

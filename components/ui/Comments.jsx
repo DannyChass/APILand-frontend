@@ -16,9 +16,9 @@ export default function Comments({ comment, apiId }) {
   const [showReplies, setShowReplies] = useState(false);
   const isReply = !!comment.parentComment;
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchReplies()
-  },[])
+  }, [])
 
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Comments({ comment, apiId }) {
     if (!replyContent) return;
 
     const response = await fetch(
-      `http://localhost:3000/comments/${comment._id}/reply`,
+      `${process.env.NEXT_PUBLIC_API_URL}/comments/${comment._id}/reply`,
       {
         method: "POST",
         headers: {
@@ -41,8 +41,10 @@ export default function Comments({ comment, apiId }) {
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({ content: replyContent }),
+        credentials: "include",
       }
     );
+
     const data = await response.json();
     console.log(data);
 
@@ -56,7 +58,7 @@ export default function Comments({ comment, apiId }) {
   const fetchReplies = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/comments/${comment._id}/replies`
+        `${process.env.NEXT_PUBLIC_API_URL}/comments/${comment._id}/replies`
       );
       const data = await res.json();
       if (data.result) {
@@ -69,7 +71,7 @@ export default function Comments({ comment, apiId }) {
 
   const toggleReplies = () => {
     if (!showReplies) {
-        fetchReplies()
+      fetchReplies()
     }
     setShowReplies(!showReplies)
   }
@@ -84,20 +86,20 @@ export default function Comments({ comment, apiId }) {
         <div className="flex w-full gap-3">
           <img
             src={comment.author?.image || "https://i.pravatar.cc/80"}
-            className={` rounded-full ${isReply ? "w-8 h-8": "w-12 h-12"}`}
+            className={` rounded-full ${isReply ? "w-8 h-8" : "w-12 h-12"}`}
             alt={comment.author?.username}
           />
           <div className="w-full">
-            <p className={`font-semibold ${isReply ? "text-sm":""}`}>{comment.author?.username}</p>
-            <p className={`text-gray-700 ${isReply ? "text-sm m-0 p-0":""}`}>{comment.content}</p>
+            <p className={`font-semibold ${isReply ? "text-sm" : ""}`}>{comment.author?.username}</p>
+            <p className={`text-gray-700 ${isReply ? "text-sm m-0 p-0" : ""}`}>{comment.content}</p>
           </div>{" "}
         </div>
       </div>
       <div className={`flex items-center px-5  ${isReply ? "gap-3 text-sm   " : "gap-5"}`}>
-        <div className={`flex items-center  ${isReply ? "gap-1":"gap-2"}`}>
+        <div className={`flex items-center  ${isReply ? "gap-1" : "gap-2"}`}>
           <button
             onClick={() => setShowReply(!showReply)}
-            className={`"text-sm text-[#7763da] hover:underline hover:underline-offset-2 hover:font-bold cursor-pointer" ${isReply ? "text-sm" :""}`}
+            className={`"text-sm text-[#7763da] hover:underline hover:underline-offset-2 hover:font-bold cursor-pointer" ${isReply ? "text-sm" : ""}`}
           >
             Answer
           </button>
@@ -114,7 +116,7 @@ export default function Comments({ comment, apiId }) {
             ) : (
               <FontAwesomeIcon
                 icon={faAngleDown}
-                onClick={toggleReplies  }
+                onClick={toggleReplies}
                 className="cursor-pointer"
                 color="#7763da"
                 width={10}
@@ -147,7 +149,7 @@ export default function Comments({ comment, apiId }) {
       {showReplies && replies?.length > 0 && (
         <div>
           {replies.map((reply) => {
-           return <Comments key={reply._id} comment={reply} />;
+            return <Comments key={reply._id} comment={reply} />;
           })}
         </div>
       )}

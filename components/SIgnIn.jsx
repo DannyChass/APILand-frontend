@@ -20,19 +20,22 @@ export default function SignIn() {
 
   const handleLogin = () => {
     // Redirige vers ton backend qui lui-même redirige vers GitHub
-    window.location.href = "http://localhost:3000/users/github";
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/users/github`;
   };
 
 
   const handleSignIn = async () => {
     setErrorMsg("");
 
-    const response = await fetch("http://localhost:3000/users/signin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-      credentials: "include",
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/signin`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+        credentials: "include",
+      }
+    );
 
     const data = await response.json();
 
@@ -44,11 +47,15 @@ export default function SignIn() {
     localStorage.setItem("accessToken", data.accessToken);
 
     // recharge le user complet
-    const meRes = await fetch("http://localhost:3000/users/me", {
-      headers: {
-        Authorization: `Bearer ${data.accessToken}`,
-      },
-    });
+    const meRes = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+      {
+        headers: {
+          Authorization: `Bearer ${data.accessToken}`,
+        },
+        credentials: "include",
+      }
+    );
 
     const meData = await meRes.json();
 
@@ -105,11 +112,11 @@ export default function SignIn() {
             />
             <div className="w-full flex items-center gap-3">
               <Link href="#" onClick={() => setPasswordForgetten(!passwordForgetten)} className="text-sm text-stone-300 hover:underline">
-              {" "}
-              Mot de passe oublié?
-            </Link> {passwordForgetten && ( <p className="text-red-400 font-bold text-sm ">in development</p>)}
+                {" "}
+                Mot de passe oublié?
+              </Link> {passwordForgetten && (<p className="text-red-400 font-bold text-sm ">in development</p>)}
             </div>
-            
+
           </div>
           <div className="w-[70%] flex flex-col justify-start items-center">
 

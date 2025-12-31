@@ -21,7 +21,7 @@ export default function ApiEndpointsList({
             setLoading(true);
             try {
                 const res = await fetch(
-                    `http://localhost:3000/api/${apiId}/endpoints`
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/${apiId}/endpoints`
                 );
 
                 const data = await res.json();
@@ -40,8 +40,8 @@ export default function ApiEndpointsList({
     }, [apiId, refreshKey]);
 
     const toggleOpen = (id) => {
-    setOpenId(openId === id ? null : id);
-  };
+        setOpenId(openId === id ? null : id);
+    };
 
 
     async function handleDelete(endpointId) {
@@ -54,12 +54,13 @@ export default function ApiEndpointsList({
             const token = localStorage.getItem("accessToken");
 
             const res = await fetch(
-                `http://localhost:3000/api/${apiId}/endpoints/${endpointId}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/api/${apiId}/endpoints/${endpointId}`,
                 {
                     method: "DELETE",
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
+                    credentials: "include",
                 }
             );
 
@@ -98,7 +99,7 @@ export default function ApiEndpointsList({
                     key={endpoint._id}
                     className="relative border rounded-lg p-4 border-slate-200 bg-gray-50"
                 >
-                    
+
 
 
                     <div className="flex justify-between items-center gap-3 mb-2">
@@ -109,40 +110,40 @@ export default function ApiEndpointsList({
                                 ${endpoint.method === 'PATCH' ? 'text-fuchsia-500 bg-fuchsia-100' : ""}
                                 ${endpoint.method === 'PUT' ? 'text-orange-500 bg-orange-100' : ""}
                                 ${endpoint.method === 'DELETE' ? 'text-red-500 bg-red-100' : ""}`}>
-                            {endpoint.method}
-                        </span>
-                        <span className=" label">
-                            {endpoint.path}
-                        </span>
+                                {endpoint.method}
+                            </span>
+                            <span className=" label">
+                                {endpoint.path}
+                            </span>
                         </div>
                         {openId === endpoint._id ? (
-                            <FontAwesomeIcon onClick={()=> toggleOpen(endpoint._id)} icon={faXmark}/>
+                            <FontAwesomeIcon onClick={() => toggleOpen(endpoint._id)} icon={faXmark} />
                         ) : (
-                            <FontAwesomeIcon onClick={()=> toggleOpen(endpoint._id)} icon={faAngleDown}/>
+                            <FontAwesomeIcon onClick={() => toggleOpen(endpoint._id)} icon={faAngleDown} />
                         )}
-                        
-                        
+
+
                     </div>
-                        <div className="flex flex-col gap-4 items-end w-full">
-                            { openId === endpoint._id && endpoint.responseExamples?.length > 0 && (
-                        <pre className="bg-white border w-full border-slate-300 rounded p-3 text-sm font-mono overflow-x-auto">
-                            {JSON.stringify(
-                                endpoint.responseExamples[0].example,
-                                null,
-                                2
-                            )}
-                        </pre>
-                    )}
-                    {openId === endpoint._id && isOwner && (
-                        <Button
-                            onClick={() => handleDelete(endpoint._id)}
-                            title="Delete endpoint"
-                        >
-                            delete
-                        </Button>
-                    )}
-                        </div>
-                    
+                    <div className="flex flex-col gap-4 items-end w-full">
+                        {openId === endpoint._id && endpoint.responseExamples?.length > 0 && (
+                            <pre className="bg-white border w-full border-slate-300 rounded p-3 text-sm font-mono overflow-x-auto">
+                                {JSON.stringify(
+                                    endpoint.responseExamples[0].example,
+                                    null,
+                                    2
+                                )}
+                            </pre>
+                        )}
+                        {openId === endpoint._id && isOwner && (
+                            <Button
+                                onClick={() => handleDelete(endpoint._id)}
+                                title="Delete endpoint"
+                            >
+                                delete
+                            </Button>
+                        )}
+                    </div>
+
                 </div>
             ))}
         </div>
