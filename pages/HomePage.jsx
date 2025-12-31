@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Footer from "../components/Footer";
-import useFollowApi from "./apis/[name]/hooks/useFollowApi";
+import useFollowApi from "../hooks/useFollowApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar,

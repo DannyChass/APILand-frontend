@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Header from "../../../components/Header";
 import Button from "../../../components/ui/Button";
-import useApiDetails from "./hooks/useApiDetails";
+import useApiDetails from "../../../hooks/useApiDetails.js"
 import Footer from "../../../components/Footer.jsx";
-import useFollowApi from "./hooks/useFollowApi";
+import useFollowApi from "../../../hooks/useFollowApi.js";
 import ApiTabs from "../../../components/ui/ApiTabs";
 import CommentsSection from "../../../components/api/CommentsSection";
 import ApiHeader from "../../../components/api/ApiHeader";
