@@ -1,6 +1,6 @@
 
 import Header from "../components/Header";
-import SignIn from "../components/SIgnIn";
+import SignIn from "../components/SignIn";
 import { useState } from 'react'
 import { useRouter } from "next/router";
 import Footer from "../components/Footer";
